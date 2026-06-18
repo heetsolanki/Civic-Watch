@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+
+# environment
+.env
+
+# builds
+dist/
+build/
+
+# logs
+*.log
+
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Android
+*.apk
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
