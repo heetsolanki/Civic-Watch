@@ -1,12 +1,16 @@
+import 'package:citizen/features/splash/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
-
 import 'app/app.dart';
 
+void main() {
+  runApp(const CivicWatchApp());
+}
 
-void main(){
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-  runApp(
-      const CivicWatchApp()
-  );
-
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen());
+  }
 }
