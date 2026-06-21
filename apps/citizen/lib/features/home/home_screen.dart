@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:citizen/exports.dart';
 
 class HomeScreen extends StatelessWidget{
   const HomeScreen({super.key});
@@ -8,7 +8,7 @@ class HomeScreen extends StatelessWidget{
     return const Scaffold(
       body:Center(
         child:Text(
-            "CivicWatch"
+            "CivicWatch Home Screen",
         ),
       ),
     );

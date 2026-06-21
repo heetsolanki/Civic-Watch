@@ -1,10 +1,4 @@
-import 'package:citizen/features/onboarding/widgets/onboarding_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../../../core/storage/app_preferences.dart';
-import '../../home/home_screen.dart';
-import '../../onboarding/screens/onboarding_screen.dart';
+import 'package:citizen/exports.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -28,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!mounted) return;
 
     if (seen) {
-      context.go('/home');
+      context.go('/main');
     } else {
       context.go('/onboard');
     }

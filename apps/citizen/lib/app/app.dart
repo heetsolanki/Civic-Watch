@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-
-import 'router.dart';
-import 'theme.dart';
+import 'package:citizen/exports.dart';
 
 class CivicWatchApp extends StatelessWidget {
 

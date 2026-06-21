@@ -1,12 +1,4 @@
-import 'package:citizen/core/constants/app_colors.dart';
-import 'package:citizen/core/widgets/button.dart';
-import 'package:citizen/features/onboarding/screens/onboarding_screen.dart';
-import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../../../core/storage/app_preferences.dart';
-import '../../home/home_screen.dart';
-import 'onboarding_page.dart';
-import 'package:flutter/material.dart';
+import 'package:citizen/exports.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -33,7 +25,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                   if (!context.mounted) return;
 
-                  context.go('/home');
+                  context.go('/main');
                 },
                 child: Text(
                   "Skip",
@@ -97,7 +89,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                     if (!context.mounted) return;
 
-                    context.go('/home');
+                    context.go('/main');
                   } else {
                     controller.nextPage(
                       duration: const Duration(milliseconds: 300),

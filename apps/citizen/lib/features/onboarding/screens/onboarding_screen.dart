@@ -1,4 +1,4 @@
-import 'package:citizen/features/onboarding/models/onboarding_item.dart';
+import 'package:citizen/exports.dart';
 
 final onboardingItems = [
   OnboardingItem(

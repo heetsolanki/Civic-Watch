@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:citizen/exports.dart';
 
 class OnboardingPage extends StatelessWidget {
   final String image;

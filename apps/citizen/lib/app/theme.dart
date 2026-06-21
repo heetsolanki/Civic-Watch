@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:citizen/exports.dart';
 
 class AppTheme{
   static ThemeData light = ThemeData(

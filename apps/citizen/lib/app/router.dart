@@ -1,8 +1,4 @@
-import 'package:citizen/features/onboarding/widgets/onboarding_screen.dart';
-import 'package:citizen/features/splash/screens/splash_screen.dart';
-import 'package:go_router/go_router.dart';
-
-import '../features/home/home_screen.dart';
+import 'package:citizen/exports.dart';
 
 final router = GoRouter(
   routes: [
@@ -18,6 +14,13 @@ final router = GoRouter(
       name: "Onboarding Screen",
       builder: (context, state) {
         return const OnboardingScreen();
+      },
+    ),
+    GoRoute(
+      path: '/main',
+      name: "Main",
+      builder: (context, state) {
+        return const MainShell();
       },
     ),
     GoRoute(
