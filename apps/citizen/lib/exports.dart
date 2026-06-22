@@ -19,7 +19,7 @@ export 'features/issues/screens/issues_screen.dart';
 // widgets
 export 'core/widgets/button.dart';
 export 'core/widgets/issue_card.dart';
-export 'core/widgets/app_search_bar.dart';
+export 'core/widgets/text_field.dart';
 export 'core/widgets/category_selector.dart';
 export 'features/home/widgets/welcome_widget.dart';
 export 'features/home/widgets/stats_card_widget.dart';
