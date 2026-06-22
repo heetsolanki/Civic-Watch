@@ -1,5 +1,4 @@
 import 'package:citizen/exports.dart';
-import 'package:citizen/features/home/data/issue_data.dart';
 import 'package:citizen/features/home/widgets/stats_card_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -39,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                         clipBehavior: Clip.none,
                         child: Row(
                           spacing: 16,
-                          children: issueDataList.map((issue) {
+                          children: issueDataList.take(5).map((issue) {
                             return IssueCard(issue: issue);
                           }).toList(),
                         ),

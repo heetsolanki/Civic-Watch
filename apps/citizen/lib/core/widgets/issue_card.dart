@@ -1,5 +1,4 @@
 import 'package:citizen/exports.dart';
-import 'package:citizen/features/home/data/issue_data.dart';
 
 class IssueCard extends StatelessWidget {
   final IssueData issue;
