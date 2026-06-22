@@ -48,8 +48,8 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             Text(
               'Report. Track. Resolve.',
-              style: GoogleFonts.caladea(
-                fontSize: 16,
+              style: GoogleFonts.openSans(
+                fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
             ),

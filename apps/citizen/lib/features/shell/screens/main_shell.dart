@@ -28,19 +28,21 @@ class _MainShellState extends State<MainShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xfff8f9ff),
       appBar: AppBar(
         shape: RoundedRectangleBorder(
           borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15),
           ),
         ),
+        toolbarHeight: 65,
         centerTitle: true,
         elevation: 5,
         title: Text(
           'CivicWatch',
           style: GoogleFonts.poppins(
-            fontSize: 22,
+            fontSize: 25,
             fontWeight: FontWeight.bold,
             color: AppColors.textPrimary,
           ),
@@ -63,7 +65,7 @@ class _MainShellState extends State<MainShell> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(top: 75),
+        padding: EdgeInsets.only(top: 70),
         child: FloatingActionButton(
           elevation: 0,
           shape: const CircleBorder(),

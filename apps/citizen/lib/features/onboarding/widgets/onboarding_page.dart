@@ -38,7 +38,7 @@ class OnboardingPage extends StatelessWidget {
           Text(
             description,
             textAlign: TextAlign.center,
-            style: GoogleFonts.caladea(fontSize: 16, color: Colors.grey.shade600),
+            style: GoogleFonts.openSans(fontSize: 14, color: Colors.grey.shade600),
           ),
         ],
       ),
