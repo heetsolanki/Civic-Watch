@@ -1,9 +1,8 @@
 import 'package:citizen/exports.dart';
 
-import '../widgets/bottom_navbar.dart';
-
 class MainShell extends StatefulWidget {
-  const MainShell({super.key});
+  final int initialIndex;
+  const MainShell({super.key, this.initialIndex = 0});
 
   @override
   State<MainShell> createState() => _MainShellState();
@@ -11,12 +10,20 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   int selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = widget.initialIndex;
+  }
+
   final screens = [
     const HomeScreen(),
     const IssuesScreen(),
     const ReportScreen(),
     const MyReportsScreen(),
-    const ProfileScreen(),
+    const AuthScreen(),
+    const ProfileScreen()
   ];
 
   void changePage(int index) {

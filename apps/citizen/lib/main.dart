@@ -1,7 +1,12 @@
 import 'exports.dart';
 
 void main() {
-  runApp(const CivicWatchApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => AuthProvider(),
+      child: const CivicWatchApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -9,7 +14,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false, home: SplashScreen());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen());
   }
 }

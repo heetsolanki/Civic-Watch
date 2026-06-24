@@ -65,7 +65,6 @@ class IssuesScreenState extends State<IssuesScreen> {
               const SizedBox(height: 30),
               // Search Bar
               AppSearchBar(
-                icon: Icons.search,
                 hintText: 'Search by issue title or location...',
                 onChanged: (value) {
                   setState(() {

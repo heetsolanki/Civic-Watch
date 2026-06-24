@@ -1,5 +1,4 @@
 import 'package:citizen/exports.dart';
-import 'package:citizen/features/home/widgets/stats_card_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

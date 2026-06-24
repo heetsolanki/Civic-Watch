@@ -27,7 +27,27 @@ final router = GoRouter(
       path: '/home',
       name: "Home",
       builder: (context, state) {
-        return const HomeScreen();
+        return const MainShell(
+          initialIndex: 0,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/profile',
+      name: "Profile",
+      builder: (context, state) {
+        return const MainShell(
+          initialIndex: 5,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/auth',
+      name: "Auth Screen",
+      builder: (context, state) {
+        return const MainShell(
+          initialIndex: 4,
+        );
       },
     ),
   ],

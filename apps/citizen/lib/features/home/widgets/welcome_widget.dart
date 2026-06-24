@@ -1,8 +1,13 @@
 import 'package:citizen/exports.dart';
 
-class WelcomeWidget extends StatelessWidget {
+class WelcomeWidget extends StatefulWidget {
   const WelcomeWidget({super.key});
 
+  @override
+  State<WelcomeWidget> createState() => WelcomeWidgetScreen();
+}
+
+class WelcomeWidgetScreen extends State<WelcomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(

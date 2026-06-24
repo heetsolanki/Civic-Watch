@@ -3,13 +3,10 @@ import 'package:citizen/exports.dart';
 class AppSearchBar extends StatelessWidget {
   final String hintText;
   final Function(String) onChanged;
-  final IconData icon;
-
   const AppSearchBar({
     super.key,
     required this.hintText,
     required this.onChanged,
-    required this.icon,
   });
 
   @override
@@ -36,7 +33,7 @@ class AppSearchBar extends StatelessWidget {
             color: Colors.grey.shade400,
             fontSize: 14,
           ),
-          prefixIcon: Icon(icon, color: AppColors.textPrimary, size: 20),
+          prefixIcon: Icon(Icons.search, color: AppColors.textPrimary, size: 20),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             borderSide: BorderSide.none,
