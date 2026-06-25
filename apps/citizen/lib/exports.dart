@@ -34,6 +34,7 @@ export 'features/auth/widgets/auth_header.dart';
 export 'features/auth/widgets/auth_footer.dart';
 export 'features/auth/widgets/login_form.dart';
 export 'features/auth/widgets/register_form.dart';
+export 'features/profile/widgets/top_card.dart';
 
 // data
 export 'core/data/issue_data.dart';
