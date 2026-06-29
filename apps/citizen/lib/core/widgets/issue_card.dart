@@ -56,10 +56,10 @@ class IssueCard extends StatelessWidget {
                         Icon(issue.icon, size: 18, color: AppColors.smallText),
                         Text(
                           issue.category,
-                          style: GoogleFonts.openSans(
+                          style: GoogleFonts.poppins(
                             fontSize: 13,
                             color: AppColors.smallText,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],

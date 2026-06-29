@@ -4,6 +4,7 @@ class AuthInput extends StatefulWidget {
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
   final String? hintText;
+  final int? maxLines;
   final bool obscureText;
   final TextInputType keyboardType;
   final IconData? prefixIcon;
@@ -15,6 +16,7 @@ class AuthInput extends StatefulWidget {
     this.controller,
     this.onChanged,
     this.hintText,
+    this.maxLines,
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
     this.prefixIcon,
@@ -45,6 +47,7 @@ class AuthInputField extends State<AuthInput> {
       child: TextField(
         controller: widget.controller,
         obscureText: widget.obscureText,
+        maxLines: widget.maxLines ?? 1,
         keyboardType: widget.keyboardType,
         style: GoogleFonts.openSans(fontSize: 14, color: AppColors.textPrimary),
         decoration: InputDecoration(
@@ -76,7 +79,7 @@ class AuthInputField extends State<AuthInput> {
             borderRadius: BorderRadius.circular(15),
             borderSide: BorderSide.none,
           ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 15),
+          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
         ),
         onChanged: widget.onChanged,
       ),

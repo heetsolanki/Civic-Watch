@@ -37,7 +37,7 @@ final router = GoRouter(
       name: "Profile",
       builder: (context, state) {
         return const MainShell(
-          initialIndex: 5,
+          initialIndex: 4,
         );
       },
     ),
@@ -46,8 +46,15 @@ final router = GoRouter(
       name: "Auth Screen",
       builder: (context, state) {
         return const MainShell(
-          initialIndex: 4,
+          initialIndex: 3,
         );
+      },
+    ),
+    GoRoute(
+      path: '/create-report',
+      name: "Create Report",
+      builder: (context, state) {
+        return const CreateReportScreen();
       },
     ),
   ],

@@ -2,11 +2,22 @@ import 'package:citizen/exports.dart';
 
 class AppSearchBar extends StatelessWidget {
   final String hintText;
-  final Function(String) onChanged;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
+  final TextEditingController? controller;
+  final Widget? suffixIcon;
+  final VoidCallback? onTap;
+  final bool readOnly;
+
   const AppSearchBar({
     super.key,
     required this.hintText,
-    required this.onChanged,
+    this.onChanged,
+    this.onSubmitted,
+    this.controller,
+    this.suffixIcon,
+    this.onTap,
+    this.readOnly = false,
   });
 
   @override
@@ -25,7 +36,11 @@ class AppSearchBar extends StatelessWidget {
         ],
       ),
       child: TextField(
+        controller: controller,
         onChanged: onChanged,
+        onSubmitted: onSubmitted,
+        onTap: onTap,
+        readOnly: readOnly,
         style: GoogleFonts.openSans(fontSize: 14, color: AppColors.textPrimary),
         decoration: InputDecoration(
           hintText: hintText,
@@ -33,7 +48,8 @@ class AppSearchBar extends StatelessWidget {
             color: Colors.grey.shade400,
             fontSize: 14,
           ),
-          prefixIcon: Icon(Icons.search, color: AppColors.textPrimary, size: 20),
+          prefixIcon: const Icon(Icons.search, color: AppColors.textPrimary, size: 20),
+          suffixIcon: suffixIcon,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             borderSide: BorderSide.none,
