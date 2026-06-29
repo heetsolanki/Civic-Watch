@@ -23,7 +23,7 @@ class CreateReportScreenState extends State<CreateReportScreen> {
       if (currentStep > 0) {
         currentStep--;
       } else {
-        context.pop();
+        context.go('/home');
       }
     });
   }

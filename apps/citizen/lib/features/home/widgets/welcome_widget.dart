@@ -94,14 +94,18 @@ class WelcomeWidgetScreen extends State<WelcomeWidget> {
               children: [
                 AppButton(
                   text: 'Report Issue',
-                  onPressed: () {},
+                  onPressed: () {
+                    context.go('/create-report');
+                  },
                   width: MediaQuery.of(context).size.width * 0.85,
                   backgroundColor: AppColors.textPrimary,
                   prefixIcon: Icon(Icons.add_circle_outline_rounded, size: 20),
                 ),
                 AppButton(
                   text: 'Explore Issues',
-                  onPressed: () {},
+                  onPressed: () {
+                    context.go('/explore-issues');
+                  },
                   width: MediaQuery.of(context).size.width * 0.85,
                   backgroundColor: Colors.white,
                   borderColor: AppColors.textPrimary,

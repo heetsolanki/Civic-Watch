@@ -51,6 +51,15 @@ final router = GoRouter(
       },
     ),
     GoRoute(
+      path: '/explore-issues',
+      name: "Explore Issues",
+      builder: (context, state) {
+        return const MainShell(
+          initialIndex: 1,
+        );
+      },
+    ),
+    GoRoute(
       path: '/create-report',
       name: "Create Report",
       builder: (context, state) {

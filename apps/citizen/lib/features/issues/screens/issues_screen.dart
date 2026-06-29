@@ -11,11 +11,16 @@ class IssuesScreenState extends State<IssuesScreen> {
   final List<String> categories = [
     'All',
     'Roads',
-    'Sanitation',
-    'Infrastructure',
-    'Environment',
-    'Safety',
     'Utilities',
+    'Cleanliness',
+    'Environment',
+    'Public Property',
+    'Traffic & Parking',
+    'Public Transport',
+    'Construction',
+    'Animals',
+    'Public Safety',
+    'Other'
   ];
   String selectedCategory = 'All';
   String tappedCategory = '';
