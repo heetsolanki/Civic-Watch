@@ -11,7 +11,7 @@ export 'features/onboarding/models/onboarding_item.dart';
 export 'features/onboarding/screens/onboarding_screen.dart';
 export 'features/shell/screens/main_shell.dart';
 export 'features/splash/screens/splash_screen.dart';
-export 'features/report/screens/report_screen.dart';
+export 'features/report/screens/create_report_screen.dart';
 export 'features/report/screens/my_reports_screen.dart';
 export 'features/issues/screens/issues_screen.dart';
 export 'features/auth/screens/auth_screen.dart';
@@ -35,9 +35,33 @@ export 'features/auth/widgets/auth_footer.dart';
 export 'features/auth/widgets/login_form.dart';
 export 'features/auth/widgets/register_form.dart';
 export 'features/profile/widgets/top_card.dart';
+export 'features/report/steps/category_step.dart';
+export 'features/report/steps/location_step.dart';
+export 'features/report/steps/details_step.dart';
+export 'features/report/steps/photo_step.dart';
+export 'features/report/steps/review_step.dart';
+export 'features/report/widgets/custom_app_bar.dart';
+export 'features/report/widgets/title_field.dart';
+export 'features/report/widgets/description_field.dart';
+export 'features/report/widgets/map_container.dart';
+export 'features/report/widgets/map_view.dart';
+export 'features/report/widgets/address_card.dart';
+export 'features/report/widgets/review_section_card.dart';
+export 'features/report/widgets/review_chip.dart';
+export 'features/report/widgets/review_status_banner.dart';
+export 'features/report/widgets/review_photos_gallery.dart';
+export 'features/report/widgets/review_details_content.dart';
+export 'features/report/widgets/review_location_content.dart';
 
 // data
 export 'core/data/issue_data.dart';
+export 'core/data/title_suggestions.dart';
+export 'features/report/models/report_draft.dart';
+export 'features/report/models/report_flow_mode.dart';
+
+// services
+export 'features/report/services/location_service.dart';
+export 'features/report/services/location_search_service.dart';
 
 // packages
 export 'package:flutter/material.dart';
@@ -45,6 +69,14 @@ export 'package:google_fonts/google_fonts.dart';
 export 'package:go_router/go_router.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:provider/provider.dart';
+export 'package:image_picker/image_picker.dart';
+export 'package:image_cropper/image_cropper.dart';
+export 'dart:io';
+export 'package:flutter_map/flutter_map.dart';
+export 'package:flutter_map_animations/flutter_map_animations.dart';
+export 'dart:async';
+export 'dart:math';
+export 'package:flutter/services.dart';
 
 // provider
 export 'providers/auth_provider.dart';

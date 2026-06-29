@@ -2,7 +2,7 @@ import 'package:citizen/exports.dart';
 
 class AppButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   final bool isLoading;
   final double height;
@@ -17,7 +17,7 @@ class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
     required this.text,
-    required this.onPressed,
+    this.onPressed,
     this.isLoading = false,
     this.height = 50,
     this.width = double.infinity,
@@ -40,7 +40,10 @@ class AppButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
-            side: BorderSide(color: borderColor?? Colors.transparent, width: 1.0)
+            side: BorderSide(
+              color: borderColor ?? Colors.transparent,
+              width: 1.0,
+            ),
           ),
           padding: EdgeInsets.zero,
           backgroundColor: backgroundColor ?? AppColors.primary,

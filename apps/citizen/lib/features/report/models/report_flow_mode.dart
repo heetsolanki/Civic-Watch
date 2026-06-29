@@ -1,0 +1,4 @@
+enum ReportFlowMode {
+  create,
+  edit,
+}

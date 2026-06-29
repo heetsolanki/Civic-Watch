@@ -2,6 +2,7 @@ import 'package:citizen/exports.dart';
 
 class MainShell extends StatefulWidget {
   final int initialIndex;
+
   const MainShell({super.key, this.initialIndex = 0});
 
   @override
@@ -20,10 +21,10 @@ class _MainShellState extends State<MainShell> {
   final screens = [
     const HomeScreen(),
     const IssuesScreen(),
-    const ReportScreen(),
+    const CreateReportScreen(),
     const MyReportsScreen(),
     const AuthScreen(),
-    const ProfileScreen()
+    const ProfileScreen(),
   ];
 
   void changePage(int index) {
@@ -79,7 +80,9 @@ class _MainShellState extends State<MainShell> {
           backgroundColor: selectedIndex == 2
               ? AppColors.primary
               : AppColors.textPrimary,
-          onPressed: () => changePage(2),
+          onPressed: () {
+            context.push('/create-report');
+          },
           child: const Icon(Icons.add, color: Colors.white, size: 34),
         ),
       ),
