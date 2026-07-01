@@ -66,5 +66,15 @@ final router = GoRouter(
         return const CreateReportScreen();
       },
     ),
+    GoRoute(
+      path: '/view-details/:issueId',
+      name: "View Details Screen",
+      builder: (context, state) {
+        final issueId = state.pathParameters['issueId']!;
+        return IssueDetailsScreen(
+          issueId: issueId,
+        );
+      },
+    ),
   ],
 );

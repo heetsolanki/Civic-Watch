@@ -16,6 +16,7 @@ export 'features/report/screens/my_reports_screen.dart';
 export 'features/issues/screens/issues_screen.dart';
 export 'features/auth/screens/auth_screen.dart';
 export 'features/profile/screens/profile_screen.dart';
+export 'features/issue_details/screens/issue_details_screen.dart';
 
 // widgets
 export 'core/widgets/button.dart';

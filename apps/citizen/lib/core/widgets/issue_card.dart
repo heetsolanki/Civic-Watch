@@ -36,7 +36,7 @@ class IssueCard extends StatelessWidget {
               ),
             ),
             clipBehavior: Clip.antiAlias,
-            child: Image.asset(issue.image),
+            child: Image.asset(issue.coverImage),
           ),
           // Main Content Container
           Container(
@@ -70,10 +70,10 @@ class IssueCard extends StatelessWidget {
                         color: AppColors.primary.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      height: 20,
-                      width: 100,
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisSize: MainAxisSize.min,
+                        spacing: 6,
                         children: [
                           Container(
                             decoration: BoxDecoration(
@@ -147,12 +147,17 @@ class IssueCard extends StatelessWidget {
                       ],
                     ),
                     // View Details Text
-                    Text(
-                      'View Details',
-                      style: GoogleFonts.openSans(
-                        fontSize: 14,
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w600,
+                    TextButton(
+                      onPressed: () {
+                        context.go('/view-details/${issue.id}');
+                      },
+                      child: Text(
+                        'View Details',
+                        style: GoogleFonts.openSans(
+                          fontSize: 14,
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
