@@ -12,7 +12,7 @@ export 'features/onboarding/screens/onboarding_screen.dart';
 export 'features/shell/screens/main_shell.dart';
 export 'features/splash/screens/splash_screen.dart';
 export 'features/report/screens/create_report_screen.dart';
-export 'features/report/screens/my_reports_screen.dart';
+export 'features/my_reports/screens/my_reports_screen.dart';
 export 'features/issues/screens/issues_screen.dart';
 export 'features/auth/screens/auth_screen.dart';
 export 'features/profile/screens/profile_screen.dart';

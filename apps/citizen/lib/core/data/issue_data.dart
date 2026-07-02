@@ -12,6 +12,11 @@ class IssueData {
   final String status;
   final String supportedCount;
   final String description;
+  final String userId;
+  final String reportedOn;
+  final String verifiedOn;
+  final String assignedOn;
+  final String resolvedOn;
 
   const IssueData({
     required this.id,
@@ -26,6 +31,11 @@ class IssueData {
     required this.supportedCount,
     this.description =
         'This is a description, which will be similar in all the issues. So please bear with me T-T',
+    required this.userId,
+    required this.reportedOn,
+    this.verifiedOn = '',
+    this.assignedOn = '',
+    this.resolvedOn = '',
   });
 
   String get coverImage => image.first;
@@ -44,8 +54,10 @@ final issueDataList = [
     category: 'Roads',
     title: 'Large Pothole near School',
     location: 'Westside High Road',
-    status: 'Issue Reported',
+    status: 'Reported',
     supportedCount: '89',
+    userId: 'user_1',
+    reportedOn: 'May 12, 2024',
   ),
   const IssueData(
     id: '2',
@@ -56,6 +68,9 @@ final issueDataList = [
     location: '64th Street North Avenue',
     status: 'Verified',
     supportedCount: '52',
+    userId: 'user_2',
+    reportedOn: 'January 05, 2025',
+    verifiedOn: 'January 07, 2025',
   ),
   const IssueData(
     id: '3',
@@ -64,8 +79,12 @@ final issueDataList = [
     category: 'Roads',
     title: 'Loose Paving Stones',
     location: 'Central Plaza',
-    status: 'Assigned to crew',
+    status: 'Assigned',
     supportedCount: '34',
+    userId: 'user_3',
+    reportedOn: 'March 15, 2026',
+    verifiedOn: 'March 16, 2026',
+    assignedOn: 'March 18, 2026',
   ),
   const IssueData(
     id: '4',
@@ -76,6 +95,11 @@ final issueDataList = [
     location: 'Bakers Street',
     status: 'Resolved',
     supportedCount: '21',
+    userId: 'user_4',
+    reportedOn: 'July 10, 2024',
+    verifiedOn: 'July 12, 2024',
+    assignedOn: 'July 15, 2024',
+    resolvedOn: 'July 20, 2024',
   ),
 
   // Utilities
@@ -86,8 +110,10 @@ final issueDataList = [
     category: 'Utilities',
     title: 'Water Leakage in Main Street',
     location: 'Downtown, Sector 4',
-    status: 'Issue Reported',
+    status: 'Reported',
     supportedCount: '24',
+    userId: 'user_5',
+    reportedOn: 'August 22, 2025',
   ),
   const IssueData(
     id: '6',
@@ -98,6 +124,9 @@ final issueDataList = [
     location: 'Sunset Blvd',
     status: 'Verified',
     supportedCount: '42',
+    userId: 'user_1',
+    reportedOn: 'September 01, 2024',
+    verifiedOn: 'September 03, 2024',
   ),
   const IssueData(
     id: '7',
@@ -106,8 +135,12 @@ final issueDataList = [
     category: 'Utilities',
     title: 'Clogged Storm Drain',
     location: 'Eastside',
-    status: 'Assigned to crew',
+    status: 'Assigned',
     supportedCount: '73',
+    userId: 'user_2',
+    reportedOn: 'November 11, 2026',
+    verifiedOn: 'November 12, 2026',
+    assignedOn: 'November 14, 2026',
   ),
   const IssueData(
     id: '8',
@@ -118,6 +151,11 @@ final issueDataList = [
     location: 'Old Town',
     status: 'Resolved',
     supportedCount: '156',
+    userId: 'user_3',
+    reportedOn: 'December 20, 2024',
+    verifiedOn: 'December 21, 2024',
+    assignedOn: 'December 22, 2024',
+    resolvedOn: 'December 24, 2024',
   ),
 
   // Cleanliness
@@ -128,8 +166,10 @@ final issueDataList = [
     category: 'Cleanliness',
     title: 'Overflowing Garbage Bin',
     location: 'Central Park North',
-    status: 'Issue Reported',
+    status: 'Reported',
     supportedCount: '45',
+    userId: 'user_4',
+    reportedOn: 'January 15, 2025',
   ),
   const IssueData(
     id: '10',
@@ -140,6 +180,9 @@ final issueDataList = [
     location: 'Willow Creek',
     status: 'Verified',
     supportedCount: '67',
+    userId: 'user_5',
+    reportedOn: 'February 10, 2026',
+    verifiedOn: 'February 12, 2026',
   ),
   const IssueData(
     id: '11',
@@ -148,8 +191,12 @@ final issueDataList = [
     category: 'Cleanliness',
     title: 'Overflowing Sewage',
     location: 'Harbor Road',
-    status: 'Assigned to crew',
+    status: 'Assigned',
     supportedCount: '95',
+    userId: 'user_1',
+    reportedOn: 'June 05, 2024',
+    verifiedOn: 'June 06, 2024',
+    assignedOn: 'June 08, 2024',
   ),
 
   // Environment
@@ -162,6 +209,11 @@ final issueDataList = [
     location: 'Greenwood Park Trail',
     status: 'Resolved',
     supportedCount: '18',
+    userId: 'user_2',
+    reportedOn: 'April 18, 2025',
+    verifiedOn: 'April 19, 2025',
+    assignedOn: 'April 20, 2025',
+    resolvedOn: 'April 22, 2025',
   ),
   const IssueData(
     id: '13',
@@ -170,8 +222,10 @@ final issueDataList = [
     category: 'Environment',
     title: 'Overgrown Vegetation',
     location: 'Riverbank',
-    status: 'Issue Reported',
+    status: 'Reported',
     supportedCount: '10',
+    userId: 'user_3',
+    reportedOn: 'August 08, 2026',
   ),
   const IssueData(
     id: '14',
@@ -182,6 +236,9 @@ final issueDataList = [
     location: 'Pine Street',
     status: 'Verified',
     supportedCount: '14',
+    userId: 'user_4',
+    reportedOn: 'October 25, 2024',
+    verifiedOn: 'October 27, 2024',
   ),
   const IssueData(
     id: '15',
@@ -190,8 +247,12 @@ final issueDataList = [
     category: 'Environment',
     title: 'Heavy Smoke Emission',
     location: 'Industrial Zone',
-    status: 'Assigned to crew',
+    status: 'Assigned',
     supportedCount: '112',
+    userId: 'user_5',
+    reportedOn: 'May 30, 2025',
+    verifiedOn: 'June 01, 2025',
+    assignedOn: 'June 03, 2025',
   ),
 
   // Public Property
@@ -204,6 +265,11 @@ final issueDataList = [
     location: 'City Gardens',
     status: 'Resolved',
     supportedCount: '21',
+    userId: 'user_1',
+    reportedOn: 'February 14, 2024',
+    verifiedOn: 'February 15, 2024',
+    assignedOn: 'February 16, 2024',
+    resolvedOn: 'February 18, 2024',
   ),
   const IssueData(
     id: '17',
@@ -212,8 +278,10 @@ final issueDataList = [
     category: 'Public Property',
     title: 'Graffiti on Library Wall',
     location: 'Downtown',
-    status: 'Issue Reported',
+    status: 'Reported',
     supportedCount: '29',
+    userId: 'user_2',
+    reportedOn: 'July 22, 2026',
   ),
   const IssueData(
     id: '18',
@@ -224,6 +292,9 @@ final issueDataList = [
     location: 'Memorial Square',
     status: 'Verified',
     supportedCount: '38',
+    userId: 'user_3',
+    reportedOn: 'March 03, 2025',
+    verifiedOn: 'March 05, 2025',
   ),
 
   // Traffic & Parking
@@ -234,8 +305,12 @@ final issueDataList = [
     category: 'Traffic & Parking',
     title: 'Broken Traffic Light',
     location: 'Intersection A',
-    status: 'Assigned to crew',
+    status: 'Assigned',
     supportedCount: '120',
+    userId: 'user_4',
+    reportedOn: 'January 20, 2024',
+    verifiedOn: 'January 21, 2024',
+    assignedOn: 'January 23, 2024',
   ),
   const IssueData(
     id: '20',
@@ -246,6 +321,11 @@ final issueDataList = [
     location: 'Market Street',
     status: 'Resolved',
     supportedCount: '56',
+    userId: 'user_5',
+    reportedOn: 'May 10, 2026',
+    verifiedOn: 'May 11, 2026',
+    assignedOn: 'May 12, 2026',
+    resolvedOn: 'May 15, 2026',
   ),
   const IssueData(
     id: '21',
@@ -254,8 +334,10 @@ final issueDataList = [
     category: 'Traffic & Parking',
     title: 'Missing Road Sign',
     location: 'New Highway Exit',
-    status: 'Issue Reported',
+    status: 'Reported',
     supportedCount: '15',
+    userId: 'user_1',
+    reportedOn: 'September 18, 2024',
   ),
 
   // Public Transport
@@ -268,6 +350,9 @@ final issueDataList = [
     location: 'North Station',
     status: 'Verified',
     supportedCount: '44',
+    userId: 'user_2',
+    reportedOn: 'October 02, 2025',
+    verifiedOn: 'October 04, 2025',
   ),
   const IssueData(
     id: '23',
@@ -276,8 +361,12 @@ final issueDataList = [
     category: 'Public Transport',
     title: 'Subway Elevator Out of Order',
     location: 'Central Station',
-    status: 'Assigned to crew',
+    status: 'Assigned',
     supportedCount: '189',
+    userId: 'user_3',
+    reportedOn: 'December 12, 2024',
+    verifiedOn: 'December 13, 2024',
+    assignedOn: 'December 15, 2024',
   ),
   const IssueData(
     id: '24',
@@ -288,6 +377,11 @@ final issueDataList = [
     location: 'West Terminal',
     status: 'Resolved',
     supportedCount: '32',
+    userId: 'user_4',
+    reportedOn: 'April 05, 2026',
+    verifiedOn: 'April 06, 2026',
+    assignedOn: 'April 07, 2026',
+    resolvedOn: 'April 10, 2026',
   ),
 
   // Construction
@@ -298,8 +392,10 @@ final issueDataList = [
     category: 'Construction',
     title: 'Unsafe Scaffolding',
     location: 'High-rise Project 4',
-    status: 'Issue Reported',
+    status: 'Reported',
     supportedCount: '77',
+    userId: 'user_5',
+    reportedOn: 'June 20, 2024',
   ),
   const IssueData(
     id: '26',
@@ -310,6 +406,9 @@ final issueDataList = [
     location: 'Bridge Avenue',
     status: 'Verified',
     supportedCount: '54',
+    userId: 'user_1',
+    reportedOn: 'August 15, 2025',
+    verifiedOn: 'August 16, 2025',
   ),
   const IssueData(
     id: '27',
@@ -318,8 +417,12 @@ final issueDataList = [
     category: 'Construction',
     title: 'Missing Safety Fence',
     location: 'Dig Site C',
-    status: 'Assigned to crew',
+    status: 'Assigned',
     supportedCount: '23',
+    userId: 'user_2',
+    reportedOn: 'December 05, 2026',
+    verifiedOn: 'December 06, 2026',
+    assignedOn: 'December 08, 2026',
   ),
 
   // Animals
@@ -332,6 +435,11 @@ final issueDataList = [
     location: 'Residential Area 5',
     status: 'Resolved',
     supportedCount: '143',
+    userId: 'user_3',
+    reportedOn: 'January 25, 2024',
+    verifiedOn: 'January 26, 2024',
+    assignedOn: 'January 28, 2024',
+    resolvedOn: 'February 01, 2024',
   ),
   const IssueData(
     id: '29',
@@ -340,8 +448,10 @@ final issueDataList = [
     category: 'Animals',
     title: 'Injured Bird',
     location: 'Town Square',
-    status: 'Issue Reported',
+    status: 'Reported',
     supportedCount: '12',
+    userId: 'user_4',
+    reportedOn: 'May 15, 2025',
   ),
   const IssueData(
     id: '30',
@@ -352,6 +462,9 @@ final issueDataList = [
     location: 'Sunny Park',
     status: 'Verified',
     supportedCount: '88',
+    userId: 'user_5',
+    reportedOn: 'September 10, 2026',
+    verifiedOn: 'September 11, 2026',
   ),
 
   // Public Safety
@@ -362,8 +475,12 @@ final issueDataList = [
     category: 'Public Safety',
     title: 'Exposed Electrical Wires',
     location: 'Market Square East',
-    status: 'Assigned to crew',
+    status: 'Assigned',
     supportedCount: '31',
+    userId: 'user_1',
+    reportedOn: 'February 20, 2025',
+    verifiedOn: 'February 21, 2025',
+    assignedOn: 'February 23, 2025',
   ),
   const IssueData(
     id: '32',
@@ -374,6 +491,11 @@ final issueDataList = [
     location: 'Industrial Area',
     status: 'Resolved',
     supportedCount: '15',
+    userId: 'user_2',
+    reportedOn: 'October 12, 2024',
+    verifiedOn: 'October 14, 2024',
+    assignedOn: 'October 15, 2024',
+    resolvedOn: 'October 18, 2024',
   ),
   const IssueData(
     id: '33',
@@ -382,8 +504,10 @@ final issueDataList = [
     category: 'Public Safety',
     title: 'Noise Complaint',
     location: 'Residential Zone 3',
-    status: 'Issue Reported',
+    status: 'Reported',
     supportedCount: '56',
+    userId: 'user_3',
+    reportedOn: 'November 05, 2026',
   ),
   const IssueData(
     id: '34',
@@ -394,6 +518,9 @@ final issueDataList = [
     location: 'Oakwood Avenue',
     status: 'Verified',
     supportedCount: '12',
+    userId: 'user_4',
+    reportedOn: 'April 10, 2025',
+    verifiedOn: 'April 12, 2025',
   ),
 
   // Other
@@ -404,8 +531,12 @@ final issueDataList = [
     category: 'Other',
     title: 'General Maintenance Request',
     location: 'Sector 12',
-    status: 'Assigned to crew',
+    status: 'Assigned',
     supportedCount: '5',
+    userId: 'user_5',
+    reportedOn: 'July 15, 2024',
+    verifiedOn: 'July 16, 2024',
+    assignedOn: 'July 18, 2024',
   ),
   const IssueData(
     id: '36',
@@ -416,6 +547,11 @@ final issueDataList = [
     location: 'Bridge Road',
     status: 'Resolved',
     supportedCount: '9',
+    userId: 'user_1',
+    reportedOn: 'December 01, 2025',
+    verifiedOn: 'December 02, 2025',
+    assignedOn: 'December 04, 2025',
+    resolvedOn: 'December 10, 2025',
   ),
   const IssueData(
     id: '37',
@@ -424,7 +560,9 @@ final issueDataList = [
     category: 'Other',
     title: 'Damaged Public Speaker',
     location: 'Bus Stand',
-    status: 'Issue Reported',
+    status: 'Reported',
     supportedCount: '27',
+    userId: 'user_2',
+    reportedOn: 'March 20, 2026',
   ),
 ];

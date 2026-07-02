@@ -14,12 +14,7 @@ class _ResolutionTrackerState extends State<ResolutionTracker> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    final statuses = [
-      'Issue Reported',
-      'Verified',
-      'Assigned to crew',
-      'Resolved',
-    ];
+    final statuses = ['Reported', 'Verified', 'Assigned', 'Resolved'];
 
     final currentStatusIndex = statuses.indexOf(widget.issue.status);
 
@@ -102,9 +97,14 @@ class _ResolutionTrackerState extends State<ResolutionTracker> {
                         if (isCompleted) {
                           // Mock dates for completed steps
                           if (index == 0) {
-                            subtitle = 'June 10, 10:59 AM by User';
+                            subtitle =
+                                '${widget.issue.reportedOn} by ${widget.issue.userId}';
                           } else if (index == 1) {
-                            subtitle = 'June 11, 09:30 AM';
+                            subtitle = widget.issue.verifiedOn;
+                          } else if (index == 2) {
+                            subtitle = widget.issue.assignedOn;
+                          } else if (index == 3) {
+                            subtitle = widget.issue.resolvedOn;
                           } else {
                             subtitle = 'Completed';
                           }
