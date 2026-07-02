@@ -1,80 +1,73 @@
 import 'package:citizen/exports.dart';
+import 'package:citizen/features/auth/screens/auth_screen.dart';
 
 final router = GoRouter(
   routes: [
     GoRoute(
       path: "/",
-      name: "Splash Screen",
+      name: "splash",
       builder: (context, state) {
         return const SplashScreen();
       },
     ),
     GoRoute(
       path: '/onboard',
-      name: "Onboarding Screen",
+      name: "onboard",
       builder: (context, state) {
         return const OnboardingScreen();
       },
     ),
     GoRoute(
       path: '/main',
-      name: "Main",
+      name: "main",
       builder: (context, state) {
         return const MainShell();
       },
     ),
     GoRoute(
       path: '/home',
-      name: "Home",
+      name: "home",
       builder: (context, state) {
-        return const MainShell(
-          initialIndex: 0,
-        );
+        return const MainShell(initialIndex: 0);
       },
     ),
     GoRoute(
       path: '/profile',
-      name: "Profile",
+      name: "profile",
       builder: (context, state) {
-        return const MainShell(
-          initialIndex: 4,
-        );
+        return const MainShell(initialIndex: 3);
       },
     ),
     GoRoute(
-      path: '/auth',
-      name: "Auth Screen",
+      path: '/account',
+      name: "account",
       builder: (context, state) {
-        return const MainShell(
-          initialIndex: 3,
-        );
+        return const AccountScreen();
       },
     ),
     GoRoute(
       path: '/explore-issues',
-      name: "Explore Issues",
+      name: "exploreIssues",
       builder: (context, state) {
-        return const MainShell(
-          initialIndex: 1,
-        );
+        return const MainShell(initialIndex: 1);
       },
     ),
     GoRoute(
       path: '/create-report',
-      name: "Create Report",
+      name: "createReport",
       builder: (context, state) {
         return const CreateReportScreen();
       },
     ),
     GoRoute(
       path: '/view-details/:issueId',
-      name: "View Details Screen",
+      name: "viewDetails",
       builder: (context, state) {
         final issueId = state.pathParameters['issueId']!;
-        return IssueDetailsScreen(
-          issueId: issueId,
-        );
+        return IssueDetailsScreen(issueId: issueId);
       },
     ),
+
+    GoRoute(path: '/auth', name: 'auth', builder: (_, _) => AuthScreen()),
   ],
 );

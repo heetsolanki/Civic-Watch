@@ -141,7 +141,7 @@ class RegisterFormState extends State<RegisterForm> {
                       context,
                       'Account created! Welcome to the community.',
                     );
-                    context.read<AuthProvider>().refreshAuth();
+                    context.read<AuthProvider>().checkLogin();
                     context.go('/main');
                   } else {
                     AppToast.error(

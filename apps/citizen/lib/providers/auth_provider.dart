@@ -15,12 +15,6 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> refreshAuth() async {
-    _isLoggedIn = await AppPreferences.isLoggedIn();
-
-    notifyListeners();
-  }
-
   Future<void> logout() async {
     await AppPreferences.logout();
 

@@ -1,3 +1,4 @@
+import 'package:citizen/core/auth/auth_guard.dart';
 import 'package:citizen/exports.dart';
 
 class MainShell extends StatefulWidget {
@@ -21,13 +22,16 @@ class _MainShellState extends State<MainShell> {
   final screens = [
     const HomeScreen(),
     const IssuesScreen(),
-    const CreateReportScreen(),
+    const SizedBox.shrink(),
     const MyReportsScreen(),
-    const AuthScreen(),
-    const ProfileScreen(),
+    const AccountScreen(),
   ];
 
-  void changePage(int index) {
+  Future<void> changePage(int index) async {
+    if (index == 3) {
+      if (!await requireLogin(context)) return;
+    }
+
     setState(() {
       selectedIndex = index;
     });
@@ -36,7 +40,7 @@ class _MainShellState extends State<MainShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff8f9ff),
+      backgroundColor: AppColors.cardColor,
       appBar: AppBar(
         shape: RoundedRectangleBorder(
           borderRadius: const BorderRadius.only(
@@ -80,7 +84,11 @@ class _MainShellState extends State<MainShell> {
           backgroundColor: selectedIndex == 2
               ? AppColors.primary
               : AppColors.textPrimary,
-          onPressed: () {
+          onPressed: () async {
+            if (!await requireLogin(context)) return;
+
+            if (!context.mounted) return;
+
             context.push('/create-report');
           },
           child: const Icon(Icons.add, color: Colors.white, size: 34),

@@ -1,6 +1,10 @@
 import 'package:citizen/exports.dart';
 
 class AppPreferences {
+  static const _emailKey = 'email';
+  static const _passwordKey = 'password';
+  static const _logKey = 'isLoggedIn';
+
   // ONBOARDING
   static const String _onboardingKey = "hasSeenOnboarding";
 
@@ -24,17 +28,17 @@ class AppPreferences {
     final prefs = await SharedPreferences.getInstance();
 
     // Simple check: if email is already saved, user exists
-    String? savedEmail = prefs.getString('email');
+    String? savedEmail = prefs.getString(_emailKey);
     if (savedEmail == email) {
       return false; // User already exists
     }
 
     await prefs.setString('name', name);
-    await prefs.setString('email', email);
+    await prefs.setString(_emailKey, email);
     await prefs.setString('phone', phone);
-    await prefs.setString('password', password);
+    await prefs.setString(_passwordKey, password);
 
-    await prefs.setBool('isLoggedIn', true);
+    await prefs.setBool(_logKey, true);
     return true;
   }
 
@@ -45,15 +49,15 @@ class AppPreferences {
   }) async {
     final prefs = await SharedPreferences.getInstance();
 
-    String? savedEmail = prefs.getString('email');
-    String? savedPassword = prefs.getString('password');
+    String? savedEmail = prefs.getString(_emailKey);
+    String? savedPassword = prefs.getString(_passwordKey);
 
     if (savedEmail == null) {
       return 0; // User does not exist
     }
 
     if ((savedEmail == email) && savedPassword == password) {
-      await prefs.setBool('isLoggedIn', true);
+      await prefs.setBool(_logKey, true);
       return 1; // Success
     }
 
@@ -66,7 +70,7 @@ class AppPreferences {
 
     return {
       "name": prefs.getString('name'),
-      "email": prefs.getString('email'),
+      "email": prefs.getString(_emailKey),
       "phone": prefs.getString('phone'),
     };
   }
@@ -75,13 +79,13 @@ class AppPreferences {
   static Future<bool> isLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
 
-    return prefs.getBool('isLoggedIn') ?? false;
+    return prefs.getBool(_logKey) ?? false;
   }
 
   // Logout
   static Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
 
-    await prefs.setBool('isLoggedIn', false);
+    await prefs.setBool(_logKey, false);
   }
 }
