@@ -1,13 +1,15 @@
 import 'package:citizen/exports.dart';
 
 class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key});
+  final bool showBackButton;
+
+  const AuthScreen({super.key, this.showBackButton = false});
 
   @override
-  State<AuthScreen> createState() => AuthScreenState();
+  State<AuthScreen> createState() => _AuthScreenState();
 }
 
-class AuthScreenState extends State<AuthScreen> {
+class _AuthScreenState extends State<AuthScreen> {
   bool isLogin = true;
 
   void changeAuthMode() {
@@ -18,8 +20,15 @@ class AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final auth = context.watch<AuthProvider>();
     return Scaffold(
+      appBar: AppBar(
+        leading: widget.showBackButton
+            ? IconButton(
+                onPressed: () => context.pop(),
+                icon: Icon(Icons.arrow_back),
+              )
+            : null,
+      ),
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -27,20 +36,23 @@ class AuthScreenState extends State<AuthScreen> {
           child: Column(
             spacing: 15,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: auth.isLoggedIn
-                ? [const ProfileScreen()]
-                : [
-                    const SizedBox(width: double.infinity, height: 30),
-                    AuthHeader(
-                      title: isLogin ? 'Welcome Back!' : 'Create Account',
-                      subtitle: isLogin
-                          ? 'Report Issues. Improve your city.'
-                          : 'Join citizens in improving your city.',
-                    ),
-                    isLogin
-                        ? LoginForm(onSwitch: changeAuthMode)
-                        : RegisterForm(onSwitch: changeAuthMode),
-                  ],
+            children: [
+              const SizedBox(width: double.infinity, height: 30),
+              AuthHeader(
+                title: isLogin ? 'Welcome Back!' : 'Create Account',
+                subtitle: isLogin
+                    ? 'Report Issues. Improve your city.'
+                    : 'Join citizens in improving your city.',
+              ),
+              isLogin
+                  ? LoginForm(
+                      onSwitch: changeAuthMode,
+                      onLoginSuccess: () {
+                        context.pop(true);
+                      },
+                    )
+                  : RegisterForm(onSwitch: changeAuthMode),
+            ],
           ),
         ),
       ),

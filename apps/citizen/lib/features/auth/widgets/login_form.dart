@@ -2,8 +2,13 @@ import 'package:citizen/exports.dart';
 
 class LoginForm extends StatefulWidget {
   final VoidCallback onSwitch;
+  final VoidCallback onLoginSuccess;
 
-  const LoginForm({super.key, required this.onSwitch});
+  const LoginForm({
+    super.key,
+    required this.onSwitch,
+    required this.onLoginSuccess,
+  });
 
   @override
   State<LoginForm> createState() => LoginFormState();
@@ -89,8 +94,8 @@ class LoginFormState extends State<LoginForm> {
                       context,
                       'Login successful! Welcome back.',
                     );
-                    context.read<AuthProvider>().refreshAuth();
-                    context.go('/main');
+                    context.read<AuthProvider>().checkLogin();
+                    widget.onLoginSuccess();
                   } else if (result == 0) {
                     AppToast.error(
                       context,
