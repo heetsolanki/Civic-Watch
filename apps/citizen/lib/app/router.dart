@@ -35,7 +35,7 @@ final router = GoRouter(
       path: '/profile',
       name: "profile",
       builder: (context, state) {
-        return const MainShell(initialIndex: 3);
+        return const MainShell(initialIndex: 4);
       },
     ),
     GoRoute(
@@ -54,6 +54,16 @@ final router = GoRouter(
     GoRoute(
       path: '/create-report',
       name: "createReport",
+      redirect: (context, state) async {
+        final loggedIn = await AppPreferences.isLoggedIn();
+        if (!loggedIn) {
+          if (context.mounted) {
+            AppToast.info(context, 'Please log in to report an issue.');
+          }
+          return '/profile';
+        }
+        return null;
+      },
       builder: (context, state) {
         return const CreateReportScreen();
       },
@@ -71,7 +81,11 @@ final router = GoRouter(
       name: "reportSuccess",
       builder: (context, state) => const ReportSuccessScreen(),
     ),
-    GoRoute(path: '/auth', name: 'auth', builder: (_, _) => AuthScreen()),
+    GoRoute(
+      path: '/auth',
+      name: 'auth',
+      builder: (context, state) => const MainShell(initialIndex: 4),
+    ),
 
     // Profile Routers
     GoRoute(

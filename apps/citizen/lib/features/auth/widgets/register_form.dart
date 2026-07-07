@@ -18,7 +18,7 @@ class RegisterFormState extends State<RegisterForm> {
   bool passwordMatch = true;
   bool hidePassword = true;
 
-  bool isPasswordValid(String password) {
+  bool _isPasswordValid(String password) {
     final passwordRegExp = RegExp(
       r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$&*~]).{8,}$',
     );
@@ -30,71 +30,51 @@ class RegisterFormState extends State<RegisterForm> {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 25),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
         child: Column(
           spacing: 16,
           children: [
             CustomTextField(
-              prefixIcon: Icons.person,
+              prefixIcon: Icons.person_rounded,
               hintText: 'Full Name',
               keyboardType: TextInputType.name,
-              onChanged: (value) {
-                setState(() {
-                  name = value;
-                });
-              },
+              onChanged: (value) => setState(() => name = value),
             ),
             CustomTextField(
-              prefixIcon: Icons.email,
+              prefixIcon: Icons.email_rounded,
               hintText: 'Email Address',
               keyboardType: TextInputType.emailAddress,
-              onChanged: (value) {
-                setState(() {
-                  email = value;
-                });
-              },
+              onChanged: (value) => setState(() => email = value),
             ),
             CustomTextField(
-              prefixIcon: Icons.phone_android,
+              prefixIcon: Icons.phone_android_rounded,
               hintText: 'Phone Number',
               keyboardType: TextInputType.phone,
-              onChanged: (value) {
-                setState(() {
-                  phone = value;
-                });
-              },
+              onChanged: (value) => setState(() => phone = value),
             ),
             CustomTextField(
-              prefixIcon: Icons.password,
+              prefixIcon: Icons.lock_rounded,
               hintText: 'Password',
               keyboardType: TextInputType.visiblePassword,
               suffixIcon: hidePassword
-                  ? Icons.visibility
-                  : Icons.visibility_off,
+                  ? Icons.visibility_rounded
+                  : Icons.visibility_off_rounded,
               obscureText: hidePassword,
               onSuffixIconPressed: () {
-                setState(() {
-                  hidePassword = !hidePassword;
-                });
+                setState(() => hidePassword = !hidePassword);
               },
-              onChanged: (value) {
-                setState(() {
-                  password = value;
-                });
-              },
+              onChanged: (value) => setState(() => password = value),
             ),
             CustomTextField(
-              prefixIcon: Icons.password,
+              prefixIcon: Icons.lock_outline_rounded,
               hintText: 'Confirm Password',
               keyboardType: TextInputType.visiblePassword,
               obscureText: hidePassword,
               suffixIcon: hidePassword
-                  ? Icons.visibility
-                  : Icons.visibility_off,
+                  ? Icons.visibility_rounded
+                  : Icons.visibility_off_rounded,
               onSuffixIconPressed: () {
-                setState(() {
-                  hidePassword = !hidePassword;
-                });
+                setState(() => hidePassword = !hidePassword);
               },
               onChanged: (value) {
                 setState(() {
@@ -104,7 +84,7 @@ class RegisterFormState extends State<RegisterForm> {
               },
             ),
             PasswordValidationView(password: password),
-            const SizedBox(height: 10),
+            const SizedBox(height: 8),
             AppButton(
               text: 'Start Contributing!',
               onPressed: () async {
@@ -116,7 +96,7 @@ class RegisterFormState extends State<RegisterForm> {
                   return;
                 }
 
-                if (!isPasswordValid(password)) {
+                if (!_isPasswordValid(password)) {
                   AppToast.error(
                     context,
                     'Password does not meet safety requirements.',
@@ -129,12 +109,15 @@ class RegisterFormState extends State<RegisterForm> {
                   return;
                 }
 
-                bool success = await AppPreferences.createUser(
+                final success = await AppPreferences.createUser(
                   name: name,
                   email: email,
                   password: confirmPassword,
                   phone: phone,
                 );
+
+                if (!context.mounted) return;
+
                 if (success) {
                   AppToast.success(
                     context,
@@ -150,6 +133,7 @@ class RegisterFormState extends State<RegisterForm> {
                 }
               },
             ),
+            const SizedBox(height: 8),
             AuthFooter(
               text: 'Already contributing? ',
               ctaText: 'Login',

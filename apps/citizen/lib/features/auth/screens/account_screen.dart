@@ -11,6 +11,6 @@ class AccountScreen extends StatelessWidget {
       return const ProfileScreen();
     }
 
-    return const AuthScreen();
+    return const AuthScreen(showAppBar: false);
   }
 }

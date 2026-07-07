@@ -66,7 +66,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -83,121 +83,89 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+        padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Push Notifications',
-              style: GoogleFonts.openSans(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ).animate().fadeIn().slideX(begin: -0.1),
-            const SizedBox(height: 15),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: AppColors.cardColor,
-                boxShadow: [
-                  BoxShadow(
-                    offset: const Offset(0, 4),
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                  ),
-                ],
-              ),
-              width: width * 0.85,
-              child: Column(
-                children: [
-                  ProfileMenuTile(
-                    label: 'App Notifications',
-                    icon: Icons.notifications,
-                    trailing: Switch(
-                      activeThumbColor: AppColors.primary,
-                      activeTrackColor: AppColors.primary.withOpacity(0.2),
-                      value: _appNotifications,
-                      onChanged: (value) {
-                        HapticFeedback.selectionClick();
-                        setState(() => _appNotifications = value);
-                      },
+            const SectionHeader(title: 'Push Notifications'),
+            InfoCard(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: SizedBox(
+                width: width * 0.85,
+                child: Column(
+                  children: [
+                    ProfileMenuTile(
+                      label: 'App Notifications',
+                      icon: Icons.notifications_none_rounded,
+                      trailing: Switch(
+                        activeThumbColor: AppColors.primary,
+                        activeTrackColor: AppColors.primary.withOpacity(0.2),
+                        value: _appNotifications,
+                        onChanged: (value) {
+                          HapticFeedback.selectionClick();
+                          setState(() => _appNotifications = value);
+                        },
+                      ),
+                      onTap: () {},
                     ),
-                    onTap: () {},
-                  ),
-                ],
+                  ],
+                ),
               ),
             ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.1),
             const SizedBox(height: 32),
-            Text(
-              'Notification Categories',
-              style: GoogleFonts.openSans(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.1),
-            const SizedBox(height: 15),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: AppColors.cardColor,
-                boxShadow: [
-                  BoxShadow(
-                    offset: const Offset(0, 4),
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                  ),
-                ],
-              ),
-              width: width * 0.85,
-              child: Column(
-                children: [
-                  ProfileMenuTile(
-                    label: 'Report Updates',
-                    icon: Icons.update_rounded,
-                    trailing: Switch(
-                      activeThumbColor: AppColors.primary,
-                      activeTrackColor: AppColors.primary.withOpacity(0.2),
-                      value: _reportUpdates,
-                      onChanged: (value) {
-                        HapticFeedback.selectionClick();
-                        setState(() => _reportUpdates = value);
-                      },
+            const SectionHeader(title: 'Notification Categories'),
+            InfoCard(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: SizedBox(
+                width: width * 0.85,
+                child: Column(
+                  children: [
+                    ProfileMenuTile(
+                      label: 'Report Updates',
+                      icon: Icons.update_rounded,
+                      trailing: Switch(
+                        activeThumbColor: AppColors.primary,
+                        activeTrackColor: AppColors.primary.withOpacity(0.2),
+                        value: _reportUpdates,
+                        onChanged: (value) {
+                          HapticFeedback.selectionClick();
+                          setState(() => _reportUpdates = value);
+                        },
+                      ),
+                      onTap: () {},
                     ),
-                    onTap: () {},
-                  ),
-                  const Divider(indent: 70, endIndent: 20, thickness: 0.5),
-                  ProfileMenuTile(
-                    label: 'Authority Messages',
-                    icon: Icons.account_balance,
-                    trailing: Switch(
-                      activeThumbColor: AppColors.primary,
-                      activeTrackColor: AppColors.primary.withOpacity(0.2),
-                      value: _authorityMessages,
-                      onChanged: (value) {
-                        HapticFeedback.selectionClick();
-                        setState(() => _authorityMessages = value);
-                      },
+                    const Divider(indent: 70, endIndent: 20, thickness: 0.5),
+                    ProfileMenuTile(
+                      label: 'Authority Messages',
+                      icon: Icons.account_balance_rounded,
+                      trailing: Switch(
+                        activeThumbColor: AppColors.primary,
+                        activeTrackColor: AppColors.primary.withOpacity(0.2),
+                        value: _authorityMessages,
+                        onChanged: (value) {
+                          HapticFeedback.selectionClick();
+                          setState(() => _authorityMessages = value);
+                        },
+                      ),
+                      onTap: () {},
                     ),
-                    onTap: () {},
-                  ),
-                  const Divider(indent: 70, endIndent: 20, thickness: 0.5),
-                  ProfileMenuTile(
-                    label: 'Nearby Issues',
-                    icon: Icons.location_on_rounded,
-                    trailing: Switch(
-                      activeThumbColor: AppColors.primary,
-                      activeTrackColor: AppColors.primary.withOpacity(0.2),
-                      value: _nearbyIssues,
-                      onChanged: (value) {
-                        HapticFeedback.selectionClick();
-                        setState(() => _nearbyIssues = value);
-                      },
+                    const Divider(indent: 70, endIndent: 20, thickness: 0.5),
+                    ProfileMenuTile(
+                      label: 'Nearby Issues',
+                      icon: Icons.location_on_outlined,
+                      trailing: Switch(
+                        activeThumbColor: AppColors.primary,
+                        activeTrackColor: AppColors.primary.withOpacity(0.2),
+                        value: _nearbyIssues,
+                        onChanged: (value) {
+                          HapticFeedback.selectionClick();
+                          setState(() => _nearbyIssues = value);
+                        },
+                      ),
+                      onTap: () {},
                     ),
-                    onTap: () {},
-                  ),
-                ],
+                  ],
+                ),
               ),
             ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1),
             const SizedBox(height: 100),

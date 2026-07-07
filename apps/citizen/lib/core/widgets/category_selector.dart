@@ -3,7 +3,7 @@ import 'package:citizen/exports.dart';
 class CategorySelector extends StatelessWidget {
   final List<String> categories;
   final String selectedCategory;
-  final Function(String) onCategorySelected;
+  final ValueChanged<String> onCategorySelected;
 
   const CategorySelector({
     super.key,
@@ -17,41 +17,40 @@ class CategorySelector extends StatelessWidget {
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       scrollDirection: Axis.horizontal,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
         child: Row(
-          spacing: 10,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          spacing: 12,
           children: categories.map((category) {
             final isSelected = selectedCategory == category;
-            return SizedBox(
-              height: 28,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  side: isSelected
-                      ? BorderSide.none
-                      : BorderSide(
-                          color: AppColors.primary,
-                          width: 0.8,
-                        ),
-                  backgroundColor: isSelected
+            return ChoiceChip(
+              selectedColor: AppColors.primary,
+              backgroundColor: AppColors.cardColor,
+              labelStyle: GoogleFonts.openSans(
+                color: isSelected ? Colors.white : AppColors.textPrimary,
+                fontWeight: FontWeight.w700,
+                fontSize: 13,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
+                side: BorderSide(
+                  color: isSelected
                       ? AppColors.primary
-                      : Colors.grey.shade200,
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                ),
-                onPressed: () => onCategorySelected(category),
-                child: Text(
-                  category,
-                  style: GoogleFonts.openSans(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: isSelected
-                        ? Colors.white
-                        : AppColors.textPrimary,
-                  ),
+                      : AppColors.primary.withOpacity(0.1),
+                  width: 1,
                 ),
               ),
+              showCheckmark: false,
+              label: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Text(category),
+              ),
+              selected: isSelected,
+              onSelected: (selected) {
+                if (selected) {
+                  onCategorySelected(category);
+                }
+              },
             );
           }).toList(),
         ),

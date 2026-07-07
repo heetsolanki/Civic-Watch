@@ -23,72 +23,55 @@ class LocationStep extends StatefulWidget {
 class _LocationStepState extends State<LocationStep> {
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+        padding: const EdgeInsets.all(24),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Text(
-                'Where is the issue?',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                ),
+            const SectionHeader(
+              title: 'Confirm Location',
+              subtitle:
+                  'Verify the location of the issue on the map. You can drag the marker if needed.',
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: MapContainer(
+                draft: widget.draft,
+                onLocationChanged: () => setState(() {}),
               ),
             ),
-            const SizedBox(height: 10),
-            Center(
-              child: Text(
-                'Confirm the location of the issue.',
-                style: GoogleFonts.openSans(
-                  fontSize: 14,
-                  color: AppColors.textSecondary,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: 20),
-            MapContainer(
-              draft: widget.draft,
-              onLocationChanged: () => setState(() {}),
-            ),
-            const Spacer(),
-            // buttons
+            const SizedBox(height: 24),
             Row(
               children: [
-                if (widget.mode == ReportFlowMode.create)
+                if (widget.mode == ReportFlowMode.create) ...[
                   Expanded(
                     child: AppButton(
-                      width: width * 0.4,
                       text: 'Back',
-                      prefixIcon: const Icon(Icons.keyboard_arrow_left),
+                      prefixIcon: const Icon(Icons.keyboard_arrow_left_rounded),
                       backgroundColor: Colors.white,
-                      borderColor: AppColors.primary,
+                      borderColor: AppColors.primary.withOpacity(0.2),
                       textColor: AppColors.primary,
                       onPressed: widget.onBack,
                     ),
                   ),
-                if (widget.mode == ReportFlowMode.create)
-                  const SizedBox(width: 15),
+                  const SizedBox(width: 16),
+                ],
                 Expanded(
+                  flex: 2,
                   child: AppButton(
-                    width: width * 0.4,
-                    text: widget.mode == ReportFlowMode.edit 
-                        ? 'Save Changes' 
+                    text: widget.mode == ReportFlowMode.edit
+                        ? 'Save Changes'
                         : 'Review Report',
-                    suffixIcon: widget.mode == ReportFlowMode.create 
-                        ? const Icon(Icons.keyboard_arrow_right)
+                    suffixIcon: widget.mode == ReportFlowMode.create
+                        ? const Icon(Icons.keyboard_arrow_right_rounded)
                         : null,
                     onPressed:
                         widget.draft.latitude != null &&
                             widget.draft.longitude != null
-                        ? (widget.mode == ReportFlowMode.edit ? widget.onSave : widget.onNext)
+                        ? (widget.mode == ReportFlowMode.edit
+                              ? widget.onSave
+                              : widget.onNext)
                         : null,
                   ),
                 ),

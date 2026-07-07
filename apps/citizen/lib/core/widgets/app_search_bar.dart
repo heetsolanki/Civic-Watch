@@ -26,7 +26,7 @@ class AppSearchBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: AppColors.textPrimary),
+        border: Border.all(color: AppColors.primary.withOpacity(0.2)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -41,19 +41,25 @@ class AppSearchBar extends StatelessWidget {
         onSubmitted: onSubmitted,
         onTap: onTap,
         readOnly: readOnly,
-        style: GoogleFonts.openSans(fontSize: 14, color: AppColors.textPrimary),
+        style: GoogleFonts.openSans(
+          fontSize: 14,
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w600,
+        ),
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: GoogleFonts.openSans(
             color: Colors.grey.shade400,
             fontSize: 14,
+            fontWeight: FontWeight.w500,
           ),
-          prefixIcon: const Icon(Icons.search, color: AppColors.textPrimary, size: 20),
+          prefixIcon: const Icon(
+            Icons.search_rounded,
+            color: AppColors.primary,
+            size: 20,
+          ),
           suffixIcon: suffixIcon,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide.none,
-          ),
+          border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(vertical: 15),
         ),
       ),

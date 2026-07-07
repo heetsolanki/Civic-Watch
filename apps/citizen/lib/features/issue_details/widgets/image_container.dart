@@ -2,6 +2,7 @@ import 'package:citizen/exports.dart';
 
 class ImageContainer extends StatefulWidget {
   final IssueData issue;
+
   const ImageContainer({super.key, required this.issue});
 
   @override
@@ -25,48 +26,52 @@ class _ImageContainerState extends State<ImageContainer> {
         // Image
         Container(
           height: 250,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
           child: PageView.builder(
             controller: _pageController,
-            scrollDirection: Axis.horizontal,
-            onPageChanged: (index) {
-              setState(() {
-                _currentPage = index;
-              });
-            },
+            onPageChanged: (index) => setState(() => _currentPage = index),
             itemCount: widget.issue.image.length,
             itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: SizedBox.expand(
-                    child: Image.asset(widget.issue.image[index], fit: BoxFit.cover),
-                  ),
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  widget.issue.image[index],
+                  fit: BoxFit.cover,
+                  width: double.infinity,
                 ),
               );
             },
           ),
         ),
         // Dots
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            widget.issue.image.length,
-            (index) => AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              margin: const EdgeInsets.only(right: 8, top: 10),
-              height: 8,
-              width: _currentPage == index ? 24 : 8,
-              decoration: BoxDecoration(
-                color: _currentPage == index
-                    ? AppColors.primary
-                    : Colors.grey[300],
-                borderRadius: BorderRadius.circular(5),
+        if (widget.issue.image.length > 1)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              widget.issue.image.length,
+              (index) => AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                margin: const EdgeInsets.only(right: 8, top: 16),
+                height: 8,
+                width: _currentPage == index ? 24 : 8,
+                decoration: BoxDecoration(
+                  color: _currentPage == index
+                      ? AppColors.primary
+                      : AppColors.primary.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(5),
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }

@@ -22,7 +22,7 @@ class DescriptionField extends StatelessWidget {
               'Description *',
               style: GoogleFonts.poppins(
                 fontSize: 16,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
               ),
             ),
@@ -30,10 +30,10 @@ class DescriptionField extends StatelessWidget {
               '${value.length}/500',
               style: GoogleFonts.openSans(
                 fontSize: 12,
-                color: value.length < 20
+                color: value.isNotEmpty && value.length < 20
                     ? AppColors.danger
                     : AppColors.textSecondary,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ],
@@ -46,22 +46,33 @@ class DescriptionField extends StatelessWidget {
             border: Border.all(
               color: value.isNotEmpty && value.length < 20
                   ? AppColors.danger
-                  : AppColors.textPrimary.withOpacity(0.5),
+                  : AppColors.primary.withOpacity(0.2),
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: TextField(
             maxLines: 6,
             maxLength: 500,
             onChanged: onChanged,
-            style: GoogleFonts.openSans(fontSize: 14),
+            style: GoogleFonts.openSans(
+              fontSize: 15,
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
+            ),
             decoration: InputDecoration(
               counterText: "",
-              // Hidden because we use our own counter
               hintText:
                   'Describe the issue...\n\nExample: "There is a large pothole near ABC School. It becomes filled with water during rain and is causing accidents."',
               hintStyle: GoogleFonts.openSans(
                 color: Colors.grey.shade400,
-                fontSize: 14,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
               ),
               contentPadding: const EdgeInsets.all(16),
               border: InputBorder.none,
@@ -76,7 +87,7 @@ class DescriptionField extends StatelessWidget {
               style: GoogleFonts.openSans(
                 color: AppColors.danger,
                 fontSize: 12,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),

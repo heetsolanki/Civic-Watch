@@ -2,8 +2,13 @@ import 'package:citizen/exports.dart';
 
 class AuthScreen extends StatefulWidget {
   final bool showBackButton;
+  final bool showAppBar;
 
-  const AuthScreen({super.key, this.showBackButton = false});
+  const AuthScreen({
+    super.key,
+    this.showBackButton = false,
+    this.showAppBar = true,
+  });
 
   @override
   State<AuthScreen> createState() => _AuthScreenState();
@@ -22,26 +27,29 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        surfaceTintColor: Colors.transparent,
-        leading: widget.showBackButton
-            ? IconButton(
-                onPressed: () => context.pop(),
-                icon: Icon(Icons.arrow_back),
-              )
-            : null,
-      ),
+      appBar: widget.showAppBar
+          ? AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              scrolledUnderElevation: 0,
+              surfaceTintColor: Colors.transparent,
+              automaticallyImplyLeading: false,
+              leading: widget.showBackButton
+                  ? IconButton(
+                      onPressed: () => context.pop(),
+                      icon: const Icon(Icons.arrow_back_rounded),
+                    )
+                  : null,
+            )
+          : null,
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           spacing: 10,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(width: double.infinity, height: 30),
+            SizedBox(width: double.infinity, height: widget.showAppBar ? 30 : 10),
             AuthHeader(
               title: isLogin ? 'Welcome Back!' : 'Create Account',
               subtitle: isLogin
@@ -52,7 +60,11 @@ class _AuthScreenState extends State<AuthScreen> {
                 ? LoginForm(
                     onSwitch: changeAuthMode,
                     onLoginSuccess: () {
-                      context.pop(true);
+                      if (context.canPop()) {
+                        context.pop(true);
+                      } else {
+                        context.go('/main');
+                      }
                     },
                   )
                 : RegisterForm(onSwitch: changeAuthMode),

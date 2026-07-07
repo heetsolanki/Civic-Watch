@@ -21,109 +21,86 @@ class DetailsStep extends StatefulWidget {
 }
 
 class _DetailsStepState extends State<DetailsStep> {
+  bool get _isStepValid =>
+      widget.draft.title.trim().length >= 10 &&
+      widget.draft.title.trim().length <= 100 &&
+      widget.draft.description.trim().length >= 20 &&
+      widget.draft.description.trim().length <= 500;
+
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
-    bool isStepValid = widget.draft.title.length >= 10 &&
-        widget.draft.title.length <= 100 &&
-        widget.draft.description.length >= 20 &&
-        widget.draft.description.length <= 500;
-
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Text(
-                  'Issue Details',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
+      body: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          children: [
+            const SectionHeader(
+              title: 'Issue Details',
+              subtitle:
+                  'Provide a clear title and description to help authorities understand the issue.',
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 8),
+                    // Title Field
+                    TitleField(
+                      category: widget.draft.category ?? 'Other',
+                      value: widget.draft.title,
+                      onChanged: (value) =>
+                          setState(() => widget.draft.title = value),
+                    ),
+                    const SizedBox(height: 32),
+                    // Description Field
+                    DescriptionField(
+                      value: widget.draft.description,
+                      onChanged: (value) =>
+                          setState(() => widget.draft.description = value),
+                    ),
+                    const SizedBox(height: 32),
+                  ],
                 ),
               ),
-              const SizedBox(height: 8),
-              Center(
-                child: Text(
-                  'Provide a clear title and description for the issue.',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.openSans(
-                    fontSize: 14,
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-
-              // Title Field
-              TitleField(
-                category: widget.draft.category!,
-                value: widget.draft.title,
-                onChanged: (value) {
-                  setState(() {
-                    widget.draft.title = value;
-                  });
-                },
-              ),
-
-              const SizedBox(height: 25),
-
-              // Description Field
-              DescriptionField(
-                value: widget.draft.description,
-                onChanged: (value) {
-                  setState(() {
-                    widget.draft.description = value;
-                  });
-                },
-              ),
-
-              const SizedBox(height: 40),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (widget.mode == ReportFlowMode.create)
-                    AppButton(
-                      width: width * 0.4,
+            ),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                if (widget.mode == ReportFlowMode.create) ...[
+                  Expanded(
+                    child: AppButton(
                       text: 'Back',
-                      prefixIcon: const Icon(Icons.keyboard_arrow_left),
+                      prefixIcon: const Icon(Icons.keyboard_arrow_left_rounded),
                       backgroundColor: Colors.white,
-                      borderColor: AppColors.primary,
+                      borderColor: AppColors.primary.withOpacity(0.2),
                       textColor: AppColors.primary,
                       onPressed: widget.onBack,
                     ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: widget.mode == ReportFlowMode.create ? 15 : 0,
-                      ),
-                      child: AppButton(
-                        text: widget.mode == ReportFlowMode.edit
-                            ? 'Save Changes'
-                            : 'Continue',
-                        suffixIcon: widget.mode == ReportFlowMode.create
-                            ? const Icon(Icons.keyboard_arrow_right)
-                            : null,
-                        onPressed: isStepValid
-                            ? (widget.mode == ReportFlowMode.edit
-                                ? widget.onSave
-                                : widget.onNext)
-                            : null,
-                      ),
-                    ),
                   ),
+                  const SizedBox(width: 16),
                 ],
-              ),
-            ],
-          ),
+                Expanded(
+                  flex: 2,
+                  child: AppButton(
+                    text: widget.mode == ReportFlowMode.edit
+                        ? 'Save Changes'
+                        : 'Continue',
+                    suffixIcon: widget.mode == ReportFlowMode.create
+                        ? const Icon(Icons.keyboard_arrow_right_rounded)
+                        : null,
+                    onPressed: _isStepValid
+                        ? (widget.mode == ReportFlowMode.edit
+                              ? widget.onSave
+                              : widget.onNext)
+                        : null,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

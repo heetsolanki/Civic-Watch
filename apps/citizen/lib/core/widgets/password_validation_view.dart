@@ -3,6 +3,7 @@ import 'package:citizen/exports.dart';
 
 class PasswordValidationView extends StatefulWidget {
   final String password;
+
   const PasswordValidationView({super.key, required this.password});
 
   @override
@@ -11,11 +12,11 @@ class PasswordValidationView extends StatefulWidget {
 
 class _PasswordValidationViewState extends State<PasswordValidationView> {
   final Map<String, bool> _requirementsMet = {
+    'At least 8 characters': false,
     'One uppercase letter': false,
     'One lowercase letter': false,
     'One number': false,
     'One special character': false,
-    'At least 8 characters': false,
   };
 
   final Map<String, bool> _recentlyMet = {};
@@ -32,26 +33,24 @@ class _PasswordValidationViewState extends State<PasswordValidationView> {
   void _checkRequirements() {
     final p = widget.password;
     final updates = {
+      'At least 8 characters': p.length >= 8,
       'One uppercase letter': RegExp(r'[A-Z]').hasMatch(p),
       'One lowercase letter': RegExp(r'[a-z]').hasMatch(p),
       'One number': RegExp(r'[0-9]').hasMatch(p),
       'One special character': RegExp(r'[!@#\$&*~]').hasMatch(p),
-      'At least 8 characters': p.length >= 8,
     };
 
     setState(() {
       updates.forEach((req, isMet) {
         bool wasMet = _requirementsMet[req] ?? false;
-        
+
         if (isMet && !wasMet) {
           // Just became met
           _recentlyMet[req] = true;
           _timers[req]?.cancel();
           _timers[req] = Timer(const Duration(seconds: 1), () {
             if (mounted) {
-              setState(() {
-                _recentlyMet[req] = false;
-              });
+              setState(() => _recentlyMet[req] = false);
             }
           });
         } else if (!isMet) {
@@ -59,7 +58,7 @@ class _PasswordValidationViewState extends State<PasswordValidationView> {
           _recentlyMet[req] = false;
           _timers[req]?.cancel();
         }
-        
+
         _requirementsMet[req] = isMet;
       });
     });
@@ -67,7 +66,9 @@ class _PasswordValidationViewState extends State<PasswordValidationView> {
 
   @override
   void dispose() {
-    _timers.values.forEach((t) => t?.cancel());
+    for (final timer in _timers.values) {
+      timer?.cancel();
+    }
     super.dispose();
   }
 
@@ -77,33 +78,46 @@ class _PasswordValidationViewState extends State<PasswordValidationView> {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: _requirementsMet.entries.where((entry) {
-        // Show if NOT met OR if JUST met (recentlyMet)
-        return !entry.value || (_recentlyMet[entry.key] ?? false);
-      }).map((entry) {
-        final isMet = entry.value;
-        return Padding(
-          padding: const EdgeInsets.only(top: 4.0),
-          child: Row(
-            children: [
-              Icon(
-                isMet ? Icons.check : Icons.cancel_outlined,
-                size: 14,
-                color: isMet ? Colors.green : Colors.red,
+      children: _requirementsMet.entries
+          .where((entry) {
+            // Show if NOT met OR if JUST met (recentlyMet)
+            return !entry.value || (_recentlyMet[entry.key] ?? false);
+          })
+          .map((entry) {
+            final isMet = entry.value;
+            return Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Row(
+                children: [
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    padding: const EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                      color: isMet
+                          ? Colors.green.withOpacity(0.1)
+                          : Colors.red.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      isMet ? Icons.check_rounded : Icons.close_rounded,
+                      size: 12,
+                      color: isMet ? Colors.green : Colors.red,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    entry.key,
+                    style: GoogleFonts.openSans(
+                      fontSize: 12,
+                      color: isMet ? Colors.green : Colors.red,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 8),
-              Text(
-                entry.key,
-                style: GoogleFonts.openSans(
-                  fontSize: 12,
-                  color: isMet ? Colors.green : Colors.red,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        );
-      }).toList(),
+            );
+          })
+          .toList(),
     );
   }
 }

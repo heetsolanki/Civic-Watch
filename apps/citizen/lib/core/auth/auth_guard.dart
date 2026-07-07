@@ -1,11 +1,16 @@
 import 'package:citizen/exports.dart';
 
-Future<bool> requireLogin(BuildContext context) async {
+Future<bool> requireLogin(BuildContext context, {String? message}) async {
   final isLoggedIn = await AppPreferences.isLoggedIn();
 
   if (isLoggedIn) return true;
 
-  final result = await context.push<bool>('/auth', extra: false);
+  if (context.mounted) {
+    AppToast.info(
+      context,
+      message ?? 'You are not logged in. Please log in to continue.',
+    );
+  }
 
-  return result ?? false;
+  return false;
 }

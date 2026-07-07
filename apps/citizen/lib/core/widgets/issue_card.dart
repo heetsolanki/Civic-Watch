@@ -5,55 +5,67 @@ class IssueCard extends StatelessWidget {
 
   const IssueCard({super.key, required this.issue});
 
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'Reported':
+        return Colors.orange.shade500;
+      case 'Verified':
+        return Colors.blue.shade500;
+      case 'Assigned':
+        return Colors.deepPurple.shade500;
+      case 'Resolved':
+        return AppColors.success;
+      default:
+        return Colors.grey;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    late Color pillColor;
-    double width = MediaQuery.of(context).size.width;
+    final pillColor = _getStatusColor(issue.status);
+    final width = MediaQuery.sizeOf(context).width;
 
-    if (issue.status == 'Reported') {
-      pillColor = Colors.orange.shade500;
-    } else if (issue.status == 'Verified') {
-      pillColor = Colors.blue.shade500;
-    } else if (issue.status == 'Assigned') {
-      pillColor = Colors.deepPurple.shade500;
-    } else if (issue.status == 'Resolved') {
-      pillColor = AppColors.smallText;
-    }
     return GestureDetector(
+      onTap: () => context.go('/view-details/${issue.id}'),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: AppColors.cardColor,
           boxShadow: [
             BoxShadow(
-              offset: Offset(0, 1),
+              offset: const Offset(0, 4),
               blurRadius: 10,
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withOpacity(0.1),
             ),
           ],
         ),
-        padding: EdgeInsets.only(bottom: 10),
+        padding: const EdgeInsets.only(bottom: 10),
         width: width * 0.85,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Image Container
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),
               ),
               clipBehavior: Clip.antiAlias,
-              child: Image.asset(issue.coverImage),
+              child: Image.asset(
+                issue.coverImage,
+                fit: BoxFit.cover,
+                height: 180,
+                width: double.infinity,
+              ),
             ),
             // Main Content Container
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 10,
+                spacing: 12,
                 children: [
                   // Header Row
                   Row(
@@ -61,18 +73,14 @@ class IssueCard extends StatelessWidget {
                     children: [
                       // Icon + Text Row
                       Row(
-                        spacing: 5,
+                        spacing: 6,
                         children: [
-                          Icon(
-                            issue.icon,
-                            size: 18,
-                            color: AppColors.smallText,
-                          ),
+                          Icon(issue.icon, size: 18, color: AppColors.primary),
                           Text(
                             issue.category,
                             style: GoogleFonts.poppins(
                               fontSize: 13,
-                              color: AppColors.smallText,
+                              color: AppColors.primary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -81,12 +89,12 @@ class IssueCard extends StatelessWidget {
                       // Pill Container
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.3),
+                          color: pillColor.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 10,
-                          vertical: 2,
+                          vertical: 4,
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -97,14 +105,15 @@ class IssueCard extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                                 color: pillColor,
                               ),
-                              height: 7,
-                              width: 7,
+                              height: 8,
+                              width: 8,
                             ),
                             Text(
                               issue.status,
                               style: GoogleFonts.openSans(
                                 fontSize: 12,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
+                                color: pillColor,
                               ),
                             ),
                           ],
@@ -115,63 +124,37 @@ class IssueCard extends StatelessWidget {
                   // Title
                   Text(
                     issue.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.poppins(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
                     ),
                   ),
-                  // Location (Icon + Text)
-                  Row(
-                    spacing: 5,
+                  // Location & Date Section
+                  Column(
+                    spacing: 8,
                     children: [
-                      Icon(
-                        Icons.location_on,
-                        size: 16,
-                        color: Colors.grey.shade500,
-                      ),
-                      Text(
-                        issue.location,
-                        style: GoogleFonts.openSans(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
+                      _buildInfoRow(Icons.location_on, issue.location),
+                      _buildInfoRow(Icons.date_range, issue.reportedOn),
                     ],
                   ),
-                  // Report Date
+                  const Divider(height: 8),
                   Row(
-                    spacing: 5,
+                    spacing: 8,
                     children: [
-                      Icon(
-                        Icons.date_range,
-                        size: 16,
-                        color: Colors.grey.shade500,
-                      ),
-                      Text(
-                        issue.reportedOn,
-                        style: GoogleFonts.openSans(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    spacing: 5,
-                    children: [
-                      Icon(
+                      const Icon(
                         Icons.thumb_up,
-                        size: 20,
-                        color: AppColors.textPrimary,
+                        size: 18,
+                        color: AppColors.primary,
                       ),
                       Text(
                         '${issue.supportedCount} Supporters',
                         style: GoogleFonts.openSans(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
+                          color: AppColors.primary,
                         ),
                       ),
                     ],
@@ -182,9 +165,27 @@ class IssueCard extends StatelessWidget {
           ],
         ),
       ),
-      onTap: () {
-        context.go('/view-details/${issue.id}');
-      },
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String text) {
+    return Row(
+      spacing: 6,
+      children: [
+        Icon(icon, size: 16, color: AppColors.textSecondary),
+        Expanded(
+          child: Text(
+            text,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.openSans(
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+              color: AppColors.textSecondary,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

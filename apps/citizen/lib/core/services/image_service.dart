@@ -10,7 +10,7 @@ class ImageService {
   static Future<File?> pickAndProcessImage({
     required ImageSource source,
   }) async {
-    final XFile? pickedFile = await _picker.pickImage(
+    final pickedFile = await _picker.pickImage(
       source: source,
       imageQuality: 90,
     );
@@ -22,7 +22,7 @@ class ImageService {
 
   /// Picks a profile image and forces a square crop.
   static Future<File?> pickProfileImage({required ImageSource source}) async {
-    final XFile? pickedFile = await _picker.pickImage(
+    final pickedFile = await _picker.pickImage(
       source: source,
       imageQuality: 90,
     );
@@ -36,20 +36,16 @@ class ImageService {
   static Future<List<File>> pickAndProcessMultiImage({
     required int maxImages,
   }) async {
-    final List<XFile> pickedFiles = await _picker.pickMultiImage(
+    final pickedFiles = await _picker.pickMultiImage(
       imageQuality: 90,
     );
 
     if (pickedFiles.isEmpty) return [];
 
-    final List<File> processedImages = [];
+    final processedImages = <File>[];
 
     // Process only up to the remaining allowed count
-    for (
-      var i = 0;
-      i < pickedFiles.length && processedImages.length < maxImages;
-      i++
-    ) {
+    for (var i = 0; i < pickedFiles.length && processedImages.length < maxImages; i++) {
       final processed = await processImage(pickedFiles[i]);
       if (processed != null) {
         processedImages.add(processed);
@@ -62,9 +58,9 @@ class ImageService {
   /// Processes an image: accepts landscape immediately, forces crop for portrait.
   static Future<File?> processImage(XFile pickedFile) async {
     final bytes = await pickedFile.readAsBytes();
-    final ui.Codec codec = await ui.instantiateImageCodec(bytes);
-    final ui.FrameInfo frameInfo = await codec.getNextFrame();
-    final ui.Image image = frameInfo.image;
+    final codec = await ui.instantiateImageCodec(bytes);
+    final frameInfo = await codec.getNextFrame();
+    final image = frameInfo.image;
 
     if (image.width >= image.height) {
       // Landscape or Square: Accept as is
@@ -88,7 +84,7 @@ class ImageService {
           toolbarWidgetColor: Colors.white,
           initAspectRatio: CropAspectRatioPreset.ratio16x9,
           lockAspectRatio: true,
-          hideBottomControls: true, // User shouldn't change settings
+          hideBottomControls: true,
         ),
         IOSUiSettings(
           title: 'Crop to Landscape (16:9)',
@@ -99,8 +95,7 @@ class ImageService {
       ],
     );
 
-    if (croppedFile == null) return null;
-    return File(croppedFile.path);
+    return croppedFile != null ? File(croppedFile.path) : null;
   }
 
   static Future<File?> _pickProfileImage(String path) async {
@@ -126,7 +121,6 @@ class ImageService {
       ],
     );
 
-    if (croppedFile == null) return null;
-    return File(croppedFile.path);
+    return croppedFile != null ? File(croppedFile.path) : null;
   }
 }

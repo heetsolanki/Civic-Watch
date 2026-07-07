@@ -1,52 +1,45 @@
 import 'package:citizen/exports.dart';
 
-class WelcomeWidget extends StatefulWidget {
+class WelcomeWidget extends StatelessWidget {
   const WelcomeWidget({super.key});
 
   @override
-  State<WelcomeWidget> createState() => WelcomeWidgetScreen();
-}
-
-class WelcomeWidgetScreen extends State<WelcomeWidget> {
-  @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+
     return Column(
       spacing: 25,
       children: [
         // Top trusted pill
         Padding(
-          padding: EdgeInsets.only(left: 20, right: 20, top: 50),
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: AppColors.primary.withOpacity(0.5),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: AppColors.primary.withOpacity(0.1),
+            ),
+            height: 36,
+            width: width * 0.65,
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 8,
+              children: [
+                const Icon(
+                  Icons.health_and_safety,
+                  color: AppColors.primary,
+                  size: 20,
                 ),
-                height: 30,
-                width: MediaQuery.of(context).size.width * 0.60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(width: 5),
-                    Icon(
-                      Icons.health_and_safety,
-                      color: AppColors.textPrimary,
-                      size: 22,
-                    ),
-                    Text(
-                      'Trusted by many people',
-                      style: GoogleFonts.openSans(
-                        fontSize: 14,
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(width: 5),
-                  ],
+                Text(
+                  'Trusted by 10k+ citizens',
+                  style: GoogleFonts.openSans(
+                    fontSize: 13,
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         // Hero Section & CTA button
@@ -56,23 +49,24 @@ class WelcomeWidgetScreen extends State<WelcomeWidget> {
           children: [
             // Text Column
             Column(
-              spacing: 2.0,
+              spacing: 4.0,
               children: [
-                Text(
+                RichText(
                   textAlign: TextAlign.center,
-                  'Report Issues.\nEmpower Communities.',
-                  style: GoogleFonts.poppins(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  textAlign: TextAlign.center,
-                  'Build Better Cities.',
-                  style: GoogleFonts.poppins(
-                    color: AppColors.textPrimary,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
+                  text: TextSpan(
+                    style: GoogleFonts.poppins(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
+                    children: [
+                      const TextSpan(text: 'Report Issues.\n'),
+                      const TextSpan(text: 'Empower '),
+                      TextSpan(
+                        text: 'Communities.',
+                        style: TextStyle(color: AppColors.primary),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
@@ -83,36 +77,40 @@ class WelcomeWidgetScreen extends State<WelcomeWidget> {
                   child: Text(
                     'Join a modern network of citizens and local governments working together to maintain and improve civic infrastructure.',
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.openSans(fontSize: 15),
+                    style: GoogleFonts.openSans(
+                      fontSize: 15,
+                      color: AppColors.textSecondary,
+                      height: 1.5,
+                    ),
                   ),
                 ),
               ],
             ),
             // CTA buttons
-            Column(
-              spacing: 20,
-              children: [
-                AppButton(
-                  text: 'Report Issue',
-                  onPressed: () {
-                    context.go('/create-report');
-                  },
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  backgroundColor: AppColors.textPrimary,
-                  prefixIcon: Icon(Icons.add_circle_outline_rounded, size: 20),
-                ),
-                AppButton(
-                  text: 'Explore Issues',
-                  onPressed: () {
-                    context.go('/explore-issues');
-                  },
-                  width: MediaQuery.of(context).size.width * 0.85,
-                  backgroundColor: Colors.white,
-                  borderColor: AppColors.textPrimary,
-                  textColor: AppColors.textPrimary,
-                  prefixIcon: Icon(Icons.search, size: 20),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                spacing: 16,
+                children: [
+                  AppButton(
+                    text: 'Report Issue',
+                    onPressed: () => context.go('/create-report'),
+                    backgroundColor: AppColors.primary,
+                    prefixIcon: const Icon(
+                      Icons.add_circle_outline_rounded,
+                      size: 20,
+                    ),
+                  ),
+                  AppButton(
+                    text: 'Explore Issues',
+                    onPressed: () => context.go('/explore-issues'),
+                    backgroundColor: Colors.white,
+                    borderColor: AppColors.primary,
+                    textColor: AppColors.primary,
+                    prefixIcon: const Icon(Icons.search, size: 20),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

@@ -8,7 +8,7 @@ class ReviewPhotosGallery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 180,
+      height: 160,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: images.length,
@@ -17,11 +17,7 @@ class ReviewPhotosGallery extends StatelessWidget {
         itemBuilder: (context, index) {
           return ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: Image.file(
-              images[index],
-              width: 250,
-              fit: BoxFit.cover,
-            ),
+            child: Image.file(images[index], width: 280, fit: BoxFit.cover),
           );
         },
       ),

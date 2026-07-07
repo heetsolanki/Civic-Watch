@@ -19,38 +19,50 @@ class StatsCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+      width: width,
       decoration: BoxDecoration(
         color: AppColors.cardColor,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withOpacity(0.1), width: 1),
         boxShadow: [
           BoxShadow(
-            offset: Offset(0, 1),
-            blurRadius: 0.9,
-            spreadRadius: 0.8,
-            color: Colors.black.withOpacity(0.3),
+            offset: const Offset(0, 4),
+            blurRadius: 12,
+            color: color.withOpacity(0.08),
           ),
         ],
       ),
-      padding: EdgeInsets.symmetric(vertical: 20),
-      width: width,
       child: Column(
-        spacing: 5,
+        mainAxisSize: MainAxisSize.min,
+        spacing: 6,
         children: [
-          Icon(icon, size: 36, color: color),
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, size: 28, color: color),
+          ),
+          const SizedBox(height: 4),
           Text(
             statNum,
             style: GoogleFonts.poppins(
-              fontSize: 26,
-              fontWeight: FontWeight.w700,
-              color: color,
+              fontSize: 24,
+              fontWeight: FontWeight.w800,
+              color: AppColors.textPrimary,
+              letterSpacing: -0.5,
             ),
           ),
           Text(
             text,
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey.shade700,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.openSans(
+              fontSize: 12,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textSecondary,
+              letterSpacing: 0.5,
             ),
           ),
         ],

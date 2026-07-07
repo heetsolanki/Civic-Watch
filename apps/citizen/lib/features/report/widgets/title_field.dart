@@ -29,22 +29,15 @@ class _TitleFieldState extends State<TitleField> {
   }
 
   void _onTextChanged() {
-    // If the text matches one of the suggestions, keep showing suggestions.
-    // If user starts typing something else manually, we might want to hide them?
-    // User said: "Suggestions should disappear once the user starts typing something different."
-    // This is tricky. Let's say if text is not empty and not in the list, hide.
     final suggestions = categoryTitleSuggestions[widget.category] ?? [];
-    if (_controller.text.isNotEmpty && !suggestions.contains(_controller.text)) {
+    if (_controller.text.isNotEmpty &&
+        !suggestions.contains(_controller.text)) {
       if (_showSuggestions) {
-        setState(() {
-          _showSuggestions = false;
-        });
+        setState(() => _showSuggestions = false);
       }
     } else if (_controller.text.isEmpty) {
       if (!_showSuggestions) {
-        setState(() {
-          _showSuggestions = true;
-        });
+        setState(() => _showSuggestions = true);
       }
     }
   }
@@ -69,7 +62,7 @@ class _TitleFieldState extends State<TitleField> {
               'Issue Title *',
               style: GoogleFonts.poppins(
                 fontSize: 16,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
               ),
             ),
@@ -80,7 +73,7 @@ class _TitleFieldState extends State<TitleField> {
                 color: widget.value.isNotEmpty && widget.value.length < 10
                     ? AppColors.danger
                     : AppColors.textSecondary,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ],
@@ -93,22 +86,37 @@ class _TitleFieldState extends State<TitleField> {
             border: Border.all(
               color: widget.value.isNotEmpty && widget.value.length < 10
                   ? AppColors.danger
-                  : AppColors.textPrimary.withValues(alpha: 0.5),
+                  : AppColors.primary.withOpacity(0.2),
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: TextField(
             controller: _controller,
             maxLength: 100,
             onChanged: widget.onChanged,
-            style: GoogleFonts.openSans(fontSize: 14),
+            style: GoogleFonts.openSans(
+              fontSize: 15,
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
+            ),
             decoration: InputDecoration(
               counterText: "",
               hintText: 'e.g., Large pothole near City Mall',
               hintStyle: GoogleFonts.openSans(
                 color: Colors.grey.shade400,
-                fontSize: 14,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 15,
+              ),
               border: InputBorder.none,
             ),
           ),
@@ -121,45 +129,46 @@ class _TitleFieldState extends State<TitleField> {
               style: GoogleFonts.openSans(
                 color: AppColors.danger,
                 fontSize: 12,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
-        
+
         if (_showSuggestions && suggestions.isNotEmpty) ...[
-          const SizedBox(height: 15),
+          const SizedBox(height: 20),
           Text(
             'Suggestions',
             style: GoogleFonts.poppins(
               fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w700,
+              color: AppColors.textPrimary,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 10),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
             child: Row(
               children: suggestions.map((suggestion) {
                 return Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
+                  padding: const EdgeInsets.only(right: 10),
                   child: ActionChip(
                     label: Text(suggestion),
                     labelStyle: GoogleFonts.openSans(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textPrimary,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primary,
                     ),
-                    backgroundColor: AppColors.primary.withValues(alpha: 0.05),
-                    side: BorderSide(color: AppColors.primary.withValues(alpha: 0.1)),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                    backgroundColor: AppColors.primary.withOpacity(0.05),
+                    side: BorderSide(color: AppColors.primary.withOpacity(0.1)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
                     onPressed: () {
+                      HapticFeedback.selectionClick();
                       _controller.text = suggestion;
                       widget.onChanged(suggestion);
-                      setState(() {
-                        _showSuggestions = false;
-                      });
+                      setState(() => _showSuggestions = false);
                     },
                   ),
                 );

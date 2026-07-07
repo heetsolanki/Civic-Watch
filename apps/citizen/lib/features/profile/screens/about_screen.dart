@@ -51,9 +51,9 @@ class AboutScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(
                     'CivicWatch',
-                    style: GoogleFonts.openSans(
+                    style: GoogleFonts.poppins(
                       fontSize: 28,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w800,
                       color: AppColors.primary,
                       letterSpacing: -0.5,
                     ),
@@ -63,7 +63,7 @@ class AboutScreen extends StatelessWidget {
                     style: GoogleFonts.openSans(
                       fontSize: 14,
                       color: AppColors.textSecondary,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
@@ -83,7 +83,7 @@ class AboutScreen extends StatelessWidget {
                     title: 'Mission',
                     content:
                         'To empower citizens with a simple digital tool to report civic issues and facilitate faster resolution through transparency and community participation.',
-                    icon: Icons.rocket_launch_outlined,
+                    icon: Icons.rocket_launch_rounded,
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 16),
@@ -93,7 +93,7 @@ class AboutScreen extends StatelessWidget {
                     title: 'Vision',
                     content:
                         'Creating cleaner, safer, and better-managed communities by bridging the gap between citizens and local authorities.',
-                    icon: Icons.visibility_outlined,
+                    icon: Icons.visibility_rounded,
                   ),
                 ],
               ),
@@ -156,7 +156,7 @@ class AboutScreen extends StatelessWidget {
                         radius: 30,
                         backgroundColor: AppColors.primary.withOpacity(0.1),
                         child: const Icon(
-                          Icons.person,
+                          Icons.person_rounded,
                           color: AppColors.primary,
                           size: 30,
                         ),
@@ -168,7 +168,7 @@ class AboutScreen extends StatelessWidget {
                           children: [
                             Text(
                               'Heet Solanki',
-                              style: GoogleFonts.openSans(
+                              style: GoogleFonts.poppins(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.textPrimary,
@@ -177,9 +177,9 @@ class AboutScreen extends StatelessWidget {
                             Text(
                               'Full Stack Flutter Developer',
                               style: GoogleFonts.openSans(
-                                fontSize: 14,
+                                fontSize: 13,
                                 color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ],
@@ -192,24 +192,24 @@ class AboutScreen extends StatelessWidget {
                     'Passionate about building software that solves real-world problems. CivicWatch is a step towards digitizing civic engagement.',
                     style: GoogleFonts.openSans(
                       fontSize: 14,
-                      height: 1.5,
+                      height: 1.6,
                       color: AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 24),
                   Text(
                     'Technology Stack',
-                    style: GoogleFonts.openSans(
+                    style: GoogleFonts.poppins(
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 12),
-                  Wrap(
+                  const Wrap(
                     spacing: 12,
                     runSpacing: 10,
-                    children: const [
+                    children: [
                       TechPill(text: 'Flutter'),
                       TechPill(text: 'Dart'),
                       TechPill(text: 'Firebase'),
@@ -236,7 +236,7 @@ class AboutScreen extends StatelessWidget {
                     style: GoogleFonts.openSans(
                       color: AppColors.textSecondary,
                       fontSize: 13,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 4),

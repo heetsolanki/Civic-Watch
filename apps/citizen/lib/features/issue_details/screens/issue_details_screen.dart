@@ -15,46 +15,43 @@ class IssueDetailsScreen extends StatefulWidget {
 }
 
 class _IssueDetailsScreenState extends State<IssueDetailsScreen> {
-
   @override
   Widget build(BuildContext context) {
     final issue = issueDataList.firstWhere((item) => item.id == widget.issueId);
 
     return Scaffold(
-      backgroundColor: const Color(0xfff8f9ff),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15),
-          ),
-        ),
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        scrolledUnderElevation: 0,
         leading: IconButton(
           icon: const Icon(
-            Icons.keyboard_arrow_left,
-            size: 25,
+            Icons.keyboard_arrow_left_rounded,
+            size: 28,
             color: AppColors.textPrimary,
           ),
-          onPressed: () {
-            context.go('/home');
-          },
+          onPressed: () => context.go('/home'),
         ),
         actions: [
           IconButton(
             icon: const Icon(
-              Icons.share_outlined,
+              Icons.share_rounded,
               color: AppColors.textPrimary,
+              size: 22,
             ),
-            onPressed: () {},
+            onPressed: () {
+              HapticFeedback.lightImpact();
+            },
           ),
+          const SizedBox(width: 8),
         ],
         toolbarHeight: 65,
-        elevation: 5,
         title: Text(
-          'View Details',
+          'Issue Details',
           style: GoogleFonts.poppins(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
             color: AppColors.textPrimary,
           ),
         ),
@@ -62,21 +59,20 @@ class _IssueDetailsScreenState extends State<IssueDetailsScreen> {
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+          padding: const EdgeInsets.all(24),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ImageContainer(issue: issue),
-              const SizedBox(height: 20),
-              CategoryStatusPill(issue: issue),
-              const SizedBox(height: 10),
-              InfoContainer(issue: issue),
-              const SizedBox(height: 40),
-              SupportersContainer(issue: issue),
-              const SizedBox(height: 40),
-              ResolutionTracker(issue: issue),
-              const SizedBox(height: 50),
+              ImageContainer(issue: issue).animate().fadeIn(duration: 400.ms).scale(begin: const Offset(0.95, 0.95)),
+              const SizedBox(height: 24),
+              CategoryStatusPill(issue: issue).animate().fadeIn(delay: 100.ms).slideX(begin: -0.1),
+              const SizedBox(height: 16),
+              InfoContainer(issue: issue).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1),
+              const SizedBox(height: 32),
+              SupportersContainer(issue: issue).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1),
+              const SizedBox(height: 32),
+              ResolutionTracker(issue: issue).animate().fadeIn(delay: 400.ms).slideY(begin: 0.1),
+              const SizedBox(height: 48),
             ],
           ),
         ),

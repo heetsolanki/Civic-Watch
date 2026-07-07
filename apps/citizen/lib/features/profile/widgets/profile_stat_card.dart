@@ -16,7 +16,7 @@ class ProfileStatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
     return Container(
       decoration: BoxDecoration(
         color: AppColors.cardColor.withOpacity(0.5),

@@ -8,52 +8,59 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  final controller = PageController();
-  int currentPage = 0;
+  final _controller = PageController();
+  int _currentPage = 0;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _completeOnboarding() async {
+    HapticFeedback.mediumImpact();
+    await AppPreferences.setOnboardingComplete();
+    if (mounted) {
+      context.go('/main');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
             Align(
               alignment: Alignment.topRight,
-              child: TextButton(
-                onPressed: () async {
-                  await AppPreferences.setOnboardingComplete();
-
-                  if (!context.mounted) return;
-
-                  context.go('/main');
-                },
-                child: Text(
-                  "Skip",
-                  style: GoogleFonts.openSans(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textSecondary,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: TextButton(
+                  onPressed: _completeOnboarding,
+                  child: Text(
+                    "Skip",
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                 ),
               ),
             ),
             Expanded(
               child: PageView.builder(
-                controller: controller,
+                controller: _controller,
                 itemCount: onboardingItems.length,
-                onPageChanged: (index) {
-                  setState(() {
-                    currentPage = index;
-                  });
-                },
+                onPageChanged: (index) => setState(() => _currentPage = index),
                 itemBuilder: (context, index) {
                   final item = onboardingItems[index];
-
                   return OnboardingPage(
                     title: item.title,
                     description: item.description,
                     image: item.image,
-                  );
+                  ).animate().fadeIn(duration: 400.ms);
                 },
               ),
             ),
@@ -62,15 +69,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
                 onboardingItems.length,
-                    (index) => AnimatedContainer(
+                (index) => AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   margin: const EdgeInsets.only(right: 8),
                   height: 8,
-                  width: currentPage == index ? 24 : 8,
+                  width: _currentPage == index ? 24 : 8,
                   decoration: BoxDecoration(
-                    color: currentPage == index
+                    color: _currentPage == index
                         ? AppColors.primary
-                        : AppColors.textSecondary.withOpacity(0.3),
+                        : AppColors.primary.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ),
@@ -80,27 +87,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: AppButton(
-                suffixIcon: Icon(Icons.arrow_right_alt, size: 20,),
-                text: currentPage == onboardingItems.length - 1
-                    ? "Explore Civic Watch"
+                suffixIcon: const Icon(Icons.arrow_forward_rounded, size: 20),
+                text: _currentPage == onboardingItems.length - 1
+                    ? "Get Started"
                     : "Next",
-                onPressed: () async {
-                  if (currentPage == onboardingItems.length - 1) {
-                    await AppPreferences.setOnboardingComplete();
-
-                    if (!context.mounted) return;
-
-                    context.go('/main');
+                onPressed: () {
+                  if (_currentPage == onboardingItems.length - 1) {
+                    _completeOnboarding();
                   } else {
-                    controller.nextPage(
+                    _controller.nextPage(
                       duration: const Duration(milliseconds: 300),
-                      curve: Curves.linear,
+                      curve: Curves.easeOutCubic,
                     );
                   }
                 },
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 48),
           ],
         ),
       ),
