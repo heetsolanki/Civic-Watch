@@ -77,7 +77,8 @@ class _ToastWidget extends StatefulWidget {
   State<_ToastWidget> createState() => _ToastWidgetState();
 }
 
-class _ToastWidgetState extends State<_ToastWidget> with SingleTickerProviderStateMixin {
+class _ToastWidgetState extends State<_ToastWidget>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
   late Animation<double> _fadeAnimation;
@@ -87,21 +88,15 @@ class _ToastWidgetState extends State<_ToastWidget> with SingleTickerProviderSta
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 400),
     );
 
     _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0, -1),
+      begin: const Offset(0, 1), // Slide up from bottom
       end: const Offset(0, 0),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOutBack,
-    ));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
 
-    _fadeAnimation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeIn,
-    );
+    _fadeAnimation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
 
     _controller.forward();
 
@@ -121,9 +116,9 @@ class _ToastWidgetState extends State<_ToastWidget> with SingleTickerProviderSta
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 110, // Adjusted to be below a standard navbar
-      left: 20,
-      right: 20,
+      bottom: 50, // Changed to bottom
+      left: 24,
+      right: 24,
       child: Material(
         color: Colors.transparent,
         child: SlideTransition(
@@ -132,30 +127,43 @@ class _ToastWidgetState extends State<_ToastWidget> with SingleTickerProviderSta
             opacity: _fadeAnimation,
             child: Center(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 14,
+                ),
                 decoration: BoxDecoration(
-                  // Increased opacity (0.9 for background, 0.15 for tint) for visibility
-                  color: Colors.white.withOpacity(0.95), 
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: widget.mainColor.withOpacity(0.3)),
+                  color: AppColors.cardColor,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: widget.mainColor.withOpacity(0.2)),
                   boxShadow: [
                     BoxShadow(
-                      color: widget.mainColor.withOpacity(0.2),
-                      blurRadius: 15,
-                      offset: const Offset(0, 8),
+                      color: widget.mainColor.withOpacity(0.15),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
                     ),
                   ],
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(widget.icon, color: widget.mainColor, size: 20),
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: widget.mainColor.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        widget.icon,
+                        color: widget.mainColor,
+                        size: 18,
+                      ),
+                    ),
                     const SizedBox(width: 12),
                     Flexible(
                       child: Text(
                         widget.message,
                         style: GoogleFonts.openSans(
-                          color: AppColors.textPrimary, // Changed to primary text color for better contrast
+                          color: AppColors.textPrimary,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),

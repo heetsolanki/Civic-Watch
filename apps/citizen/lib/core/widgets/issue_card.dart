@@ -27,8 +27,7 @@ class IssueCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               offset: Offset(0, 1),
-              blurRadius: 0.9,
-              spreadRadius: 0.8,
+              blurRadius: 10,
               color: Colors.black.withOpacity(0.3),
             ),
           ],

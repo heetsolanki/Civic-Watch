@@ -123,9 +123,20 @@ class ReviewStep extends StatelessWidget {
             const SizedBox(height: 20),
             AppButton(
               text: 'Submit Report',
-              onPressed: () {
-                AppToast.success(context, 'Report submitted successfully!');
-                context.go('/main');
+              onPressed: () async {
+                // Show the blocking dialog
+                showSubmittingReportDialog(context);
+
+                // Simulate API call/upload
+                await Future.delayed(const Duration(seconds: 2));
+
+                if (context.mounted) {
+                  // Dismiss the dialog
+                  Navigator.pop(context);
+                  
+                  // Navigate to success screen
+                  context.go('/report-success');
+                }
               },
             ),
           ],
