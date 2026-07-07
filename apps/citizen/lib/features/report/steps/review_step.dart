@@ -4,7 +4,7 @@ class ReviewStep extends StatelessWidget {
   final String title;
   final VoidCallback onBack;
   final ReportDraft draft;
-  final Function(int) onEdit;
+  final ValueChanged<int> onEdit;
 
   const ReviewStep({
     super.key,
@@ -23,12 +23,16 @@ class ReviewStep extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+              padding: const EdgeInsets.all(24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildHeader(),
-                  const SizedBox(height: 30),
+                  const SectionHeader(
+                    title: 'Review Your Report',
+                    subtitle:
+                        'Please verify the information below before submitting to local authorities.',
+                  ),
+                  const SizedBox(height: 8),
                   ReviewSectionCard(
                     title: 'Category',
                     onEdit: () => onEdit(0),
@@ -54,14 +58,14 @@ class ReviewStep extends StatelessWidget {
                   ReviewSectionCard(
                     title: 'Location',
                     onEdit: () => onEdit(3),
-                    padding: const EdgeInsets.all(0),
+                    padding: EdgeInsets.zero,
                     child: ReviewLocationContent(
                       latitude: draft.latitude ?? 0,
                       longitude: draft.longitude ?? 0,
                       address: draft.address ?? 'No address found',
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 32),
                 ],
               ),
             ),
@@ -72,43 +76,14 @@ class ReviewStep extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
-    return Column(
-      children: [
-        Center(
-          child: Text(
-            'Review your report',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.poppins(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
-            ),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Center(
-          child: Text(
-            'Please verify the information below before submitting.',
-            style: GoogleFonts.openSans(
-              fontSize: 14,
-              color: AppColors.textSecondary,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget _buildStickyBottom(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(25),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, -5),
           ),
@@ -124,6 +99,7 @@ class ReviewStep extends StatelessWidget {
             AppButton(
               text: 'Submit Report',
               onPressed: () async {
+                HapticFeedback.heavyImpact();
                 // Show the blocking dialog
                 showSubmittingReportDialog(context);
 
@@ -133,7 +109,7 @@ class ReviewStep extends StatelessWidget {
                 if (context.mounted) {
                   // Dismiss the dialog
                   Navigator.pop(context);
-                  
+
                   // Navigate to success screen
                   context.go('/report-success');
                 }

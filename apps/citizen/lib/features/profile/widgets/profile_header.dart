@@ -19,7 +19,7 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasImage = imagePath != null && imagePath!.isNotEmpty;
-    double width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
@@ -36,7 +36,7 @@ class ProfileHeader extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                offset: Offset(0, 4),
+                offset: const Offset(0, 4),
                 color: Colors.black.withOpacity(0.1),
                 blurRadius: 5,
               ),
@@ -47,7 +47,7 @@ class ProfileHeader extends StatelessWidget {
         ),
         Container(
           alignment: Alignment.bottomCenter,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: AppColors.cardColor,
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(10),
@@ -56,73 +56,68 @@ class ProfileHeader extends StatelessWidget {
           ),
           width: width * 0.85,
           height: 175,
-          child: Padding(
-            padding: const EdgeInsets.all(0),
-            child: Column(
-              children: [
-                SizedBox(height: 60),
-                Text(
-                  name,
-                  style: GoogleFonts.poppins(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
-                  ),
+          child: Column(
+            children: [
+              const SizedBox(height: 60),
+              Text(
+                name,
+                style: GoogleFonts.poppins(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
                 ),
-                SizedBox(height: 3),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.verified_user_rounded,
-                      size: 20,
-                      color: AppColors.smallText,
+              ),
+              const SizedBox(height: 3),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.verified_user_rounded,
+                    size: 20,
+                    color: AppColors.smallText,
+                  ),
+                  const SizedBox(width: 2),
+                  Text(
+                    'Verified Citizen',
+                    style: GoogleFonts.openSans(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                     ),
-                    SizedBox(width: 2),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 4,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.amber.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.amber.withOpacity(0.3)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(
+                      Icons.emoji_events_rounded,
+                      size: 16,
+                      color: Colors.amber,
+                    ),
+                    const SizedBox(width: 6),
                     Text(
-                      'Verified Citizen',
-                      style: GoogleFonts.openSans(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                      '$civicPoints Civic Points',
+                      style: GoogleFonts.poppins(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amber[800],
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 4,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.amber.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Colors.amber.withValues(alpha: 0.3),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(
-                        Icons.emoji_events_rounded,
-                        size: 16,
-                        color: Colors.amber,
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        '$civicPoints Civic Points',
-                        style: GoogleFonts.poppins(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.amber[800],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         Positioned(

@@ -1,63 +1,50 @@
 import 'package:citizen/exports.dart';
 
-class SupportersContainer extends StatefulWidget {
+class SupportersContainer extends StatelessWidget {
   final IssueData issue;
 
   const SupportersContainer({super.key, required this.issue});
 
   @override
-  State<SupportersContainer> createState() => _SupportersContainerState();
-}
-
-class _SupportersContainerState extends State<SupportersContainer> {
-  @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: AppColors.cardColor,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
+    return InfoCard(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  widget.issue.supportedCount,
+                  issue.supportedCount,
                   style: GoogleFonts.poppins(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
                     color: AppColors.textPrimary,
                   ),
                 ),
-                Text('Supporters', style: GoogleFonts.poppins(fontSize: 14)),
+                Text(
+                  'Supporters',
+                  style: GoogleFonts.openSans(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
               ],
             ),
-            AppButton(
-              text: 'I\'m Affected Too',
-              prefixIcon: const Icon(Icons.people_alt),
-              borderRadius: 5,
-              width: width * 0.45,
-              backgroundColor: AppColors.textPrimary,
-              onPressed: () {
-                AppToast.success(context, 'You\'re supporting this issue');
-              },
-            ),
-          ],
-        ),
+          ),
+          AppButton(
+            text: "I'm Affected Too",
+            width: 180,
+            height: 44,
+            prefixIcon: const Icon(Icons.thumb_up_alt_rounded, size: 18),
+            onPressed: () {
+              HapticFeedback.mediumImpact();
+              AppToast.success(context, "You're now supporting this issue!");
+            },
+          ),
+        ],
       ),
     );
   }

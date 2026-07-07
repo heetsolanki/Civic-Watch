@@ -8,7 +8,7 @@ class IssuesScreen extends StatefulWidget {
 }
 
 class IssuesScreenState extends State<IssuesScreen> {
-  final List<String> categories = [
+  static const List<String> categories = [
     'All',
     'Roads',
     'Utilities',
@@ -20,7 +20,7 @@ class IssuesScreenState extends State<IssuesScreen> {
     'Construction',
     'Animals',
     'Public Safety',
-    'Other'
+    'Other',
   ];
   String selectedCategory = 'All';
   String tappedCategory = '';
@@ -28,46 +28,51 @@ class IssuesScreenState extends State<IssuesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
     return Scaffold(
+      backgroundColor: AppColors.background,
       body: Center(
         child: SizedBox(
-          width: width * 0.85,
+          width: width * 0.9,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header Row
               const SizedBox(height: 60),
-              Row(
-                spacing: 5,
-                children: [
-                  Icon(
-                    Icons.search,
-                    size: 28,
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  Text(
-                    'Explore Issues',
-                    style: GoogleFonts.poppins(
-                      fontSize: 28,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Row(
+                  spacing: 8,
+                  children: [
+                    const Icon(
+                      Icons.search_rounded,
+                      size: 32,
+                      color: AppColors.primary,
                     ),
-                  ),
-                ],
+                    Text(
+                      'Explore Issues',
+                      style: GoogleFonts.poppins(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textPrimary,
+                        letterSpacing: -0.5,
+                      ),
+                    ),
+                  ],
+                ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 35, top: 5),
+                padding: const EdgeInsets.only(left: 48, top: 4),
                 child: Text(
                   'Find and support issues around your city.',
                   style: GoogleFonts.openSans(
                     fontSize: 14,
+                    color: AppColors.textSecondary,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 32),
               // Search Bar
               AppSearchBar(
                 hintText: 'Search by issue title or location...',
@@ -77,7 +82,7 @@ class IssuesScreenState extends State<IssuesScreen> {
                   });
                 },
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 24),
               // Categories Pill
               CategorySelector(
                 categories: categories,
@@ -88,7 +93,7 @@ class IssuesScreenState extends State<IssuesScreen> {
                   });
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
               // Issue Cards
               Expanded(
                 child: Builder(
@@ -109,16 +114,17 @@ class IssuesScreenState extends State<IssuesScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
-                              Icons.search_off,
-                              size: 64,
-                              color: Colors.grey.shade300,
+                              Icons.search_off_rounded,
+                              size: 72,
+                              color: AppColors.primary.withOpacity(0.1),
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 20),
                             Text(
                               'No issues found matching your search.',
                               style: GoogleFonts.openSans(
-                                color: Colors.grey,
+                                color: AppColors.textSecondary,
                                 fontSize: 16,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ],
@@ -133,8 +139,8 @@ class IssuesScreenState extends State<IssuesScreen> {
                       itemBuilder: (context, index) {
                         final issue = filteredIssues[index];
                         return Padding(
-                          padding: const EdgeInsets.only(bottom: 25),
-                          child: IssueCard(issue: issue),
+                          padding: const EdgeInsets.only(bottom: 24),
+                          child: Center(child: IssueCard(issue: issue)),
                         );
                       },
                     );

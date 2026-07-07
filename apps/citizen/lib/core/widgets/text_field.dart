@@ -1,6 +1,6 @@
 import 'package:citizen/exports.dart';
 
-class CustomTextField extends StatefulWidget {
+class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
   final String? hintText;
@@ -27,17 +27,12 @@ class CustomTextField extends StatefulWidget {
   });
 
   @override
-  State<CustomTextField> createState() => CustomTextFieldState();
-}
-
-class CustomTextFieldState extends State<CustomTextField> {
-  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: AppColors.textPrimary),
+        border: Border.all(color: AppColors.primary.withOpacity(0.2)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -47,44 +42,49 @@ class CustomTextFieldState extends State<CustomTextField> {
         ],
       ),
       child: TextField(
-        readOnly: widget.readOnly,
-        controller: widget.controller,
-        obscureText: widget.obscureText,
-        maxLines: widget.maxLines ?? 1,
-        keyboardType: widget.keyboardType,
-        style: GoogleFonts.openSans(fontSize: 15, color: AppColors.textPrimary),
+        readOnly: readOnly,
+        controller: controller,
+        obscureText: obscureText,
+        maxLines: maxLines ?? 1,
+        keyboardType: keyboardType,
+        style: GoogleFonts.openSans(
+          fontSize: 15,
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w600,
+        ),
         decoration: InputDecoration(
-          hintText: widget.hintText,
+          hintText: hintText,
           hintStyle: GoogleFonts.openSans(
-            color: Colors.grey.shade600,
+            color: Colors.grey.shade400,
             fontSize: 15,
+            fontWeight: FontWeight.w500,
           ),
-          prefixIcon: widget.prefixIcon != null
-              ? Icon(widget.prefixIcon, color: AppColors.textPrimary, size: 20)
+          prefixIcon: prefixIcon != null
+              ? Icon(prefixIcon, color: AppColors.primary, size: 20)
               : null,
-          suffixIcon: widget.suffixIcon != null
-              ? (widget.onSuffixIconPressed != null
+          suffixIcon: suffixIcon != null
+              ? (onSuffixIconPressed != null
                     ? IconButton(
                         icon: Icon(
-                          widget.suffixIcon,
-                          color: AppColors.textPrimary,
+                          suffixIcon,
+                          color: AppColors.textSecondary,
                           size: 20,
                         ),
-                        onPressed: widget.onSuffixIconPressed,
+                        onPressed: onSuffixIconPressed,
                       )
                     : Icon(
-                        widget.suffixIcon,
-                        color: AppColors.textPrimary,
+                        suffixIcon,
+                        color: AppColors.textSecondary,
                         size: 20,
                       ))
               : null,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide.none,
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(
+            vertical: 15,
+            horizontal: 15,
           ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
         ),
-        onChanged: widget.onChanged,
+        onChanged: onChanged,
       ),
     );
   }

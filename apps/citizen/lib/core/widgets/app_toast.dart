@@ -24,8 +24,8 @@ class AppToast {
       _isShowing = false;
     }
 
-    Color mainColor;
-    IconData icon;
+    final Color mainColor;
+    final IconData icon;
 
     switch (type) {
       case ToastType.success:
@@ -48,9 +48,11 @@ class AppToast {
         mainColor: mainColor,
         icon: icon,
         onDismiss: () {
-          _overlayEntry?.remove();
-          _overlayEntry = null;
-          _isShowing = false;
+          if (_isShowing) {
+            _overlayEntry?.remove();
+            _overlayEntry = null;
+            _isShowing = false;
+          }
         },
       ),
     );
@@ -92,7 +94,7 @@ class _ToastWidgetState extends State<_ToastWidget>
     );
 
     _offsetAnimation = Tween<Offset>(
-      begin: const Offset(0, 1), // Slide up from bottom
+      begin: const Offset(0, -1), // Slide down from top
       end: const Offset(0, 0),
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
 
@@ -116,7 +118,7 @@ class _ToastWidgetState extends State<_ToastWidget>
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 50, // Changed to bottom
+      top: 85, // Positioned just below the AppBar
       left: 24,
       right: 24,
       child: Material(
@@ -137,9 +139,9 @@ class _ToastWidgetState extends State<_ToastWidget>
                   border: Border.all(color: widget.mainColor.withOpacity(0.2)),
                   boxShadow: [
                     BoxShadow(
-                      color: widget.mainColor.withOpacity(0.15),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
+                      color: Colors.black.withOpacity(0.08),
+                      blurRadius: 15,
+                      offset: const Offset(0, 8),
                     ),
                   ],
                 ),

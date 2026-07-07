@@ -133,7 +133,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
 
     ImageProvider? imageProvider;
     if (!_imageRemoved) {
@@ -145,21 +145,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
 
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 10,
+        elevation: 0,
         leading: IconButton(
           onPressed: () => context.pop(),
           icon: const Icon(Icons.arrow_back),
         ),
         title: Text(
           'Edit Profile',
-          style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w500),
+          style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600),
         ),
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+        padding: const EdgeInsets.all(24),
         child: Column(
           children: [
             Align(
@@ -173,6 +174,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           tag: 'profile-avatar',
                           child: CircleAvatar(
                             radius: 70,
+                            backgroundColor: AppColors.cardColor,
                             backgroundImage: imageProvider,
                             child: imageProvider == null
                                 ? const Icon(
@@ -184,14 +186,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.all(4),
+                          padding: const EdgeInsets.all(6),
                           decoration: const BoxDecoration(
                             color: Colors.white,
                             shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 8,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
                           ),
                           child: const Icon(
-                            Icons.camera_alt,
-                            size: 25,
+                            Icons.camera_alt_rounded,
+                            size: 24,
                             color: AppColors.primary,
                           ),
                         ),
@@ -202,38 +211,39 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 .animate()
                 .fadeIn(duration: 400.ms)
                 .scale(begin: const Offset(0.9, 0.9)),
-            const SizedBox(height: 15),
+            const SizedBox(height: 16),
             AppButton(
               text: 'Change Photo',
-              width: width * 0.40,
+              width: width * 0.45,
+              height: 40,
               textColor: AppColors.primary,
-              backgroundColor: AppColors.background,
-              borderColor: AppColors.primary,
+              backgroundColor: Colors.white,
+              borderColor: AppColors.primary.withOpacity(0.2),
               onPressed: _showImagePickerOptions,
             ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.2),
-            const SizedBox(height: 30),
+            const SizedBox(height: 40),
             CustomTextField(
               controller: _nameController,
               hintText: 'Full Name',
-              prefixIcon: Icons.person,
+              prefixIcon: Icons.person_outline_rounded,
               keyboardType: TextInputType.text,
             ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.1),
             const SizedBox(height: 20),
             CustomTextField(
               controller: _emailController,
               hintText: 'Email Address',
-              prefixIcon: Icons.mail,
-              suffixIcon: Icons.block,
+              prefixIcon: Icons.mail_outline_rounded,
+              suffixIcon: Icons.lock_outline_rounded,
               readOnly: true,
             ).animate().fadeIn(delay: 300.ms).slideX(begin: -0.1),
             const SizedBox(height: 20),
             CustomTextField(
               controller: _phoneController,
               hintText: 'Phone Number',
-              prefixIcon: Icons.phone_android,
+              prefixIcon: Icons.phone_android_rounded,
               keyboardType: TextInputType.phone,
             ).animate().fadeIn(delay: 400.ms).slideX(begin: -0.1),
-            const SizedBox(height: 100),
+            const SizedBox(height: 80),
             AppButton(
               text: 'Save Changes',
               loadingText: 'Saving...',
@@ -245,8 +255,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       setState(() => _isSaving = true);
                       String? finalImagePath;
                       if (_imageRemoved) {
-                        finalImagePath =
-                            ''; // Triggers removal in AppPreferences
+                        finalImagePath = '';
                       } else if (_selectedImage != null) {
                         finalImagePath = _selectedImage!.path;
                       }

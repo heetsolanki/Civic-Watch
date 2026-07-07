@@ -5,34 +5,38 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
     return Scaffold(
+      backgroundColor: AppColors.background,
       body: CustomScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         slivers: [
           SliverToBoxAdapter(
             child: Column(
               spacing: 40,
               children: [
-                WelcomeWidget(),
+                const WelcomeWidget(),
                 // Nearby Issues
                 SizedBox(
-                  width: width * 0.85,
+                  width: width * 0.9,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Nearby Issues',
-                        style: GoogleFonts.poppins(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Text(
+                          'Nearby Issues',
+                          style: GoogleFonts.poppins(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 16),
                       // Scrollable List of Nearby Issues
                       SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         clipBehavior: Clip.none,
                         child: Row(
@@ -46,44 +50,49 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 // Stats Card
-                Column(
-                  spacing: 20,
-                  children: [
-                    StatsCardWidget(
-                      width: width * 0.85,
-                      icon: Icons.warning,
-                      statNum: '95k+',
-                      text: 'TOTAL HELPED',
-                      color: AppColors.textPrimary,
-                    ),
-                    SizedBox(
-                      width: width * 0.85,
-                      child: Row(
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    spacing: 16,
+                    children: [
+                      StatsCardWidget(
+                        width: double.infinity,
+                        icon: Icons.warning_rounded,
+                        statNum: '95k+',
+                        text: 'TOTAL HELPED',
+                        color: AppColors.primary,
+                      ),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        spacing: 16,
                         children: [
-                          StatsCardWidget(
-                            width: width * 0.40,
-                            icon: Icons.check_circle,
-                            statNum: '45k+',
-                            text: 'ISSUES FIXED',
-                            color: AppColors.smallText,
+                          Expanded(
+                            child: StatsCardWidget(
+                              width: double.infinity,
+                              icon: Icons.check_circle_rounded,
+                              statNum: '45k+',
+                              text: 'ISSUES FIXED',
+                              color: AppColors.success,
+                            ),
                           ),
-                          StatsCardWidget(
-                            width: width * 0.40,
-                            icon: Icons.people,
-                            statNum: '25k',
-                            text: 'ACTIVE CITIZENS',
-                            color: Colors.amber,
+                          Expanded(
+                            child: StatsCardWidget(
+                              width: double.infinity,
+                              icon: Icons.people_rounded,
+                              statNum: '25k',
+                              text: 'CITIZENS',
+                              color: AppColors.warning,
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: 150)),
+          const SliverToBoxAdapter(child: SizedBox(height: 140)),
         ],
       ),
     );

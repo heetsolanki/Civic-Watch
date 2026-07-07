@@ -89,7 +89,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                     color: AppColors.primary.withOpacity(0.1),
                   ),
                   _buildContactTile(
-                    icon: Icons.phone_outlined,
+                    icon: Icons.phone_android_outlined,
                     title: 'Call Us',
                     subtitle: '+91 77382 50800',
                     onTap: () {
@@ -109,7 +109,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                     style: GoogleFonts.openSans(
                       color: AppColors.textSecondary,
                       fontSize: 13,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -137,9 +137,9 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
     required VoidCallback onTap,
   }) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       leading: Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: AppColors.primary.withOpacity(0.1),
           shape: BoxShape.circle,
@@ -148,8 +148,8 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
       ),
       title: Text(
         title,
-        style: GoogleFonts.openSans(
-          fontWeight: FontWeight.bold,
+        style: GoogleFonts.poppins(
+          fontWeight: FontWeight.w700,
           fontSize: 16,
           color: AppColors.textPrimary,
         ),
@@ -159,10 +159,11 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
         style: GoogleFonts.openSans(
           fontSize: 14,
           color: AppColors.textSecondary,
+          fontWeight: FontWeight.w500,
         ),
       ),
       trailing: Icon(
-        Icons.arrow_forward_ios,
+        Icons.arrow_forward_ios_rounded,
         size: 14,
         color: AppColors.textSecondary.withOpacity(0.5),
       ),

@@ -1,154 +1,129 @@
 import 'package:citizen/exports.dart';
 
-class ResolutionTracker extends StatefulWidget {
+class ResolutionTracker extends StatelessWidget {
   final IssueData issue;
 
   const ResolutionTracker({super.key, required this.issue});
 
   @override
-  State<ResolutionTracker> createState() => _ResolutionTrackerState();
-}
-
-class _ResolutionTrackerState extends State<ResolutionTracker> {
-  @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    const statuses = ['Reported', 'Verified', 'Assigned', 'Resolved'];
+    final currentStatusIndex = statuses.indexOf(issue.status);
 
-    final statuses = ['Reported', 'Verified', 'Assigned', 'Resolved'];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionHeader(title: 'Resolution Tracker'),
+        InfoCard(
+          child: Column(
+            children: List.generate(statuses.length, (index) {
+              final isCompleted = index <= currentStatusIndex;
+              final isLast = index == statuses.length - 1;
 
-    final currentStatusIndex = statuses.indexOf(widget.issue.status);
+              String subtitle;
+              if (isCompleted) {
+                if (index == 0) {
+                  subtitle = '${issue.reportedOn} • ${issue.userId}';
+                } else if (index == 1) {
+                  subtitle = issue.verifiedOn;
+                } else if (index == 2) {
+                  subtitle = issue.assignedOn;
+                } else {
+                  subtitle = issue.resolvedOn;
+                }
+              } else {
+                subtitle = index == 2
+                    ? 'Pending Assignment'
+                    : 'Pending Completion';
+              }
 
-    return Container(
-      width: width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: AppColors.cardColor,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              'Resolution Tracker',
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(height: 20),
-            IntrinsicHeight(
-              child: Row(
-                children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      VerticalDivider(
-                        width: 40,
-                        thickness: 2,
-                        color: Colors.grey[300],
-                      ),
-                      Column(
-                        spacing: 50,
-                        children: List.generate(statuses.length, (index) {
-                          final isCompleted = index <= currentStatusIndex;
-                          IconData icon;
-                          if (index == 0 || index == 1) {
-                            icon = Icons.check;
-                          } else if (index == 2) {
-                            icon = Icons.person;
-                          } else {
-                            icon = Icons.verified;
-                          }
-
-                          return CircleAvatar(
-                            radius: 20,
-                            backgroundColor: isCompleted
-                                ? AppColors.smallText
-                                : Colors.grey[400],
-                            child: Icon(
-                              isCompleted ? Icons.check : icon,
-                              color: AppColors.cardColor,
-                              size: 20,
+              return IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        Container(
+                          width: 28,
+                          height: 28,
+                          decoration: BoxDecoration(
+                            color: isCompleted
+                                ? AppColors.success
+                                : Colors.grey.shade200,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            isCompleted
+                                ? Icons.check_rounded
+                                : _getIconForIndex(index),
+                            size: 16,
+                            color: isCompleted
+                                ? Colors.white
+                                : Colors.grey.shade400,
+                          ),
+                        ),
+                        if (!isLast)
+                          Expanded(
+                            child: Container(
+                              width: 2,
+                              color: isCompleted
+                                  ? AppColors.success.withOpacity(0.3)
+                                  : Colors.grey.shade200,
                             ),
-                          );
-                        }),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      spacing: 48,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(statuses.length, (index) {
-                        final isCompleted = index <= currentStatusIndex;
-                        String subtitle;
-                        if (isCompleted) {
-                          // Mock dates for completed steps
-                          if (index == 0) {
-                            subtitle =
-                                '${widget.issue.reportedOn} by ${widget.issue.userId}';
-                          } else if (index == 1) {
-                            subtitle = widget.issue.verifiedOn;
-                          } else if (index == 2) {
-                            subtitle = widget.issue.assignedOn;
-                          } else if (index == 3) {
-                            subtitle = widget.issue.resolvedOn;
-                          } else {
-                            subtitle = 'Completed';
-                          }
-                        } else {
-                          subtitle = index == 2
-                              ? 'Pending Assignment'
-                              : 'Pending Completion';
-                        }
-
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              statuses[index],
-                              style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: isCompleted
-                                    ? AppColors.textPrimary
-                                    : Colors.grey[600],
-                              ),
-                            ),
-                            Text(
-                              subtitle,
-                              style: GoogleFonts.openSans(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: isCompleted
-                                    ? Colors.black
-                                    : Colors.grey[500],
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
+                          ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            statuses[index],
+                            style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: isCompleted
+                                  ? AppColors.textPrimary
+                                  : AppColors.textSecondary,
+                            ),
+                          ),
+                          Text(
+                            subtitle,
+                            style: GoogleFonts.openSans(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: isCompleted
+                                  ? AppColors.textSecondary
+                                  : Colors.grey.shade400,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
+          ),
         ),
-      ),
+      ],
     );
+  }
+
+  IconData _getIconForIndex(int index) {
+    switch (index) {
+      case 0:
+        return Icons.report_problem_rounded;
+      case 1:
+        return Icons.verified_user_rounded;
+      case 2:
+        return Icons.engineering_rounded;
+      case 3:
+        return Icons.task_alt_rounded;
+      default:
+        return Icons.circle;
+    }
   }
 }

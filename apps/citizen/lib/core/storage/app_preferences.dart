@@ -1,6 +1,8 @@
 import 'package:citizen/exports.dart';
 
 class AppPreferences {
+  AppPreferences._();
+
   static const _imageKey = 'profileImage';
   static const _nameKey = 'name';
   static const _emailKey = 'email';
@@ -13,9 +15,7 @@ class AppPreferences {
   static const _reportUpdatesKey = 'reportUpdates';
   static const _authorityMessagesKey = 'authorityMessages';
   static const _nearbyIssuesKey = 'nearbyIssues';
-
-  // ONBOARDING
-  static const String _onboardingKey = "hasSeenOnboarding";
+  static const _onboardingKey = "hasSeenOnboarding";
 
   static Future<bool> hasSeenOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
@@ -27,7 +27,7 @@ class AppPreferences {
     await prefs.setBool(_onboardingKey, true);
   }
 
-  // AUTH: SignUp
+  /// AUTH: SignUp
   static Future<bool> createUser({
     required String name,
     required String email,
@@ -43,8 +43,7 @@ class AppPreferences {
   }) async {
     final prefs = await SharedPreferences.getInstance();
 
-    // Simple check: if email is already saved, user exists
-    String? savedEmail = prefs.getString(_emailKey);
+    final savedEmail = prefs.getString(_emailKey);
     if (savedEmail == email) {
       return false; // User already exists
     }
@@ -70,15 +69,15 @@ class AppPreferences {
     return true;
   }
 
-  // AUTH: LogIn
+  /// AUTH: LogIn
   static Future<int> loginUser({
     String? email,
     required String password,
   }) async {
     final prefs = await SharedPreferences.getInstance();
 
-    String? savedEmail = prefs.getString(_emailKey);
-    String? savedPassword = prefs.getString(_passwordKey);
+    final savedEmail = prefs.getString(_emailKey);
+    final savedPassword = prefs.getString(_passwordKey);
 
     if (savedEmail == null) {
       return 0; // User does not exist
@@ -92,7 +91,7 @@ class AppPreferences {
     return 2; // Incorrect password
   }
 
-  // Fetch Profile
+  /// Fetch Profile
   static Future<Map<String, dynamic>> getUser() async {
     final prefs = await SharedPreferences.getInstance();
 
@@ -110,28 +109,27 @@ class AppPreferences {
     };
   }
 
-  // Check Login
+  /// Check Login
   static Future<bool> isLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
-
     return prefs.getBool(_logKey) ?? false;
   }
 
-  // Logout
+  /// Logout
   static Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
 
     await prefs.setBool(_logKey, false);
   }
 
-  // Update Civic Points
+  /// Update Civic Points
   static Future<void> addCivicPoints(int points) async {
     final prefs = await SharedPreferences.getInstance();
-    int currentPoints = prefs.getInt(_civicPoints) ?? 0;
+    final currentPoints = prefs.getInt(_civicPoints) ?? 0;
     await prefs.setInt(_civicPoints, currentPoints + points);
   }
 
-  // Update User Profile
+  /// Update User Profile
   static Future<void> updateUserProfile({
     required String name,
     required String phone,
@@ -150,7 +148,7 @@ class AppPreferences {
     }
   }
 
-  // Notification Preferences
+  /// Notification Preferences
   static Future<void> updatePreferences({
     required bool appNotifications,
     required bool reportUpdates,
