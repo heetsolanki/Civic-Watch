@@ -44,6 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
               style: GoogleFonts.poppins(
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
+                color: AppColors.primary
               ),
             ),
             Text(
@@ -51,6 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
               style: GoogleFonts.openSans(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
+                color: AppColors.textPrimary
               ),
             ),
           ],

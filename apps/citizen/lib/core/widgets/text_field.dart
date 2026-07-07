@@ -1,6 +1,6 @@
 import 'package:citizen/exports.dart';
 
-class AuthInput extends StatefulWidget {
+class CustomTextField extends StatefulWidget {
   final TextEditingController? controller;
   final ValueChanged<String>? onChanged;
   final String? hintText;
@@ -10,8 +10,9 @@ class AuthInput extends StatefulWidget {
   final IconData? prefixIcon;
   final IconData? suffixIcon;
   final VoidCallback? onSuffixIconPressed;
+  final bool readOnly;
 
-  const AuthInput({
+  const CustomTextField({
     super.key,
     this.controller,
     this.onChanged,
@@ -22,13 +23,14 @@ class AuthInput extends StatefulWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.onSuffixIconPressed,
+    this.readOnly = false,
   });
 
   @override
-  State<AuthInput> createState() => AuthInputField();
+  State<CustomTextField> createState() => CustomTextFieldState();
 }
 
-class AuthInputField extends State<AuthInput> {
+class CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,16 +47,17 @@ class AuthInputField extends State<AuthInput> {
         ],
       ),
       child: TextField(
+        readOnly: widget.readOnly,
         controller: widget.controller,
         obscureText: widget.obscureText,
         maxLines: widget.maxLines ?? 1,
         keyboardType: widget.keyboardType,
-        style: GoogleFonts.openSans(fontSize: 14, color: AppColors.textPrimary),
+        style: GoogleFonts.openSans(fontSize: 15, color: AppColors.textPrimary),
         decoration: InputDecoration(
           hintText: widget.hintText,
           hintStyle: GoogleFonts.openSans(
-            color: Colors.grey.shade400,
-            fontSize: 14,
+            color: Colors.grey.shade600,
+            fontSize: 15,
           ),
           prefixIcon: widget.prefixIcon != null
               ? Icon(widget.prefixIcon, color: AppColors.textPrimary, size: 20)

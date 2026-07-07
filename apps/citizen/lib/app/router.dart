@@ -41,9 +41,8 @@ final router = GoRouter(
     GoRoute(
       path: '/account',
       name: "account",
-      builder: (context, state) {
-        return const AccountScreen();
-      },
+      pageBuilder: (context, state) =>
+          _customTransition(child: const AccountScreen(), state: state),
     ),
     GoRoute(
       path: '/explore-issues',
@@ -67,7 +66,75 @@ final router = GoRouter(
         return IssueDetailsScreen(issueId: issueId);
       },
     ),
-
+    GoRoute(
+      path: '/report-success',
+      name: "reportSuccess",
+      builder: (context, state) => const ReportSuccessScreen(),
+    ),
     GoRoute(path: '/auth', name: 'auth', builder: (_, _) => AuthScreen()),
+
+    // Profile Routers
+    GoRoute(
+      path: '/edit-profile',
+      name: 'editProfile',
+      pageBuilder: (context, state) =>
+          _customTransition(child: const EditProfileScreen(), state: state),
+    ),
+    GoRoute(
+      path: '/preferences',
+      name: 'preferences',
+      pageBuilder: (context, state) =>
+          _customTransition(child: const PreferencesScreen(), state: state),
+    ),
+    GoRoute(
+      path: '/help-support',
+      name: 'helpSupport',
+      pageBuilder: (context, state) =>
+          _customTransition(child: const HelpSupportScreen(), state: state),
+    ),
+    GoRoute(
+      path: '/privacy-policy',
+      name: 'privacyPolicy',
+      pageBuilder: (context, state) =>
+          _customTransition(child: const PrivacyPolicyScreen(), state: state),
+    ),
+    GoRoute(
+      path: '/terms',
+      name: 'terms',
+      pageBuilder: (context, state) =>
+          _customTransition(child: const TermsConditionsScreen(), state: state),
+    ),
+    GoRoute(
+      path: '/about',
+      name: 'about',
+      pageBuilder: (context, state) =>
+          _customTransition(child: const AboutScreen(), state: state),
+    ),
   ],
 );
+
+CustomTransitionPage _customTransition({
+  required Widget child,
+  required GoRouterState state,
+}) {
+  return CustomTransitionPage(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      return FadeTransition(
+        opacity: animation,
+        child: SlideTransition(
+          position:
+              Tween<Offset>(
+                begin: const Offset(0.08, 0), // 8% horizontal slide
+                end: Offset.zero,
+              ).animate(
+                CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
+              ),
+          child: child,
+        ),
+      );
+    },
+    transitionDuration: const Duration(milliseconds: 300),
+  );
+}

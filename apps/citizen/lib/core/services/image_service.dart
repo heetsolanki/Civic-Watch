@@ -7,7 +7,9 @@ class ImageService {
   static final ImagePicker _picker = ImagePicker();
 
   /// Picks a single image from the specified [source] and processes it.
-  static Future<File?> pickAndProcessImage({required ImageSource source}) async {
+  static Future<File?> pickAndProcessImage({
+    required ImageSource source,
+  }) async {
     final XFile? pickedFile = await _picker.pickImage(
       source: source,
       imageQuality: 90,
@@ -18,8 +20,22 @@ class ImageService {
     return await processImage(pickedFile);
   }
 
+  /// Picks a profile image and forces a square crop.
+  static Future<File?> pickProfileImage({required ImageSource source}) async {
+    final XFile? pickedFile = await _picker.pickImage(
+      source: source,
+      imageQuality: 90,
+    );
+
+    if (pickedFile == null) return null;
+
+    return await _pickProfileImage(pickedFile.path);
+  }
+
   /// Picks multiple images from the gallery and processes each one.
-  static Future<List<File>> pickAndProcessMultiImage({required int maxImages}) async {
+  static Future<List<File>> pickAndProcessMultiImage({
+    required int maxImages,
+  }) async {
     final List<XFile> pickedFiles = await _picker.pickMultiImage(
       imageQuality: 90,
     );
@@ -27,9 +43,13 @@ class ImageService {
     if (pickedFiles.isEmpty) return [];
 
     final List<File> processedImages = [];
-    
+
     // Process only up to the remaining allowed count
-    for (var i = 0; i < pickedFiles.length && processedImages.length < maxImages; i++) {
+    for (
+      var i = 0;
+      i < pickedFiles.length && processedImages.length < maxImages;
+      i++
+    ) {
       final processed = await processImage(pickedFiles[i]);
       if (processed != null) {
         processedImages.add(processed);
@@ -72,6 +92,33 @@ class ImageService {
         ),
         IOSUiSettings(
           title: 'Crop to Landscape (16:9)',
+          aspectRatioLockEnabled: true,
+          resetAspectRatioEnabled: false,
+          aspectRatioPickerButtonHidden: true,
+        ),
+      ],
+    );
+
+    if (croppedFile == null) return null;
+    return File(croppedFile.path);
+  }
+
+  static Future<File?> _pickProfileImage(String path) async {
+    final croppedFile = await ImageCropper().cropImage(
+      sourcePath: path,
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      compressQuality: 90,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Crop Profile Picture',
+          toolbarColor: AppColors.primary,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.square,
+          lockAspectRatio: true,
+          hideBottomControls: true,
+        ),
+        IOSUiSettings(
+          title: 'Crop Profile Picture',
           aspectRatioLockEnabled: true,
           resetAspectRatioEnabled: false,
           aspectRatioPickerButtonHidden: true,

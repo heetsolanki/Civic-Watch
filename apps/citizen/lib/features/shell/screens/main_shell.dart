@@ -40,8 +40,10 @@ class _MainShellState extends State<MainShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.cardColor,
+      resizeToAvoidBottomInset: false,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
+        backgroundColor: AppColors.background,
         shape: RoundedRectangleBorder(
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(15),
@@ -86,9 +88,7 @@ class _MainShellState extends State<MainShell> {
               : AppColors.textPrimary,
           onPressed: () async {
             if (!await requireLogin(context)) return;
-
             if (!context.mounted) return;
-
             context.push('/create-report');
           },
           child: const Icon(Icons.add, color: Colors.white, size: 34),

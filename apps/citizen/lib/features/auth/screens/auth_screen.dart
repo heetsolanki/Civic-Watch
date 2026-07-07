@@ -21,7 +21,12 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        surfaceTintColor: Colors.transparent,
         leading: widget.showBackButton
             ? IconButton(
                 onPressed: () => context.pop(),
@@ -30,30 +35,28 @@ class _AuthScreenState extends State<AuthScreen> {
             : null,
       ),
       resizeToAvoidBottomInset: true,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            spacing: 15,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(width: double.infinity, height: 30),
-              AuthHeader(
-                title: isLogin ? 'Welcome Back!' : 'Create Account',
-                subtitle: isLogin
-                    ? 'Report Issues. Improve your city.'
-                    : 'Join citizens in improving your city.',
-              ),
-              isLogin
-                  ? LoginForm(
-                      onSwitch: changeAuthMode,
-                      onLoginSuccess: () {
-                        context.pop(true);
-                      },
-                    )
-                  : RegisterForm(onSwitch: changeAuthMode),
-            ],
-          ),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+          spacing: 10,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(width: double.infinity, height: 30),
+            AuthHeader(
+              title: isLogin ? 'Welcome Back!' : 'Create Account',
+              subtitle: isLogin
+                  ? 'Report Issues. Improve your city.'
+                  : 'Join citizens in improving your city.',
+            ),
+            isLogin
+                ? LoginForm(
+                    onSwitch: changeAuthMode,
+                    onLoginSuccess: () {
+                      context.pop(true);
+                    },
+                  )
+                : RegisterForm(onSwitch: changeAuthMode),
+          ],
         ),
       ),
     );

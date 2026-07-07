@@ -1,5 +1,5 @@
 import 'package:citizen/exports.dart';
-import 'package:citizen/features/report/services/image_service.dart';
+import 'package:citizen/core/services/image_service.dart';
 import 'package:citizen/features/report/widgets/image_container.dart';
 
 class PhotoStep extends StatefulWidget {
@@ -60,7 +60,7 @@ class _PhotoStepState extends State<PhotoStep> {
                   AppToast.error(context, 'Maximum of 5 photos allowed');
                   return;
                 }
-                
+
                 final processed = await ImageService.pickAndProcessImage(
                   source: ImageSource.camera,
                 );
@@ -94,10 +94,10 @@ class _PhotoStepState extends State<PhotoStep> {
                   return;
                 }
 
-                final List<File> processedImages = 
+                final List<File> processedImages =
                     await ImageService.pickAndProcessMultiImage(
-                  maxImages: remaining,
-                );
+                      maxImages: remaining,
+                    );
 
                 if (processedImages.isNotEmpty) {
                   setState(() {
@@ -126,14 +126,16 @@ class _PhotoStepState extends State<PhotoStep> {
                       left: widget.mode == ReportFlowMode.create ? 15 : 0,
                     ),
                     child: AppButton(
-                      text: widget.mode == ReportFlowMode.edit 
-                          ? 'Save Changes' 
+                      text: widget.mode == ReportFlowMode.edit
+                          ? 'Save Changes'
                           : 'Continue',
-                      suffixIcon: widget.mode == ReportFlowMode.create 
+                      suffixIcon: widget.mode == ReportFlowMode.create
                           ? const Icon(Icons.keyboard_arrow_right)
                           : null,
                       onPressed: widget.draft.images.isNotEmpty
-                          ? (widget.mode == ReportFlowMode.edit ? widget.onSave : widget.onNext)
+                          ? (widget.mode == ReportFlowMode.edit
+                                ? widget.onSave
+                                : widget.onNext)
                           : null,
                     ),
                   ),
