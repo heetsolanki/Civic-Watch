@@ -1,6 +1,5 @@
 import 'package:citizen/exports.dart';
 import 'package:citizen/core/services/image_service.dart';
-import 'package:citizen/features/report/widgets/image_container.dart';
 
 class PhotoStep extends StatefulWidget {
   final VoidCallback onNext;
@@ -76,7 +75,7 @@ class _PhotoStepState extends State<PhotoStep> {
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
-                    ImageContainer(draft: widget.draft),
+                    DraftImageContainer(draft: widget.draft),
                     const SizedBox(height: 32),
                     AppButton(
                       text: 'Capture a photo',
@@ -97,7 +96,9 @@ class _PhotoStepState extends State<PhotoStep> {
                             style: GoogleFonts.poppins(
                               fontSize: 12,
                               fontWeight: FontWeight.w800,
-                              color: AppColors.textSecondary.withOpacity(0.5),
+                              color: AppColors.textSecondary.withValues(
+                                alpha: 0.5,
+                              ),
                             ),
                           ),
                         ),
@@ -107,7 +108,7 @@ class _PhotoStepState extends State<PhotoStep> {
                     const SizedBox(height: 16),
                     AppButton(
                       backgroundColor: Colors.white,
-                      borderColor: AppColors.primary.withOpacity(0.2),
+                      borderColor: AppColors.primary.withValues(alpha: 0.2),
                       textColor: AppColors.primary,
                       text: 'Upload from gallery',
                       prefixIcon: const Icon(
@@ -129,7 +130,7 @@ class _PhotoStepState extends State<PhotoStep> {
                       text: 'Back',
                       prefixIcon: const Icon(Icons.keyboard_arrow_left_rounded),
                       backgroundColor: Colors.white,
-                      borderColor: AppColors.primary.withOpacity(0.2),
+                      borderColor: AppColors.primary.withValues(alpha: 0.2),
                       textColor: AppColors.primary,
                       onPressed: widget.onBack,
                     ),

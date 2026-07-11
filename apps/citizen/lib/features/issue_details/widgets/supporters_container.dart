@@ -1,9 +1,9 @@
 import 'package:citizen/exports.dart';
 
 class SupportersContainer extends StatelessWidget {
-  final IssueData issue;
+  final Report report;
 
-  const SupportersContainer({super.key, required this.issue});
+  const SupportersContainer({super.key, required this.report});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,8 @@ class SupportersContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  issue.supportedCount,
+                  // TODO: Fetch supporters count from Supabase
+                  '1',
                   style: GoogleFonts.poppins(
                     fontSize: 24,
                     fontWeight: FontWeight.w800,

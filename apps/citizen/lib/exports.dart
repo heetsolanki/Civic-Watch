@@ -15,6 +15,9 @@ export 'package:shared_preferences/shared_preferences.dart';
 export 'package:flutter_animate/flutter_animate.dart' hide ShimmerEffect;
 export 'package:skeletonizer/skeletonizer.dart';
 export 'package:animated_flip_counter/animated_flip_counter.dart';
+export 'package:hive_ce/hive_ce.dart';
+export 'package:hive_ce_flutter/hive_ce_flutter.dart';
+export 'package:uuid/uuid.dart';
 
 // app
 export 'app/app.dart';
@@ -23,7 +26,6 @@ export 'app/theme.dart';
 
 // core - constants & data
 export 'core/constants/app_colors.dart';
-export 'core/data/issue_data.dart';
 export 'core/data/title_suggestions.dart';
 export 'core/storage/app_preferences.dart';
 
@@ -34,6 +36,10 @@ export 'core/widgets/button.dart';
 export 'core/widgets/category_selector.dart';
 export 'core/widgets/issue_card.dart';
 export 'core/widgets/password_validation_view.dart';
+
+// core - database
+export 'core/database/hive_boxes.dart';
+export 'core/database/hive_service.dart';
 
 // features - home
 export 'features/home/screens/home_screen.dart';
@@ -74,20 +80,31 @@ export 'features/profile/widgets/tech_pill.dart';
 export 'features/profile/widgets/policy_section.dart';
 
 // features - report
+// models
 export 'features/report/models/report_draft.dart';
 export 'features/report/models/report_flow_mode.dart';
+export 'features/report/models/report.dart';
+
+//screens
 export 'features/report/screens/create_report_screen.dart';
 export 'features/report/screens/report_success_screen.dart';
+
+//services
 export 'features/report/services/location_search_service.dart';
 export 'features/report/services/location_service.dart';
+
+//steps
 export 'features/report/steps/category_step.dart';
 export 'features/report/steps/details_step.dart';
 export 'features/report/steps/location_step.dart';
 export 'features/report/steps/photo_step.dart';
 export 'features/report/steps/review_step.dart';
+
+//widgets
 export 'features/report/widgets/address_card.dart';
 export 'features/report/widgets/custom_app_bar.dart';
 export 'features/report/widgets/description_field.dart';
+export 'features/report/widgets/image_container.dart';
 export 'features/report/widgets/map_container.dart';
 export 'features/report/widgets/map_view.dart';
 export 'features/report/widgets/review_chip.dart';
@@ -99,6 +116,16 @@ export 'features/report/widgets/review_status_banner.dart';
 export 'features/report/widgets/submitting_report_dialog.dart';
 export 'features/report/widgets/title_field.dart';
 
+//data - local
+export 'features/report/data/local/report_local_data_source.dart';
+
+//data - repositories
+export 'features/report/data/repositories/report_repository.dart';
+
+// providers
+export 'package:citizen/features/report/providers/report_providers.dart';
+export 'features/report/providers/report_notifier.dart';
+
 // features - my reports
 export 'features/my_reports/screens/my_reports_screen.dart';
 
@@ -107,6 +134,11 @@ export 'features/issues/screens/issues_screen.dart';
 
 // features - issue details
 export 'features/issue_details/screens/issue_details_screen.dart';
+export 'features/issue_details/widgets/category_status_pill.dart';
+export 'features/issue_details/widgets/image_container.dart';
+export 'features/issue_details/widgets/info_container.dart';
+export 'features/issue_details/widgets/resolution_tracker.dart';
+export 'features/issue_details/widgets/supporters_container.dart';
 
 // features - shell
 export 'features/shell/screens/main_shell.dart';

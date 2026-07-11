@@ -5,6 +5,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final reports = context.watch<ReportProvider>().reports;
     final width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -41,8 +42,8 @@ class HomeScreen extends StatelessWidget {
                         clipBehavior: Clip.none,
                         child: Row(
                           spacing: 16,
-                          children: issueDataList.take(5).map((issue) {
-                            return IssueCard(issue: issue);
+                          children: reports.take(5).map((report) {
+                            return IssueCard(report: report);
                           }).toList(),
                         ),
                       ),

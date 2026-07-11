@@ -28,6 +28,7 @@ class IssuesScreenState extends State<IssuesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final reports = context.watch<ReportProvider>().reports;
     final width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -37,41 +38,6 @@ class IssuesScreenState extends State<IssuesScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header Row
-              const SizedBox(height: 60),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Row(
-                  spacing: 8,
-                  children: [
-                    const Icon(
-                      Icons.search_rounded,
-                      size: 32,
-                      color: AppColors.primary,
-                    ),
-                    Text(
-                      'Explore Issues',
-                      style: GoogleFonts.poppins(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
-                        letterSpacing: -0.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 48, top: 4),
-                child: Text(
-                  'Find and support issues around your city.',
-                  style: GoogleFonts.openSans(
-                    fontSize: 14,
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
               const SizedBox(height: 32),
               // Search Bar
               AppSearchBar(
@@ -98,17 +64,17 @@ class IssuesScreenState extends State<IssuesScreen> {
               Expanded(
                 child: Builder(
                   builder: (context) {
-                    final filteredIssues = issueDataList.where((issue) {
+                    final filteredReports = reports.where((report) {
                       final matchesCategory =
                           selectedCategory == 'All' ||
-                          issue.category == selectedCategory;
+                          report.category == selectedCategory;
                       final matchesSearch =
-                          issue.title.toLowerCase().contains(searchQuery) ||
-                          issue.location.toLowerCase().contains(searchQuery);
+                          report.title.toLowerCase().contains(searchQuery) ||
+                          report.address.toLowerCase().contains(searchQuery);
                       return matchesCategory && matchesSearch;
                     }).toList();
 
-                    if (filteredIssues.isEmpty) {
+                    if (filteredReports.isEmpty) {
                       return Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -135,12 +101,12 @@ class IssuesScreenState extends State<IssuesScreen> {
                     return ListView.builder(
                       padding: const EdgeInsets.only(top: 10, bottom: 100),
                       physics: const BouncingScrollPhysics(),
-                      itemCount: filteredIssues.length,
+                      itemCount: filteredReports.length,
                       itemBuilder: (context, index) {
-                        final issue = filteredIssues[index];
+                        final report = filteredReports[index];
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 24),
-                          child: Center(child: IssueCard(issue: issue)),
+                          child: Center(child: IssueCard(report: report)),
                         );
                       },
                     );

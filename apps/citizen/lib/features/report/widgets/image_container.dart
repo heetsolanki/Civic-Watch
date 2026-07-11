@@ -1,15 +1,15 @@
 import 'package:citizen/exports.dart';
 
-class ImageContainer extends StatefulWidget {
+class DraftImageContainer extends StatefulWidget {
   final ReportDraft draft;
 
-  const ImageContainer({super.key, required this.draft});
+  const DraftImageContainer({super.key, required this.draft});
 
   @override
-  State<ImageContainer> createState() => _ImageContainerState();
+  State<DraftImageContainer> createState() => _DraftImageContainerState();
 }
 
-class _ImageContainerState extends State<ImageContainer> {
+class _DraftImageContainerState extends State<DraftImageContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,7 +21,7 @@ class _ImageContainerState extends State<ImageContainer> {
         border: Border.all(color: Colors.grey.shade300),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

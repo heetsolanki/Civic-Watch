@@ -8,7 +8,7 @@ class MyReportsScreen extends StatefulWidget {
 }
 
 class _MyReportsScreenState extends State<MyReportsScreen> {
-  static const String userId = 'user_1';
+  String username = '';
   static const List<String> filters = [
     'All',
     'Reported',
@@ -20,22 +20,36 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
   int _selectedIndex = 0;
 
   @override
+  void initState() {
+    super.initState();
+    loadUser();
+  }
+
+  void loadUser() async {
+    final user = await AppPreferences.getUser();
+    setState(() {
+      username = user['username'] ?? '';
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: false,
-        title: Text(
-          'My Reports',
+    final reports = context.watch<ReportProvider>().reports;
+    debugPrint('Reports count: ${reports.length}');
+    if (reports.isEmpty) {
+      return Center(
+        child: Text(
+          'No Reports Yet!',
           style: GoogleFonts.poppins(
             fontSize: 24,
             fontWeight: FontWeight.w800,
             color: AppColors.textPrimary,
           ),
         ),
-      ),
+      );
+    }
+    return Scaffold(
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           const SizedBox(height: 8),
@@ -78,6 +92,7 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
                     selected: isSelected,
                     onSelected: (selected) {
                       if (selected) {
+                        HapticFeedback.lightImpact();
                         setState(() => _selectedIndex = index);
                       }
                     },
@@ -90,16 +105,16 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
           Expanded(
             child: Builder(
               builder: (context) {
-                final filteredIssues = issueDataList.where((issue) {
-                  final matchUser = userId == issue.userId;
+                final filteredReports = reports.where((report) {
+                  final matchUser = username == report.userId;
                   final matchStatus =
                       _selectedIndex == 0 ||
-                      issue.status.toLowerCase() ==
+                      report.status.toLowerCase() ==
                           filters[_selectedIndex].toLowerCase();
                   return matchUser && matchStatus;
                 }).toList();
 
-                if (filteredIssues.isEmpty) {
+                if (filteredReports.isEmpty) {
                   return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -125,15 +140,15 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
                 return ListView.builder(
                   padding: const EdgeInsets.only(top: 8, bottom: 100),
                   physics: const BouncingScrollPhysics(),
-                  itemCount: filteredIssues.length,
+                  itemCount: filteredReports.length,
                   itemBuilder: (context, index) {
-                    final issue = filteredIssues[index];
+                    final report = filteredReports[index];
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 12,
                       ),
-                      child: Center(child: IssueCard(issue: issue)),
+                      child: Center(child: IssueCard(report: report)),
                     );
                   },
                 );

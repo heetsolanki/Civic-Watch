@@ -1,9 +1,10 @@
+import 'package:citizen/core/widgets/get_category_icon.dart';
 import 'package:citizen/exports.dart';
 
 class CategoryStatusPill extends StatelessWidget {
-  final IssueData issue;
+  final Report report;
 
-  const CategoryStatusPill({super.key, required this.issue});
+  const CategoryStatusPill({super.key, required this.report});
 
   Color _getStatusColor(String status) {
     switch (status) {
@@ -22,7 +23,8 @@ class CategoryStatusPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final statusColor = _getStatusColor(issue.status);
+    final statusColor = _getStatusColor(report.status);
+    final icon = getCategoryIcon(report.category);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -30,15 +32,15 @@ class CategoryStatusPill extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.05),
+            color: AppColors.primary.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
             children: [
-              Icon(issue.icon, color: AppColors.primary, size: 18),
+              Icon(icon, color: AppColors.primary, size: 18),
               const SizedBox(width: 8),
               Text(
-                issue.category,
+                report.category,
                 style: GoogleFonts.poppins(
                   fontSize: 13,
                   color: AppColors.primary,
@@ -50,9 +52,9 @@ class CategoryStatusPill extends StatelessWidget {
         ),
         Container(
           decoration: BoxDecoration(
-            color: statusColor.withOpacity(0.1),
+            color: statusColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: statusColor.withOpacity(0.2)),
+            border: Border.all(color: statusColor.withValues(alpha: 0.2)),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           child: Row(
@@ -68,7 +70,7 @@ class CategoryStatusPill extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                issue.status,
+                report.status,
                 style: GoogleFonts.openSans(
                   fontSize: 12,
                   color: statusColor,

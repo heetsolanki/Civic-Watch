@@ -23,7 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       leading: IconButton(
         onPressed: onBack,
-        icon: const Icon(Icons.keyboard_arrow_left_outlined, size: 30),
+        icon: const Icon(Icons.close, size: 30),
         tooltip: 'Back to Home',
       ),
       toolbarHeight: 65,
