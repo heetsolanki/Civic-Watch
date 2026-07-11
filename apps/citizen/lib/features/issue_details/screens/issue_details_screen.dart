@@ -1,23 +1,81 @@
 import 'package:citizen/exports.dart';
-import 'package:citizen/features/issue_details/widgets/category_status_pill.dart';
-import 'package:citizen/features/issue_details/widgets/image_container.dart';
-import 'package:citizen/features/issue_details/widgets/info_container.dart';
-import 'package:citizen/features/issue_details/widgets/resolution_tracker.dart';
-import 'package:citizen/features/issue_details/widgets/supporters_container.dart';
 
 class IssueDetailsScreen extends StatefulWidget {
-  final String issueId;
+  final String id;
 
-  const IssueDetailsScreen({super.key, required this.issueId});
+  const IssueDetailsScreen({super.key, required this.id});
 
   @override
   State<IssueDetailsScreen> createState() => _IssueDetailsScreenState();
 }
 
 class _IssueDetailsScreenState extends State<IssueDetailsScreen> {
+  String username = '';
+
+  @override
+  void initState() {
+    super.initState();
+    loadUser();
+  }
+
+  void loadUser() async {
+    final user = await AppPreferences.getUser();
+    setState(() {
+      username = user['username'] ?? '';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final issue = issueDataList.firstWhere((item) => item.id == widget.issueId);
+    final reports = context.watch<ReportProvider>().reports;
+    final report = reports.where((item) => item.id == widget.id).firstOrNull;
+
+    if (report == null) {
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          backgroundColor: AppColors.background,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.close, size: 28),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              context.pop();
+            },
+          ),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline_rounded,
+                size: 64,
+                color: AppColors.textSecondary.withValues(alpha: 0.5),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Report not found',
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+              const SizedBox(height: 24),
+              AppButton(
+                text: 'Go Back',
+                width: 150,
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  context.pop();
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -26,12 +84,11 @@ class _IssueDetailsScreenState extends State<IssueDetailsScreen> {
         elevation: 0,
         scrolledUnderElevation: 0,
         leading: IconButton(
-          icon: const Icon(
-            Icons.keyboard_arrow_left_rounded,
-            size: 28,
-            color: AppColors.textPrimary,
-          ),
-          onPressed: () => context.go('/home'),
+          icon: const Icon(Icons.close, size: 28, color: AppColors.textPrimary),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            context.pop();
+          },
         ),
         actions: [
           IconButton(
@@ -42,6 +99,7 @@ class _IssueDetailsScreenState extends State<IssueDetailsScreen> {
             ),
             onPressed: () {
               HapticFeedback.lightImpact();
+              // TODO: Implement share functionality
             },
           ),
           const SizedBox(width: 8),
@@ -63,15 +121,27 @@ class _IssueDetailsScreenState extends State<IssueDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ImageContainer(issue: issue).animate().fadeIn(duration: 400.ms).scale(begin: const Offset(0.95, 0.95)),
+              ImageContainer(report: report)
+                  .animate()
+                  .fadeIn(duration: 400.ms)
+                  .scale(begin: const Offset(0.95, 0.95)),
               const SizedBox(height: 24),
-              CategoryStatusPill(issue: issue).animate().fadeIn(delay: 100.ms).slideX(begin: -0.1),
+              CategoryStatusPill(
+                report: report,
+              ).animate().fadeIn(delay: 100.ms).slideX(begin: -0.1),
               const SizedBox(height: 16),
-              InfoContainer(issue: issue).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1),
+              InfoContainer(
+                report: report,
+              ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1),
               const SizedBox(height: 32),
-              SupportersContainer(issue: issue).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1),
+              if (report.userId == username)
+                SupportersContainer(
+                  report: report,
+                ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1),
               const SizedBox(height: 32),
-              ResolutionTracker(issue: issue).animate().fadeIn(delay: 400.ms).slideY(begin: 0.1),
+              ResolutionTracker(
+                report: report,
+              ).animate().fadeIn(delay: 400.ms).slideY(begin: 0.1),
               const SizedBox(height: 48),
             ],
           ),

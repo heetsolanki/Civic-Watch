@@ -19,13 +19,7 @@ class CreateReportScreenState extends State<CreateReportScreen> {
   }
 
   void previousStep() {
-    setState(() {
-      if (currentStep > 0) {
-        currentStep--;
-      } else {
-        context.go('/home');
-      }
-    });
+    context.pop();
   }
 
   void enterEditMode(int stepIndex) {

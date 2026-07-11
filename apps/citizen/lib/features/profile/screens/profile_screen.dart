@@ -9,6 +9,7 @@ class ProfileScreen extends StatefulWidget {
 
 class ProfileScreenState extends State<ProfileScreen> {
   String name = '';
+  String username = '';
   String phone = '';
   String email = '';
   int civicPoints = 0;
@@ -26,6 +27,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     final data = await AppPreferences.getUser();
     setState(() {
       name = data['name'] ?? '';
+      username = data['username'] ?? '';
       phone = data['phone'] ?? '';
       email = data['email'] ?? '';
       civicPoints = data['civicPoints'] ?? 0;
@@ -48,6 +50,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                 delegate: SliverChildListDelegate([
                   ProfileHeader(
                     name: name,
+                    username: username,
                     email: email,
                     phone: phone,
                     civicPoints: civicPoints,

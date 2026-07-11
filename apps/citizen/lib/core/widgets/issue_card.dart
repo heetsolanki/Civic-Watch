@@ -1,9 +1,11 @@
+import 'package:citizen/core/widgets/get_category_icon.dart';
 import 'package:citizen/exports.dart';
+import 'package:intl/intl.dart';
 
 class IssueCard extends StatelessWidget {
-  final IssueData issue;
+  final Report report;
 
-  const IssueCard({super.key, required this.issue});
+  const IssueCard({super.key, required this.report});
 
   Color _getStatusColor(String status) {
     switch (status) {
@@ -22,11 +24,14 @@ class IssueCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pillColor = _getStatusColor(issue.status);
+    final pillColor = _getStatusColor(report.status);
     final width = MediaQuery.sizeOf(context).width;
 
     return GestureDetector(
-      onTap: () => context.go('/view-details/${issue.id}'),
+      onTap: () {
+        HapticFeedback.lightImpact();
+        context.push('/view-details/${report.id}');
+      },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
@@ -35,7 +40,7 @@ class IssueCard extends StatelessWidget {
             BoxShadow(
               offset: const Offset(0, 4),
               blurRadius: 10,
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
             ),
           ],
         ),
@@ -53,12 +58,9 @@ class IssueCard extends StatelessWidget {
                 ),
               ),
               clipBehavior: Clip.antiAlias,
-              child: Image.asset(
-                issue.coverImage,
-                fit: BoxFit.cover,
-                height: 180,
-                width: double.infinity,
-              ),
+              child: report.images.isEmpty
+                  ? _buildPlaceholder()
+                  : _buildImage(report.images.first),
             ),
             // Main Content Container
             Container(
@@ -75,9 +77,13 @@ class IssueCard extends StatelessWidget {
                       Row(
                         spacing: 6,
                         children: [
-                          Icon(issue.icon, size: 18, color: AppColors.primary),
+                          Icon(
+                            getCategoryIcon(report.category),
+                            size: 18,
+                            color: AppColors.primary,
+                          ),
                           Text(
-                            issue.category,
+                            report.category,
                             style: GoogleFonts.poppins(
                               fontSize: 13,
                               color: AppColors.primary,
@@ -89,7 +95,7 @@ class IssueCard extends StatelessWidget {
                       // Pill Container
                       Container(
                         decoration: BoxDecoration(
-                          color: pillColor.withOpacity(0.1),
+                          color: pillColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         padding: const EdgeInsets.symmetric(
@@ -109,7 +115,7 @@ class IssueCard extends StatelessWidget {
                               width: 8,
                             ),
                             Text(
-                              issue.status,
+                              report.status,
                               style: GoogleFonts.openSans(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
@@ -123,7 +129,7 @@ class IssueCard extends StatelessWidget {
                   ),
                   // Title
                   Text(
-                    issue.title,
+                    report.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.poppins(
@@ -136,8 +142,11 @@ class IssueCard extends StatelessWidget {
                   Column(
                     spacing: 8,
                     children: [
-                      _buildInfoRow(Icons.location_on, issue.location),
-                      _buildInfoRow(Icons.date_range, issue.reportedOn),
+                      _buildInfoRow(Icons.location_on, report.address),
+                      _buildInfoRow(
+                        Icons.date_range,
+                        DateFormat('dd-MM-yyyy').format(report.createdAt),
+                      ),
                     ],
                   ),
                   const Divider(height: 8),
@@ -150,7 +159,7 @@ class IssueCard extends StatelessWidget {
                         color: AppColors.primary,
                       ),
                       Text(
-                        '${issue.supportedCount} Supporters',
+                        '0 Supporters',
                         style: GoogleFonts.openSans(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -163,6 +172,41 @@ class IssueCard extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImage(String path) {
+    if (path.startsWith('assets/')) {
+      return Image.asset(
+        path,
+        fit: BoxFit.cover,
+        height: 180,
+        width: double.infinity,
+        errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
+      );
+    } else {
+      return Image.file(
+        File(path),
+        fit: BoxFit.cover,
+        height: 180,
+        width: double.infinity,
+        errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
+      );
+    }
+  }
+
+  Widget _buildPlaceholder() {
+    return Container(
+      height: 180,
+      width: double.infinity,
+      color: Colors.grey.shade200,
+      child: Center(
+        child: Icon(
+          Icons.image_not_supported_rounded,
+          color: Colors.grey.shade400,
+          size: 48,
         ),
       ),
     );

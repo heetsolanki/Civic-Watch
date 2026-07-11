@@ -68,16 +68,6 @@ class _MainShellState extends State<MainShell> {
         toolbarHeight: 70,
         centerTitle: false,
         elevation: 0,
-        leading: selectedIndex != 0
-            ? IconButton(
-                onPressed: () => changePage(0),
-                icon: const Icon(
-                  Icons.arrow_back_rounded,
-                  color: AppColors.textPrimary,
-                  size: 28,
-                ),
-              )
-            : null,
         title: Padding(
           padding: EdgeInsets.only(left: selectedIndex == 0 ? 8 : 0),
           child: Text(

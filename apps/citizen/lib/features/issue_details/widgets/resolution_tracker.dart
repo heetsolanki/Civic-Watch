@@ -1,14 +1,15 @@
 import 'package:citizen/exports.dart';
+import 'package:intl/intl.dart';
 
 class ResolutionTracker extends StatelessWidget {
-  final IssueData issue;
+  final Report report;
 
-  const ResolutionTracker({super.key, required this.issue});
+  const ResolutionTracker({super.key, required this.report});
 
   @override
   Widget build(BuildContext context) {
     const statuses = ['Reported', 'Verified', 'Assigned', 'Resolved'];
-    final currentStatusIndex = statuses.indexOf(issue.status);
+    final currentStatusIndex = statuses.indexOf(report.status);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,13 +24,17 @@ class ResolutionTracker extends StatelessWidget {
               String subtitle;
               if (isCompleted) {
                 if (index == 0) {
-                  subtitle = '${issue.reportedOn} • ${issue.userId}';
+                  subtitle =
+                      '${DateFormat('MMM dd, yyyy').format(report.createdAt)} • ${report.userId}';
                 } else if (index == 1) {
-                  subtitle = issue.verifiedOn;
+                  // TODO: Fetch verification date from timeline
+                  subtitle = DateFormat('MMM dd, yyyy').format(report.updatedAt);
                 } else if (index == 2) {
-                  subtitle = issue.assignedOn;
+                  // TODO: Fetch assignment date from timeline
+                  subtitle = 'Authority assigned';
                 } else {
-                  subtitle = issue.resolvedOn;
+                  // TODO: Fetch resolution date from timeline
+                  subtitle = DateFormat('MMM dd, yyyy').format(report.updatedAt);
                 }
               } else {
                 subtitle = index == 2
@@ -67,7 +72,7 @@ class ResolutionTracker extends StatelessWidget {
                             child: Container(
                               width: 2,
                               color: isCompleted
-                                  ? AppColors.success.withOpacity(0.3)
+                                  ? AppColors.success.withValues(alpha: 0.3)
                                   : Colors.grey.shade200,
                             ),
                           ),

@@ -2,6 +2,7 @@ import 'package:citizen/exports.dart';
 
 class ProfileHeader extends StatelessWidget {
   final String name;
+  final String username;
   final String phone;
   final String email;
   final int civicPoints;
@@ -10,6 +11,7 @@ class ProfileHeader extends StatelessWidget {
   const ProfileHeader({
     super.key,
     required this.name,
+    required this.username,
     required this.phone,
     required this.email,
     required this.civicPoints,
@@ -58,13 +60,21 @@ class ProfileHeader extends StatelessWidget {
           height: 175,
           child: Column(
             children: [
-              const SizedBox(height: 60),
+              const SizedBox(height: 55),
               Text(
                 name,
                 style: GoogleFonts.poppins(
-                  fontSize: 22,
+                  fontSize: 20,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textPrimary,
+                ),
+              ),
+              Text(
+                '@$username',
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.primary,
                 ),
               ),
               const SizedBox(height: 3),
@@ -73,14 +83,14 @@ class ProfileHeader extends StatelessWidget {
                 children: [
                   const Icon(
                     Icons.verified_user_rounded,
-                    size: 20,
+                    size: 18,
                     color: AppColors.smallText,
                   ),
                   const SizedBox(width: 2),
                   Text(
                     'Verified Citizen',
                     style: GoogleFonts.openSans(
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

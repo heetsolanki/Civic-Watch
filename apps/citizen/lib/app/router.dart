@@ -1,5 +1,4 @@
 import 'package:citizen/exports.dart';
-import 'package:citizen/features/auth/screens/auth_screen.dart';
 
 final router = GoRouter(
   routes: [
@@ -69,11 +68,11 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/view-details/:issueId',
+      path: '/view-details/:id',
       name: "viewDetails",
       builder: (context, state) {
-        final issueId = state.pathParameters['issueId']!;
-        return IssueDetailsScreen(issueId: issueId);
+        final id = state.pathParameters['id']!;
+        return IssueDetailsScreen(id: id);
       },
     ),
     GoRoute(

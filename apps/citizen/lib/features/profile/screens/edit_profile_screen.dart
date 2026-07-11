@@ -10,6 +10,7 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
 
@@ -17,6 +18,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   bool _imageRemoved = false;
 
   String _initialName = '';
+  String _initialUsername = '';
   String _initialPhone = '';
   String? _initialImagePath;
 
@@ -25,6 +27,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.initState();
     _nameController.addListener(_onTextChanged);
     _phoneController.addListener(_onTextChanged);
+    _usernameController.addListener(_onTextChanged);
     loadUser();
   }
 
@@ -36,7 +39,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void dispose() {
     _nameController.removeListener(_onTextChanged);
     _phoneController.removeListener(_onTextChanged);
+    _usernameController.removeListener(_onTextChanged);
     _nameController.dispose();
+    _usernameController.dispose();
     _phoneController.dispose();
     _emailController.dispose();
     super.dispose();
@@ -48,10 +53,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final data = await AppPreferences.getUser();
     setState(() {
       _initialName = data['name'] ?? '';
+      _initialUsername = data['username'] ?? '';
       _initialPhone = data['phone'] ?? '';
       _initialImagePath = data['imagePath'];
 
       _nameController.text = _initialName;
+      _usernameController.text = _initialUsername;
       _phoneController.text = _initialPhone;
       _emailController.text = data['email'] ?? '';
     });
@@ -61,6 +68,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final imageChanged =
         _selectedImage != null || (_imageRemoved && _initialImagePath != null);
     return _nameController.text != _initialName ||
+        _usernameController.text != _initialUsername ||
         _phoneController.text != _initialPhone ||
         imageChanged;
   }
@@ -230,6 +238,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.1),
             const SizedBox(height: 20),
             CustomTextField(
+              controller: _usernameController,
+              hintText: 'Username',
+              prefixIcon: Icons.alternate_email_rounded,
+              keyboardType: TextInputType.text,
+            ).animate().fadeIn(delay: 250.ms).slideX(begin: -0.1),
+            const SizedBox(height: 20),
+            CustomTextField(
               controller: _emailController,
               hintText: 'Email Address',
               prefixIcon: Icons.mail_outline_rounded,
@@ -249,7 +264,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               loadingText: 'Saving...',
               isLoading: _isSaving,
               backgroundColor: AppColors.primary,
-              onPressed: _hasChanges
+              onPressed: (_hasChanges && _usernameController.text.isNotEmpty)
                   ? () async {
                       HapticFeedback.mediumImpact();
                       setState(() => _isSaving = true);
@@ -262,6 +277,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                       await AppPreferences.updateUserProfile(
                         name: _nameController.text,
+                        username: _usernameController.text,
                         phone: _phoneController.text,
                         imagePath: finalImagePath,
                       );

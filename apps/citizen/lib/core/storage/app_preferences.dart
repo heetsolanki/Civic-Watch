@@ -5,6 +5,7 @@ class AppPreferences {
 
   static const _imageKey = 'profileImage';
   static const _nameKey = 'name';
+  static const _usernameKey = 'username';
   static const _emailKey = 'email';
   static const _phoneKey = 'phone';
   static const _passwordKey = 'password';
@@ -16,6 +17,11 @@ class AppPreferences {
   static const _authorityMessagesKey = 'authorityMessages';
   static const _nearbyIssuesKey = 'nearbyIssues';
   static const _onboardingKey = "hasSeenOnboarding";
+
+  static String _generateUsername(String email) {
+    if (email.isEmpty) return '';
+    return email.split('@')[0].toLowerCase().trim();
+  }
 
   static Future<bool> hasSeenOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
@@ -50,6 +56,7 @@ class AppPreferences {
 
     await prefs.setString(_nameKey, name);
     await prefs.setString(_emailKey, email);
+    await prefs.setString(_usernameKey, _generateUsername(email));
     await prefs.setString(_phoneKey, phone);
     await prefs.setString(_passwordKey, password);
     await prefs.setString(
@@ -95,9 +102,18 @@ class AppPreferences {
   static Future<Map<String, dynamic>> getUser() async {
     final prefs = await SharedPreferences.getInstance();
 
+    String? username = prefs.getString(_usernameKey);
+    final email = prefs.getString(_emailKey);
+
+    if (username == null && email != null) {
+      username = _generateUsername(email);
+      await prefs.setString(_usernameKey, username);
+    }
+
     return {
       "name": prefs.getString(_nameKey),
-      "email": prefs.getString(_emailKey),
+      "username": username,
+      "email": email,
       "phone": prefs.getString(_phoneKey),
       "userSince": prefs.getString(_userSinceKey),
       "civicPoints": prefs.getInt(_civicPoints),
@@ -119,6 +135,7 @@ class AppPreferences {
   static Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
 
+    await prefs.remove(_usernameKey);
     await prefs.setBool(_logKey, false);
   }
 
@@ -133,12 +150,16 @@ class AppPreferences {
   static Future<void> updateUserProfile({
     required String name,
     required String phone,
+    String? username,
     String? imagePath,
   }) async {
     final prefs = await SharedPreferences.getInstance();
 
     await prefs.setString(_nameKey, name);
     await prefs.setString(_phoneKey, phone);
+    if (username != null) {
+      await prefs.setString(_usernameKey, username);
+    }
     if (imagePath != null) {
       if (imagePath.isEmpty) {
         await prefs.remove(_imageKey);
@@ -146,6 +167,22 @@ class AppPreferences {
         await prefs.setString(_imageKey, imagePath);
       }
     }
+  }
+
+  /// Username Methods
+  static Future<void> saveUsername(String username) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_usernameKey, username);
+  }
+
+  static Future<String?> getUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_usernameKey);
+  }
+
+  static Future<void> clearUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_usernameKey);
   }
 
   /// Notification Preferences

@@ -1,9 +1,9 @@
 import 'package:citizen/exports.dart';
 
 class InfoContainer extends StatelessWidget {
-  final IssueData issue;
+  final Report report;
 
-  const InfoContainer({super.key, required this.issue});
+  const InfoContainer({super.key, required this.report});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class InfoContainer extends StatelessWidget {
       children: [
         // Title
         Text(
-          issue.title,
+          report.title,
           style: GoogleFonts.poppins(
             fontSize: 24,
             fontWeight: FontWeight.w800,
@@ -32,7 +32,7 @@ class InfoContainer extends StatelessWidget {
             const SizedBox(width: 4),
             Expanded(
               child: Text(
-                issue.location,
+                report.address,
                 style: GoogleFonts.openSans(
                   fontSize: 15,
                   color: AppColors.textSecondary,
@@ -45,11 +45,11 @@ class InfoContainer extends StatelessWidget {
         const SizedBox(height: 16),
         // Description
         Text(
-          issue.description,
+          report.description,
           style: GoogleFonts.openSans(
             fontSize: 15,
             height: 1.6,
-            color: AppColors.textPrimary.withOpacity(0.8),
+            color: AppColors.textPrimary.withValues(alpha: 0.8),
           ),
         ),
       ],

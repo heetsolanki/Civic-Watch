@@ -99,19 +99,40 @@ class ReviewStep extends StatelessWidget {
             AppButton(
               text: 'Submit Report',
               onPressed: () async {
-                HapticFeedback.heavyImpact();
-                // Show the blocking dialog
-                showSubmittingReportDialog(context);
+                final user = await AppPreferences.getUser();
+                debugPrint('User: $user');
+                try {
+                  HapticFeedback.heavyImpact();
+                  showSubmittingReportDialog(context);
 
-                // Simulate API call/upload
-                await Future.delayed(const Duration(seconds: 2));
+                  final report = Report(
+                    id: const Uuid().v4(),
+                    category: draft.category!,
+                    title: draft.title,
+                    description: draft.description,
+                    images: draft.images.map((image) => image.path).toList(),
+                    latitude: draft.latitude!,
+                    longitude: draft.longitude!,
+                    address: draft.address!,
+                    status: 'Reported',
+                    createdAt: DateTime.now(),
+                    updatedAt: DateTime.now(),
+                    userId: user['username'],
+                  );
 
-                if (context.mounted) {
-                  // Dismiss the dialog
-                  Navigator.pop(context);
+                  await Provider.of<ReportProvider>(
+                    context,
+                    listen: false,
+                  ).addReport(report);
 
-                  // Navigate to success screen
-                  context.go('/report-success');
+                  await Future.delayed(const Duration(seconds: 2));
+
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    context.go('/report-success');
+                  }
+                } catch (e, stackTrace) {
+                  debugPrintStack(stackTrace: stackTrace);
                 }
               },
             ),
