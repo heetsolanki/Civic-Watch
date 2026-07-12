@@ -1,9 +1,10 @@
 import 'package:citizen/exports.dart';
+import '../services/report_dialog_service.dart';
 
-class ReviewStep extends StatelessWidget {
+class ReviewStep extends StatefulWidget {
   final String title;
   final VoidCallback onBack;
-  final ReportDraft draft;
+  final Report draft;
   final ValueChanged<int> onEdit;
 
   const ReviewStep({
@@ -13,6 +14,13 @@ class ReviewStep extends StatelessWidget {
     required this.title,
     required this.onEdit,
   });
+
+  @override
+  State<ReviewStep> createState() => _ReviewStepState();
+}
+
+class _ReviewStepState extends State<ReviewStep> {
+  bool _isSubmitting = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,34 +43,42 @@ class ReviewStep extends StatelessWidget {
                   const SizedBox(height: 8),
                   ReviewSectionCard(
                     title: 'Category',
-                    onEdit: () => onEdit(0),
-                    child: ReviewChip(label: draft.category ?? 'N/A'),
+                    onEdit: () => widget.onEdit(0),
+                    child: ReviewChip(
+                      label: widget.draft.category.isNotEmpty
+                          ? widget.draft.category
+                          : 'N/A',
+                    ),
                   ),
                   const SizedBox(height: 20),
                   ReviewSectionCard(
                     title: 'Issue Photos',
-                    onEdit: () => onEdit(1),
-                    child: ReviewPhotosGallery(images: draft.images),
+                    onEdit: () => widget.onEdit(1),
+                    child: ReviewPhotosGallery(images: widget.draft.images),
                   ),
                   const SizedBox(height: 20),
                   ReviewSectionCard(
                     title: 'Issue Details',
-                    onEdit: () => onEdit(2),
+                    onEdit: () => widget.onEdit(2),
                     child: ReviewDetailsContent(
-                      category: draft.category ?? 'N/A',
-                      title: draft.title,
-                      description: draft.description,
+                      category: widget.draft.category.isNotEmpty
+                          ? widget.draft.category
+                          : 'N/A',
+                      title: widget.draft.title,
+                      description: widget.draft.description,
                     ),
                   ),
                   const SizedBox(height: 20),
                   ReviewSectionCard(
                     title: 'Location',
-                    onEdit: () => onEdit(3),
+                    onEdit: () => widget.onEdit(3),
                     padding: EdgeInsets.zero,
                     child: ReviewLocationContent(
-                      latitude: draft.latitude ?? 0,
-                      longitude: draft.longitude ?? 0,
-                      address: draft.address ?? 'No address found',
+                      latitude: widget.draft.latitude,
+                      longitude: widget.draft.longitude,
+                      address: widget.draft.address.isNotEmpty
+                          ? widget.draft.address
+                          : 'No address found',
                     ),
                   ),
                   const SizedBox(height: 32),
@@ -98,43 +114,46 @@ class ReviewStep extends StatelessWidget {
             const SizedBox(height: 20),
             AppButton(
               text: 'Submit Report',
-              onPressed: () async {
-                final user = await AppPreferences.getUser();
-                debugPrint('User: $user');
-                try {
-                  HapticFeedback.heavyImpact();
-                  showSubmittingReportDialog(context);
+              isLoading: _isSubmitting,
+              onPressed: _isSubmitting
+                  ? null
+                  : () async {
+                      try {
+                        setState(() => _isSubmitting = true);
+                        HapticFeedback.heavyImpact();
 
-                  final report = Report(
-                    id: const Uuid().v4(),
-                    category: draft.category!,
-                    title: draft.title,
-                    description: draft.description,
-                    images: draft.images.map((image) => image.path).toList(),
-                    latitude: draft.latitude!,
-                    longitude: draft.longitude!,
-                    address: draft.address!,
-                    status: 'Reported',
-                    createdAt: DateTime.now(),
-                    updatedAt: DateTime.now(),
-                    userId: user['username'],
-                  );
+                        final report = widget.draft.copyWith(
+                          status: ReportStatus.pending,
+                          updatedAt: DateTime.now(),
+                        );
 
-                  await Provider.of<ReportProvider>(
-                    context,
-                    listen: false,
-                  ).addReport(report);
+                        // 1. Save to reports box
+                        await context.read<ReportsProvider>().addReport(report);
 
-                  await Future.delayed(const Duration(seconds: 2));
+                        // 2. Remove from drafts box
+                        await context.read<DraftProvider>().deleteDraft(
+                          report.id,
+                        );
 
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                    context.go('/report-success');
-                  }
-                } catch (e, stackTrace) {
-                  debugPrintStack(stackTrace: stackTrace);
-                }
-              },
+                        if (mounted) {
+                          await ReportDialogHelper.showSubmittingExperience(
+                            context,
+                            () {
+                              if (mounted) context.go('/report-success');
+                            },
+                          );
+                        }
+                      } catch (e, stackTrace) {
+                        debugPrintStack(stackTrace: stackTrace);
+                        if (mounted) {
+                          setState(() => _isSubmitting = false);
+                          AppToast.error(
+                            context,
+                            'Failed to submit report. Please try again.',
+                          );
+                        }
+                      }
+                    },
             ),
           ],
         ),

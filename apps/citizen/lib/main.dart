@@ -12,8 +12,13 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(
           create: (_) =>
-              ReportProvider(ReportRepository(ReportLocalDataSource()))
+              ReportsProvider(ReportRepository(ReportLocalDataSource()))
                 ..loadReports(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) =>
+              DraftProvider(DraftRepository(DraftLocalDataSource()))
+                ..loadDrafts(),
         ),
       ],
       child: const CivicWatchApp(),

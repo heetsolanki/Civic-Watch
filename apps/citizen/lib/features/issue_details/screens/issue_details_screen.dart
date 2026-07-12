@@ -27,7 +27,7 @@ class _IssueDetailsScreenState extends State<IssueDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final reports = context.watch<ReportProvider>().reports;
+    final reports = context.watch<ReportsProvider>().reports;
     final report = reports.where((item) => item.id == widget.id).firstOrNull;
 
     if (report == null) {
@@ -133,11 +133,15 @@ class _IssueDetailsScreenState extends State<IssueDetailsScreen> {
               InfoContainer(
                 report: report,
               ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1),
-              const SizedBox(height: 32),
-              if (report.userId == username)
-                SupportersContainer(
-                  report: report,
-                ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1),
+              if (report.userId != username)
+                Column(
+                  children: [
+                    const SizedBox(height: 32),
+                    SupportersContainer(
+                      report: report,
+                    ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1),
+                  ],
+                ),
               const SizedBox(height: 32),
               ResolutionTracker(
                 report: report,

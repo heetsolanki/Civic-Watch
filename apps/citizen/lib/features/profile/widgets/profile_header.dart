@@ -21,7 +21,6 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasImage = imagePath != null && imagePath!.isNotEmpty;
-    final width = MediaQuery.sizeOf(context).width;
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
@@ -44,7 +43,6 @@ class ProfileHeader extends StatelessWidget {
               ),
             ],
           ),
-          width: width * 0.85,
           height: 260,
         ),
         Container(
@@ -52,11 +50,10 @@ class ProfileHeader extends StatelessWidget {
           decoration: const BoxDecoration(
             color: AppColors.cardColor,
             borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10),
+              bottomLeft: Radius.circular(15),
+              bottomRight: Radius.circular(15),
             ),
           ),
-          width: width * 0.85,
           height: 175,
           child: Column(
             children: [

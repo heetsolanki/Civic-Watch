@@ -3,9 +3,10 @@ import 'package:citizen/exports.dart';
 class DetailsStep extends StatefulWidget {
   final VoidCallback onNext;
   final VoidCallback onBack;
-  final ReportDraft draft;
+  final Report draft;
   final ReportFlowMode mode;
   final VoidCallback onSave;
+  final ValueChanged<Report> onUpdate;
 
   const DetailsStep({
     super.key,
@@ -14,6 +15,7 @@ class DetailsStep extends StatefulWidget {
     required this.onBack,
     this.mode = ReportFlowMode.create,
     required this.onSave,
+    required this.onUpdate,
   });
 
   @override
@@ -49,17 +51,17 @@ class _DetailsStepState extends State<DetailsStep> {
                     const SizedBox(height: 8),
                     // Title Field
                     TitleField(
-                      category: widget.draft.category ?? 'Other',
+                      category: widget.draft.category.isNotEmpty ? widget.draft.category : 'Other',
                       value: widget.draft.title,
                       onChanged: (value) =>
-                          setState(() => widget.draft.title = value),
+                          widget.onUpdate(widget.draft.copyWith(title: value)),
                     ),
                     const SizedBox(height: 32),
                     // Description Field
                     DescriptionField(
                       value: widget.draft.description,
                       onChanged: (value) =>
-                          setState(() => widget.draft.description = value),
+                          widget.onUpdate(widget.draft.copyWith(description: value)),
                     ),
                     const SizedBox(height: 32),
                   ],

@@ -28,7 +28,7 @@ class IssuesScreenState extends State<IssuesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final reports = context.watch<ReportProvider>().reports;
+    final reports = context.watch<ReportsProvider>().reports;
     final width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       backgroundColor: AppColors.background,

@@ -1,13 +1,16 @@
 import 'package:citizen/exports.dart';
 import 'package:latlong2/latlong.dart';
 
+typedef LocationChangedCallback =
+    void Function(double latitude, double longitude, String address);
+
 class MapContainer extends StatefulWidget {
-  final ReportDraft draft;
-  final VoidCallback onLocationChanged;
+  final Report report;
+  final LocationChangedCallback onLocationChanged;
 
   const MapContainer({
     super.key,
-    required this.draft,
+    required this.report,
     required this.onLocationChanged,
   });
 
@@ -39,14 +42,13 @@ class _MapContainerState extends State<MapContainer>
       cancelPreviousAnimations: true,
     );
 
-    if (widget.draft.latitude != null && widget.draft.longitude != null) {
+    if (widget.report.latitude != 0.0 && widget.report.longitude != 0.0) {
       _selectedLocation = LatLng(
-        widget.draft.latitude!,
-        widget.draft.longitude!,
+        widget.report.latitude,
+        widget.report.longitude,
       );
-      _selectedAddress = widget.draft.address;
+      _selectedAddress = widget.report.address;
       _isLoadingLocation = false;
-      // We still re-verify/fetch the address to ensure it's up to date
       _setLocation(_selectedLocation!, animate: false);
     } else {
       _getCurrentLocation();
@@ -100,33 +102,31 @@ class _MapContainerState extends State<MapContainer>
       _isLoadingLocation = false;
       _selectedAddress = null;
       _isFetchingAddress = true;
-      _searchResults = []; // Clear search results
-      _searchController.clear(); // Clear search bar
+      _searchResults = [];
+      _searchController.clear();
     });
-
-    widget.draft.latitude = point.latitude;
-    widget.draft.longitude = point.longitude;
-    widget.onLocationChanged();
 
     if (animate) {
       _animatedMapController.animateTo(dest: point);
     }
 
     final address = await LocationService.reverseGeocode(point);
+    final finalAddress = address ?? 'Location selected';
 
     if (!mounted) return;
 
     setState(() {
-      _selectedAddress = address ?? 'Location selected';
-      widget.draft.address = _selectedAddress; // Update draft
+      _selectedAddress = finalAddress;
       _isFetchingAddress = false;
     });
+
+    widget.onLocationChanged(point.latitude, point.longitude, finalAddress);
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 450, // Increased height to accommodate search
+      height: 450,
       decoration: BoxDecoration(
         color: AppColors.cardColor,
         borderRadius: BorderRadius.circular(20),
@@ -151,7 +151,6 @@ class _MapContainerState extends State<MapContainer>
                         selectedLocation: _selectedLocation!,
                         onTap: _setLocation,
                       ),
-                      // Search Bar Overlay
                       Positioned(
                         top: 15,
                         left: 15,
@@ -214,7 +213,8 @@ class _MapContainerState extends State<MapContainer>
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                       ),
-                                      onTap: () => _setLocation(result.location),
+                                      onTap: () =>
+                                          _setLocation(result.location),
                                     );
                                   },
                                 ),

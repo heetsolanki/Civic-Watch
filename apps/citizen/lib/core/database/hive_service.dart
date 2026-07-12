@@ -16,7 +16,7 @@ final class HiveService {
 
     await Future.wait([
       Hive.openBox<Report>(HiveBoxes.reports),
-      Hive.openBox(HiveBoxes.drafts),
+      Hive.openBox<Report>(HiveBoxes.drafts),
       Hive.openBox(HiveBoxes.profile),
       Hive.openBox(HiveBoxes.settings),
       Hive.openBox(HiveBoxes.notifications),

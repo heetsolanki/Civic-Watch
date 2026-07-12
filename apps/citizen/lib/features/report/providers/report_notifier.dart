@@ -1,7 +1,7 @@
 import 'package:citizen/exports.dart';
 
-class ReportProvider extends ChangeNotifier {
-  ReportProvider(this._repository);
+class ReportsProvider extends ChangeNotifier {
+  ReportsProvider(this._repository);
 
   final ReportRepository _repository;
 

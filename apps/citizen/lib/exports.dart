@@ -26,14 +26,21 @@ export 'app/theme.dart';
 
 // core - constants & data
 export 'core/constants/app_colors.dart';
+export 'core/constants/categories.dart';
+export 'core/constants/report_status.dart';
 export 'core/data/title_suggestions.dart';
 export 'core/storage/app_preferences.dart';
+export 'core/utils/date_formatter.dart';
 
 // core - widgets
 export 'core/widgets/app_search_bar.dart';
 export 'core/widgets/app_toast.dart';
 export 'core/widgets/button.dart';
+export 'core/widgets/confirmation_dialog.dart';
+export 'core/widgets/empty_state.dart';
+export 'core/widgets/loading_indicator.dart';
 export 'core/widgets/category_selector.dart';
+export 'core/widgets/get_category_icon.dart';
 export 'core/widgets/issue_card.dart';
 export 'core/widgets/password_validation_view.dart';
 
@@ -81,17 +88,18 @@ export 'features/profile/widgets/policy_section.dart';
 
 // features - report
 // models
-export 'features/report/models/report_draft.dart';
 export 'features/report/models/report_flow_mode.dart';
 export 'features/report/models/report.dart';
 
 //screens
 export 'features/report/screens/create_report_screen.dart';
 export 'features/report/screens/report_success_screen.dart';
+export 'features/report/screens/drafts_screen.dart';
 
 //services
 export 'features/report/services/location_search_service.dart';
 export 'features/report/services/location_service.dart';
+export 'features/report/services/report_dialog_service.dart';
 
 //steps
 export 'features/report/steps/category_step.dart';
@@ -113,18 +121,20 @@ export 'features/report/widgets/review_location_content.dart';
 export 'features/report/widgets/review_photos_gallery.dart';
 export 'features/report/widgets/review_section_card.dart';
 export 'features/report/widgets/review_status_banner.dart';
-export 'features/report/widgets/submitting_report_dialog.dart';
+export 'features/report/widgets/report_action_dialogs.dart';
 export 'features/report/widgets/title_field.dart';
 
 //data - local
 export 'features/report/data/local/report_local_data_source.dart';
+export 'features/report/data/local/draft_local_data_source.dart';
 
 //data - repositories
 export 'features/report/data/repositories/report_repository.dart';
+export 'features/report/data/repositories/draft_repository.dart';
 
 // providers
-export 'package:citizen/features/report/providers/report_providers.dart';
 export 'features/report/providers/report_notifier.dart';
+export 'features/report/providers/draft_provider.dart';
 
 // features - my reports
 export 'features/my_reports/screens/my_reports_screen.dart';

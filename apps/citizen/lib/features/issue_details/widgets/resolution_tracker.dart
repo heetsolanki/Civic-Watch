@@ -1,5 +1,4 @@
 import 'package:citizen/exports.dart';
-import 'package:intl/intl.dart';
 
 class ResolutionTracker extends StatelessWidget {
   final Report report;
@@ -8,8 +7,9 @@ class ResolutionTracker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const statuses = ['Reported', 'Verified', 'Assigned', 'Resolved'];
-    final currentStatusIndex = statuses.indexOf(report.status);
+    const statuses = ['pending', 'in_progress', 'resolved'];
+    const statusLabels = ['Reported', 'Processing', 'Resolved'];
+    final currentStatusIndex = statuses.indexOf(report.status.toLowerCase());
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,19 +25,14 @@ class ResolutionTracker extends StatelessWidget {
               if (isCompleted) {
                 if (index == 0) {
                   subtitle =
-                      '${DateFormat('MMM dd, yyyy').format(report.createdAt)} • ${report.userId}';
+                      '${AppDateFormatter.formatShort(report.createdAt)} • ${report.userId}';
                 } else if (index == 1) {
-                  // TODO: Fetch verification date from timeline
-                  subtitle = DateFormat('MMM dd, yyyy').format(report.updatedAt);
-                } else if (index == 2) {
-                  // TODO: Fetch assignment date from timeline
-                  subtitle = 'Authority assigned';
+                  subtitle = AppDateFormatter.formatShort(report.updatedAt);
                 } else {
-                  // TODO: Fetch resolution date from timeline
-                  subtitle = DateFormat('MMM dd, yyyy').format(report.updatedAt);
+                  subtitle = AppDateFormatter.formatShort(report.updatedAt);
                 }
               } else {
-                subtitle = index == 2
+                subtitle = index == 1
                     ? 'Pending Assignment'
                     : 'Pending Completion';
               }
@@ -84,7 +79,7 @@ class ResolutionTracker extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            statuses[index],
+                            statusLabels[index],
                             style: GoogleFonts.poppins(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
@@ -124,8 +119,6 @@ class ResolutionTracker extends StatelessWidget {
       case 1:
         return Icons.verified_user_rounded;
       case 2:
-        return Icons.engineering_rounded;
-      case 3:
         return Icons.task_alt_rounded;
       default:
         return Icons.circle;

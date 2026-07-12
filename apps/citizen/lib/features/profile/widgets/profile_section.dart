@@ -36,6 +36,12 @@ class ProfileSection extends StatelessWidget {
                   icon: Icons.notifications_rounded,
                   onTap: () => context.push('/preferences'),
                 ),
+                const Divider(indent: 70, endIndent: 20, thickness: 0.5),
+                ProfileMenuTile(
+                  label: 'Draft Reports',
+                  icon: Icons.drafts_rounded,
+                  onTap: () => context.push('/drafts'),
+                ),
               ],
             ),
           ),

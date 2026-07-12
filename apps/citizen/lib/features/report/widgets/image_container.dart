@@ -1,15 +1,15 @@
 import 'package:citizen/exports.dart';
 
-class DraftImageContainer extends StatefulWidget {
-  final ReportDraft draft;
+class DraftImageContainer extends StatelessWidget {
+  final Report report;
+  final Function(int) onRemove;
 
-  const DraftImageContainer({super.key, required this.draft});
+  const DraftImageContainer({
+    super.key,
+    required this.report,
+    required this.onRemove,
+  });
 
-  @override
-  State<DraftImageContainer> createState() => _DraftImageContainerState();
-}
-
-class _DraftImageContainerState extends State<DraftImageContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,7 +30,7 @@ class _DraftImageContainerState extends State<DraftImageContainer> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (widget.draft.images.isEmpty)
+          if (report.images.isEmpty)
             Column(
               children: [
                 const Icon(
@@ -49,13 +49,13 @@ class _DraftImageContainerState extends State<DraftImageContainer> {
                 ),
               ],
             ),
-          if (widget.draft.images.isNotEmpty)
+          if (report.images.isNotEmpty)
             SizedBox(
               height: 80,
               child: ListView.separated(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 scrollDirection: Axis.horizontal,
-                itemCount: widget.draft.images.length,
+                itemCount: report.images.length,
                 separatorBuilder: (context, index) => const SizedBox(width: 10),
                 itemBuilder: (context, index) {
                   return Stack(
@@ -63,7 +63,7 @@ class _DraftImageContainerState extends State<DraftImageContainer> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image.file(
-                          widget.draft.images[index],
+                          File(report.images[index]),
                           width: 80,
                           height: 80,
                           fit: BoxFit.cover,
@@ -73,9 +73,7 @@ class _DraftImageContainerState extends State<DraftImageContainer> {
                         top: 0,
                         right: 0,
                         child: GestureDetector(
-                          onTap: () => setState(
-                            () => widget.draft.images.removeAt(index),
-                          ),
+                          onTap: () => onRemove(index),
                           child: Container(
                             decoration: const BoxDecoration(
                               color: Colors.black54,
@@ -94,11 +92,11 @@ class _DraftImageContainerState extends State<DraftImageContainer> {
                 },
               ),
             ),
-          if (widget.draft.images.isNotEmpty)
+          if (report.images.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
-                '${widget.draft.images.length} / 5 photos',
+                '${report.images.length} / 5 photos',
                 style: GoogleFonts.openSans(
                   color: Colors.grey.shade600,
                   fontSize: 12,

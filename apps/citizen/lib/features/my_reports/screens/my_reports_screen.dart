@@ -9,6 +9,7 @@ class MyReportsScreen extends StatefulWidget {
 
 class _MyReportsScreenState extends State<MyReportsScreen> {
   String username = '';
+  int _selectedIndex = 0;
   static const List<String> filters = [
     'All',
     'Reported',
@@ -16,8 +17,6 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
     'Assigned',
     'Resolved',
   ];
-
-  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -27,27 +26,36 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
 
   void loadUser() async {
     final user = await AppPreferences.getUser();
-    setState(() {
-      username = user['username'] ?? '';
-    });
+    if (mounted) {
+      setState(() {
+        username = user['username'] ?? '';
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final reports = context.watch<ReportProvider>().reports;
-    debugPrint('Reports count: ${reports.length}');
+    final reports = context.select<ReportsProvider, List<Report>>(
+      (p) => p.reports,
+    );
+
     if (reports.isEmpty) {
-      return Center(
-        child: Text(
-          'No Reports Yet!',
-          style: GoogleFonts.poppins(
-            fontSize: 24,
-            fontWeight: FontWeight.w800,
-            color: AppColors.textPrimary,
-          ),
-        ),
+      return const EmptyState(
+        icon: Icons.assignment_outlined,
+        title: 'No Reports Yet!',
+        description:
+            'You haven\'t submitted any reports yet. Your reports will appear here.',
       );
     }
+
+    final filteredReports = reports.where((report) {
+      final matchUser = username == report.userId;
+      final matchStatus =
+          _selectedIndex == 0 ||
+          report.status.toLowerCase() == filters[_selectedIndex].toLowerCase();
+      return matchUser && matchStatus;
+    }).toList();
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Column(
@@ -103,60 +111,39 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: Builder(
-              builder: (context) {
-                final filteredReports = reports.where((report) {
-                  final matchUser = username == report.userId;
-                  final matchStatus =
-                      _selectedIndex == 0 ||
-                      report.status.toLowerCase() ==
-                          filters[_selectedIndex].toLowerCase();
-                  return matchUser && matchStatus;
-                }).toList();
-
-                if (filteredReports.isEmpty) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.assignment_late_rounded,
-                          size: 64,
-                          color: AppColors.primary.withOpacity(0.1),
+            child: filteredReports.isEmpty
+                ? const _EmptyFilteredState()
+                : ListView.builder(
+                    padding: const EdgeInsets.only(top: 8, bottom: 100),
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: filteredReports.length,
+                    itemBuilder: (context, index) {
+                      final report = filteredReports[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
                         ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'No reports found in this category',
-                          style: GoogleFonts.openSans(
-                            color: AppColors.textSecondary,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-                return ListView.builder(
-                  padding: const EdgeInsets.only(top: 8, bottom: 100),
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: filteredReports.length,
-                  itemBuilder: (context, index) {
-                    final report = filteredReports[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 12,
-                      ),
-                      child: Center(child: IssueCard(report: report)),
-                    );
-                  },
-                );
-              },
-            ),
+                        child: Center(child: IssueCard(report: report)),
+                      );
+                    },
+                  ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _EmptyFilteredState extends StatelessWidget {
+  const _EmptyFilteredState();
+
+  @override
+  Widget build(BuildContext context) {
+    return const EmptyState(
+      icon: Icons.assignment_late_rounded,
+      title: 'No Reports Found',
+      description: 'No reports found in this category',
     );
   }
 }

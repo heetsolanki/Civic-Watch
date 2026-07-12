@@ -1,4 +1,3 @@
-import 'package:citizen/core/widgets/get_category_icon.dart';
 import 'package:citizen/exports.dart';
 
 class CategoryStatusPill extends StatelessWidget {
@@ -6,24 +5,9 @@ class CategoryStatusPill extends StatelessWidget {
 
   const CategoryStatusPill({super.key, required this.report});
 
-  Color _getStatusColor(String status) {
-    switch (status) {
-      case 'Reported':
-        return Colors.orange;
-      case 'Verified':
-        return Colors.blue;
-      case 'Assigned':
-        return Colors.deepPurple;
-      case 'Resolved':
-        return AppColors.success;
-      default:
-        return Colors.grey;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final statusColor = _getStatusColor(report.status);
+    final statusColor = ReportStatus.getStatusColor(report.status);
     final icon = getCategoryIcon(report.category);
 
     return Row(
@@ -70,7 +54,7 @@ class CategoryStatusPill extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                report.status,
+                ReportStatus.getStatusLabel(report.status),
                 style: GoogleFonts.openSans(
                   fontSize: 12,
                   color: statusColor,

@@ -3,9 +3,10 @@ import 'package:citizen/exports.dart';
 class LocationStep extends StatefulWidget {
   final VoidCallback onNext;
   final VoidCallback onBack;
-  final ReportDraft draft;
+  final Report draft;
   final ReportFlowMode mode;
   final VoidCallback onSave;
+  final ValueChanged<Report> onUpdate;
 
   const LocationStep({
     super.key,
@@ -14,6 +15,7 @@ class LocationStep extends StatefulWidget {
     required this.onBack,
     this.mode = ReportFlowMode.create,
     required this.onSave,
+    required this.onUpdate,
   });
 
   @override
@@ -37,8 +39,14 @@ class _LocationStepState extends State<LocationStep> {
             const SizedBox(height: 8),
             Expanded(
               child: MapContainer(
-                draft: widget.draft,
-                onLocationChanged: () => setState(() {}),
+                report: widget.draft,
+                onLocationChanged: (latitude, longitude, address) {
+                  widget.onUpdate(widget.draft.copyWith(
+                    latitude: latitude,
+                    longitude: longitude,
+                    address: address,
+                  ));
+                },
               ),
             ),
             const SizedBox(height: 24),
@@ -67,8 +75,8 @@ class _LocationStepState extends State<LocationStep> {
                         ? const Icon(Icons.keyboard_arrow_right_rounded)
                         : null,
                     onPressed:
-                        widget.draft.latitude != null &&
-                            widget.draft.longitude != null
+                        widget.draft.latitude != 0.0 &&
+                            widget.draft.longitude != 0.0
                         ? (widget.mode == ReportFlowMode.edit
                               ? widget.onSave
                               : widget.onNext)

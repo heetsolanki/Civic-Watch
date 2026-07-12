@@ -1,7 +1,7 @@
 import 'package:citizen/exports.dart';
 
 class ReviewPhotosGallery extends StatelessWidget {
-  final List<File> images;
+  final List<String> images;
 
   const ReviewPhotosGallery({super.key, required this.images});
 
@@ -17,7 +17,11 @@ class ReviewPhotosGallery extends StatelessWidget {
         itemBuilder: (context, index) {
           return ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: Image.file(images[index], width: 280, fit: BoxFit.cover),
+            child: Image.file(
+              File(images[index]),
+              width: 280,
+              fit: BoxFit.cover,
+            ),
           );
         },
       ),

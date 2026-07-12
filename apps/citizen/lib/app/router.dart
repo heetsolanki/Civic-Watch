@@ -64,7 +64,8 @@ final router = GoRouter(
         return null;
       },
       builder: (context, state) {
-        return const CreateReportScreen();
+        final draft = state.extra as Report?;
+        return CreateReportScreen(initialDraft: draft);
       },
     ),
     GoRoute(
@@ -79,6 +80,11 @@ final router = GoRouter(
       path: '/report-success',
       name: "reportSuccess",
       builder: (context, state) => const ReportSuccessScreen(),
+    ),
+    GoRoute(
+      path: '/drafts',
+      name: 'drafts',
+      builder: (context, state) => const DraftsScreen(),
     ),
     GoRoute(
       path: '/auth',
@@ -134,16 +140,14 @@ CustomTransitionPage _customTransition({
     key: state.pageKey,
     child: child,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const curve = Curves.easeInOutCubic;
       return FadeTransition(
-        opacity: animation,
+        opacity: CurvedAnimation(parent: animation, curve: curve),
         child: SlideTransition(
-          position:
-              Tween<Offset>(
-                begin: const Offset(0.08, 0), // 8% horizontal slide
-                end: Offset.zero,
-              ).animate(
-                CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
-              ),
+          position: Tween<Offset>(
+            begin: const Offset(0.05, 0),
+            end: Offset.zero,
+          ).animate(CurvedAnimation(parent: animation, curve: curve)),
           child: child,
         ),
       );

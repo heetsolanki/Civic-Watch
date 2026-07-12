@@ -1,30 +1,13 @@
-import 'package:citizen/core/widgets/get_category_icon.dart';
 import 'package:citizen/exports.dart';
-import 'package:intl/intl.dart';
 
 class IssueCard extends StatelessWidget {
   final Report report;
 
   const IssueCard({super.key, required this.report});
 
-  Color _getStatusColor(String status) {
-    switch (status) {
-      case 'Reported':
-        return Colors.orange.shade500;
-      case 'Verified':
-        return Colors.blue.shade500;
-      case 'Assigned':
-        return Colors.deepPurple.shade500;
-      case 'Resolved':
-        return AppColors.success;
-      default:
-        return Colors.grey;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final pillColor = _getStatusColor(report.status);
+    final pillColor = ReportStatus.getStatusColor(report.status);
     final width = MediaQuery.sizeOf(context).width;
 
     return GestureDetector(
@@ -115,7 +98,7 @@ class IssueCard extends StatelessWidget {
                               width: 8,
                             ),
                             Text(
-                              report.status,
+                              ReportStatus.getStatusLabel(report.status),
                               style: GoogleFonts.openSans(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
@@ -145,7 +128,7 @@ class IssueCard extends StatelessWidget {
                       _buildInfoRow(Icons.location_on, report.address),
                       _buildInfoRow(
                         Icons.date_range,
-                        DateFormat('dd-MM-yyyy').format(report.createdAt),
+                        AppDateFormatter.formatShort(report.createdAt),
                       ),
                     ],
                   ),

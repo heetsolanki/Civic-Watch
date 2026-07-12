@@ -4,9 +4,10 @@ import 'package:citizen/core/services/image_service.dart';
 class PhotoStep extends StatefulWidget {
   final VoidCallback onNext;
   final VoidCallback onBack;
-  final ReportDraft draft;
+  final Report draft;
   final ReportFlowMode mode;
   final VoidCallback onSave;
+  final ValueChanged<Report> onUpdate;
 
   const PhotoStep({
     super.key,
@@ -15,6 +16,7 @@ class PhotoStep extends StatefulWidget {
     required this.onBack,
     this.mode = ReportFlowMode.create,
     required this.onSave,
+    required this.onUpdate,
   });
 
   @override
@@ -36,7 +38,9 @@ class _PhotoStepState extends State<PhotoStep> {
 
     if (processed != null) {
       HapticFeedback.lightImpact();
-      setState(() => widget.draft.images.add(processed));
+      widget.onUpdate(widget.draft.copyWith(
+        images: [...widget.draft.images, processed.path],
+      ));
     }
   }
 
@@ -52,7 +56,12 @@ class _PhotoStepState extends State<PhotoStep> {
 
     if (processedImages.isNotEmpty) {
       HapticFeedback.lightImpact();
-      setState(() => widget.draft.images.addAll(processedImages));
+      widget.onUpdate(widget.draft.copyWith(
+        images: [
+          ...widget.draft.images,
+          ...processedImages.map((f) => f.path),
+        ],
+      ));
     }
   }
 
@@ -75,7 +84,14 @@ class _PhotoStepState extends State<PhotoStep> {
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
-                    DraftImageContainer(draft: widget.draft),
+                    DraftImageContainer(
+                      report: widget.draft,
+                      onRemove: (index) {
+                        final newImages = List<String>.from(widget.draft.images)
+                          ..removeAt(index);
+                        widget.onUpdate(widget.draft.copyWith(images: newImages));
+                      },
+                    ),
                     const SizedBox(height: 32),
                     AppButton(
                       text: 'Capture a photo',
